@@ -523,3 +523,139 @@
   gap: 6px;
   text-decoration: none;
 }
+
+.call-label-mobile {
+  display: none;
+}
+
+/* ==========================================================================
+   RESPONSIVE MEDIA QUERIES FOR FLOATING PILL NAVBAR
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .floating-nav-links {
+    gap: 2px;
+  }
+  .pill-nav-link {
+    padding: 6px 10px;
+    font-size: 12.5px;
+  }
+  .call-number {
+    display: none;
+  }
+  .call-label-mobile {
+    display: inline;
+  }
+  .pill-call-btn {
+    padding: 7px 12px;
+    font-size: 12.5px;
+  }
+}
+
+@media (max-width: 868px) {
+  .floating-nav-links {
+    display: none !important;
+  }
+  .floating-navbar-container {
+    top: 8px;
+    padding: 0 10px;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+  .floating-navbar-pill {
+    padding: 7px 12px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    backdrop-filter: blur(14px);
+    background: rgba(255, 255, 255, 0.95);
+  }
+  .brand-badge {
+    display: none;
+  }
+  .brand-name {
+    font-size: 16px;
+  }
+  .floating-actions-wrap {
+    gap: 8px;
+  }
+  .pill-book-btn,
+  .desktop-only-cta {
+    display: none !important;
+  }
+  .pill-call-btn {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 5px;
+    background: #0f172a;
+    color: #ffffff;
+    padding: 6px 13px;
+    font-size: 12.5px;
+    font-weight: 800;
+    border-radius: 9999px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.2);
+  }
+  .call-number {
+    display: none !important;
+  }
+  .call-label-mobile {
+    display: inline !important;
+  }
+  .pill-mobile-hamburger {
+    display: flex !important;
+    width: 36px;
+    height: 36px;
+    background: #f1f5f9;
+    color: #0f172a;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 440px) {
+  .floating-navbar-container {
+    top: 6px;
+    padding: 0 8px;
+  }
+  .floating-navbar-pill {
+    padding: 6px 10px;
+    gap: 6px;
+  }
+  .floating-logo-wrap {
+    width: 32px;
+    height: 32px;
+  }
+  .floating-logo-img {
+    width: 24px;
+    height: 24px;
+  }
+  .brand-name {
+    font-size: 14.5px;
+  }
+  .pill-call-btn {
+    padding: 6px 10px;
+    font-size: 11.5px;
+    gap: 4px;
+  }
+  .pill-mobile-hamburger {
+    width: 33px;
+    height: 33px;
+  }
+}
+
+@media (max-width: 350px) {
+  .call-label-mobile {
+    display: none !important;
+  }
+  .pill-call-btn {
+    width: 33px;
+    height: 33px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 50%;
+  }
+}
+

@@ -73,11 +73,20 @@ export default function FloatingActions() {
           </Link>
 
           <a
+            href="tel:+919304415657"
+            className="mobile-bottom-item call-item"
+          >
+            <span className="mobile-bottom-icon">
+              <Phone size={18} />
+            </span>
+            <span>Call</span>
+          </a>
+
+          <a
             href="https://wa.me/919304415657?text=Hi%20Repair%20Saathi%2C%20I%20need%20appliance%20repair."
             target="_blank"
             rel="noopener noreferrer"
-            className="mobile-bottom-item"
-            style={{ color: "#25d366" }}
+            className="mobile-bottom-item wa-item"
           >
             <span className="mobile-bottom-icon">
               <WhatsAppIcon size={19} color="#25d366" />

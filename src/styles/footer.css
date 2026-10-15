@@ -107,3 +107,29 @@
 .footer-bottom a:hover {
   color: #fbbc34;
 }
+
+/* RESPONSIVE MEDIA QUERIES FOR FOOTER */
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-footer {
+    padding-top: 36px;
+    padding-bottom: 20px;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding-bottom: 24px;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+}
+

@@ -14,18 +14,16 @@ export default function ProductBookingClient({ serviceId }: Props) {
 
   return (
     <>
-      <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
+      <div className="product-actions-group">
         <button
           onClick={() => setModalOpen(true)}
           className="btn-book-now"
-          style={{ fontSize: "15px", padding: "12px 28px" }}
         >
           ⚡ Book This Service Now
         </button>
         <a
           href="tel:+919304415657"
           className="btn-call-header"
-          style={{ fontSize: "14px", padding: "11px 22px" }}
         >
           📞 Call +91-9304415657
         </a>
@@ -33,21 +31,10 @@ export default function ProductBookingClient({ serviceId }: Props) {
           href={`https://wa.me/919304415657?text=Hi%20Repair%20Saathi%2C%20I%20want%20to%20inquire%20about%20${serviceId}.`}
           target="_blank"
           rel="noopener noreferrer"
-          style={{
-            background: "#25d366",
-            color: "#ffffff",
-            fontSize: "14px",
-            fontWeight: "800",
-            padding: "11px 20px",
-            borderRadius: "9999px",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "8px",
-            textDecoration: "none",
-          }}
+          className="btn-wa-header"
         >
           <WhatsAppIcon size={18} color="#ffffff" />
-          <span>WhatsApp</span>
+          <span>WhatsApp Us</span>
         </a>
       </div>
 

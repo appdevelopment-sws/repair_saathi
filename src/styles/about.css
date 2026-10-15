@@ -664,27 +664,8 @@
   box-shadow: 0 6px 18px rgba(37, 211, 102, 0.45);
 }
 
-/* RESPONSIVE */
-@media (max-width: 1240px) {
-  .brand-badge {
-    display: none;
-  }
-  .floating-nav-links {
-    gap: 4px;
-  }
-  .pill-nav-link {
-    font-size: 11.5px;
-    padding: 5px 8px;
-  }
-}
-
+/* RESPONSIVE FOR ABOUT PAGE */
 @media (max-width: 1024px) {
-  .floating-nav-links, .pill-call-btn {
-    display: none;
-  }
-  .pill-mobile-hamburger {
-    display: inline-flex;
-  }
   .about-origin-grid {
     grid-template-columns: 1fr;
     gap: 45px;
@@ -698,138 +679,31 @@
   .about-cta-card {
     grid-template-columns: 1fr;
   }
-  .yoga-highlights-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .yoga-hero-heading {
-    font-size: 42px;
-  }
-  .hero-cards-row {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .services-grid-8 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .footer-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 @media (max-width: 768px) {
   .about-hero-title {
-    font-size: 32px;
+    font-size: 28px;
     letter-spacing: -0.5px;
   }
   .about-hero-subtitle {
-    font-size: 15px;
+    font-size: 14.5px;
   }
   .origin-main-heading {
-    font-size: 28px;
+    font-size: 24px;
   }
   .origin-stats-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
   .why-highlights-grid {
     grid-template-columns: 1fr;
-  }
-  .about-origin-section, .about-pillars-section, .about-why-section {
-    padding: 60px 0;
-  }
-  .about-pillars-section {
-    border-radius: 2rem 2rem 0 0;
-  }
-  .floating-nav-links, .pill-call-btn {
-    display: none;
-  }
-  .pill-mobile-hamburger {
-    display: inline-flex;
-  }
-  .floating-navbar-container {
-    top: 8px;
-    padding: 0 10px;
-  }
-  .floating-navbar-pill {
-    padding: 6px 14px;
-  }
-  .yoga-hero-section {
-    padding-top: 85px;
-  }
-  .yoga-hero-heading {
-    font-size: 32px;
-    letter-spacing: -0.5px;
-  }
-  .yoga-hero-subtitle {
-    font-size: 14.5px;
-    margin-bottom: 22px;
-  }
-  .yoga-highlights-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  .yoga-highlight-card {
-    padding: 14px 8px;
-  }
-  .highlight-title {
-    font-size: 14px;
-  }
-  .highlight-desc {
-    font-size: 10px;
-  }
-  .yoga-hero-ctas {
-    flex-direction: column;
-    width: 100%;
-  }
-  .yoga-btn-primary, .yoga-btn-secondary, .yoga-btn-whatsapp {
-    width: 100%;
-    justify-content: center;
-  }
-  .desktop-navigation, .header-call-btn, .top-bar-phone-right {
-    display: none;
-  }
-  .mobile-hamburger {
-    display: block;
-  }
-  .top-bar-flex {
-    justify-content: center;
-    font-size: 11px;
-  }
-  .top-bar-phone {
-    display: none;
-  }
-  .hero-cards-row {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-  .services-grid-8 {
-    grid-template-columns: 1fr;
     gap: 16px;
   }
-  .content-block-grid, .content-block-grid.reverse {
-    grid-template-columns: 1fr;
-    gap: 24px;
-    direction: ltr;
+  .about-origin-section, .about-pillars-section, .about-why-section {
+    padding: 40px 0;
   }
-  .inquiry-grid {
-    grid-template-columns: 1fr;
-  }
-  .query-form-grid {
-    grid-template-columns: 1fr;
-  }
-  .query-group.full {
-    grid-column: span 1;
-  }
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-  .mobile-bottom-bar {
-    display: block;
-  }
-  body {
-    padding-bottom: 56px;
-  }
-  .floating-actions {
-    bottom: 70px;
-    right: 16px;
+  .about-pillars-section {
+    border-radius: 1.5rem 1.5rem 0 0;
   }
 }

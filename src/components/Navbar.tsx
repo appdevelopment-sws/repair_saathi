@@ -252,14 +252,15 @@ export default function Navbar() {
 
           {/* Right Action CTAs */}
           <div className="floating-actions-wrap">
-            <a href="tel:+919304415657" className="pill-call-btn">
+            <a href="tel:+919304415657" className="pill-call-btn" title="Call Repair Saathi">
               <Phone size={14} className="call-icon" />
               <span className="call-number">+91-9304415657</span>
+              <span className="call-label-mobile">Call</span>
             </a>
 
             <button
               onClick={() => setBookingModalOpen(true)}
-              className="pill-book-btn"
+              className="pill-book-btn desktop-only-cta"
               type="button"
             >
               <span>Book Service</span>

@@ -82,69 +82,54 @@ export default function ServicesClient() {
         </div>
 
         {/* Services Grid */}
-        <div className="services-grid">
+        <div className="services-grid-8">
           {filteredServices.map((item) => (
-            <div key={item.id} className="service-card">
-              {item.discountBadge && (
-                <span className="service-card-badge">{item.discountBadge}</span>
-              )}
-              <div className="service-card-img-wrap">
+            <div key={item.id} className="appliance-service-card">
+              <Link href={`/product/${item.slug}/`} className="service-card-thumbnail">
                 <Image
                   src={item.image}
                   alt={item.title}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  className="service-card-img"
+                  className="service-thumb-img"
                 />
-              </div>
-              <div className="service-card-content">
+              </Link>
+              <div className="service-card-details">
                 <span
                   style={{
                     fontSize: "11px",
-                    fontWeight: "700",
-                    color: "#94a3b8",
+                    fontWeight: "800",
+                    color: "#f59e0b",
                     textTransform: "uppercase",
                     marginBottom: "4px",
                   }}
                 >
                   {item.category}
                 </span>
-                <h3 className="service-card-title">{item.title}</h3>
-                <p
-                  style={{
-                    fontSize: "13px",
-                    color: "#64748b",
-                    lineHeight: "1.5",
-                    marginBottom: "12px",
-                    display: "-webkit-box",
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: "vertical",
-                    overflow: "hidden",
-                  }}
-                >
-                  {item.description}
-                </p>
+                <Link href={`/product/${item.slug}/`}>
+                  <h3 className="service-title">{item.title}</h3>
+                </Link>
 
-                <div className="service-price-block">
-                  <span className="service-price-label">Visiting &amp; Fix</span>
+                <div className="service-price-row">
+                  <span className="service-price-text">Starts from</span>
                   <div>
-                    <span className="service-price-val">{item.price}</span>
+                    <span className="service-price-current">{item.price}</span>
                     {item.originalPrice && (
-                      <span className="service-price-original">
+                      <span className="service-price-strike">
                         {item.originalPrice}
                       </span>
                     )}
                   </div>
                 </div>
 
-                <div className="service-card-actions">
+                <div className="service-action-buttons">
                   <button
                     onClick={() => handleBook(item.id)}
-                    className="btn-book-card"
+                    className="btn-book-service"
                   >
-                    ⚡ Book Now
+                    Book Now
                   </button>
-                  <Link href={`/product/${item.slug}/`} className="btn-view-card">
+                  <Link href={`/product/${item.slug}/`} className="btn-details-service">
                     Details
                   </Link>
                 </div>
@@ -154,20 +139,7 @@ export default function ServicesClient() {
         </div>
 
         {/* Need custom repair banner */}
-        <div
-          style={{
-            marginTop: "48px",
-            background: "#0f172a",
-            color: "#ffffff",
-            padding: "32px",
-            borderRadius: "16px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            gap: "20px",
-          }}
-        >
+        <div className="services-custom-banner">
           <div>
             <h3 style={{ fontSize: "20px", fontWeight: "900", color: "#fbbc34", marginBottom: "6px" }}>
               Can&apos;t find your specific appliance issue?
@@ -176,7 +148,7 @@ export default function ServicesClient() {
               Call our technician coordinator directly. We service TVs, induction cooktops, inverters, and heavy kitchen equipment as well.
             </p>
           </div>
-          <a href="tel:+919304415657" className="btn-book-now" style={{ fontSize: "15px", padding: "12px 24px" }}>
+          <a href="tel:+919304415657" className="btn-book-now services-custom-btn">
             📞 Call Helpdesk: +91-9304415657
           </a>
         </div>

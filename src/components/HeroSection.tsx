@@ -32,7 +32,7 @@ export default function HeroSection() {
       icon: Clock,
       label: "Fast Response",
       title: "30-Min Arrival",
-      desc: "Doorstep technician anywhere in Patna",
+      desc: "Doorstep technician in Patna",
       color: "#f59e0b",
       bgColor: "rgba(245, 158, 11, 0.1)",
     },
@@ -40,23 +40,23 @@ export default function HeroSection() {
       icon: ShieldCheck,
       label: "Guaranteed",
       title: "90-Day Warranty",
-      desc: "100% genuine spare parts only",
+      desc: "100% genuine spare parts",
       color: "#10b981",
       bgColor: "rgba(16, 185, 129, 0.1)",
     },
     {
       icon: Wrench,
-      label: "Verified Experts",
-      title: "Certified Pros",
-      desc: "5,000+ satisfied Patna families",
+      label: "Certified",
+      title: "Expert Pros",
+      desc: "5,000+ satisfied families",
       color: "#0284c7",
       bgColor: "rgba(2, 132, 199, 0.1)",
     },
     {
       icon: Zap,
-      label: "Transparent",
+      label: "Upfront",
       title: "Starts @ ₹199",
-      desc: "Fixed upfront pricing • No hidden fees",
+      desc: "Fixed upfront pricing",
       color: "#8b5cf6",
       bgColor: "rgba(139, 92, 246, 0.1)",
     },
@@ -79,14 +79,14 @@ export default function HeroSection() {
               className="yoga-hero-badge"
             >
               <span className="badge-sparkle">
-                <Sparkles size={14} />
+                <Sparkles size={13} />
               </span>
               <span className="badge-text">
-                Patna&apos;s #1 Doorstep Repair Partner
+                Patna&apos;s #1 Doorstep Repair
               </span>
               <span className="badge-rating">
-                <Star size={12} fill="#f59e0b" color="#f59e0b" />
-                4.9/5 (5,000+ Reviews)
+                <Star size={11} fill="#f59e0b" color="#f59e0b" />
+                4.9★ (5k+ Reviews)
               </span>
             </motion.div>
 
@@ -97,7 +97,7 @@ export default function HeroSection() {
               transition={{ duration: 0.8, delay: 0.1 }}
               className="yoga-hero-heading"
             >
-              Fast, Reliable Doorstep <br />
+              Fast, Reliable Doorstep <br className="hero-desktop-br" />
               <span className="heading-highlight">
                 Home Appliance Repair
                 <svg
@@ -145,11 +145,13 @@ export default function HeroSection() {
                         color: card.color,
                       }}
                     >
-                      <Icon size={22} />
+                      <Icon size={20} />
                     </div>
-                    <span className="highlight-tag">{card.label}</span>
-                    <h3 className="highlight-title">{card.title}</h3>
-                    <p className="highlight-desc">{card.desc}</p>
+                    <div className="highlight-content">
+                      <span className="highlight-tag">{card.label}</span>
+                      <h3 className="highlight-title">{card.title}</h3>
+                      <p className="highlight-desc">{card.desc}</p>
+                    </div>
                   </div>
                 );
               })}
@@ -171,20 +173,22 @@ export default function HeroSection() {
                 <ArrowRight size={18} />
               </button>
 
-              <a href="tel:+919304415657" className="yoga-btn-secondary">
-                <Phone size={17} style={{ color: "#f59e0b" }} />
-                <span>Call +91-9304415657</span>
-              </a>
+              <div className="yoga-hero-sub-ctas">
+                <a href="tel:+919304415657" className="yoga-btn-secondary">
+                  <Phone size={17} style={{ color: "#f59e0b" }} />
+                  <span>Call Us</span>
+                </a>
 
-              <a
-                href="https://wa.me/919304415657?text=Hi%20Repair%20Saathi%2C%20I%20need%20appliance%20repair%20service"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="yoga-btn-whatsapp"
-              >
-                <WhatsAppIcon size={18} color="#ffffff" />
-                <span>WhatsApp</span>
-              </a>
+                <a
+                  href="https://wa.me/919304415657?text=Hi%20Repair%20Saathi%2C%20I%20need%20appliance%20repair%20service"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="yoga-btn-whatsapp"
+                >
+                  <WhatsAppIcon size={18} color="#ffffff" />
+                  <span>WhatsApp</span>
+                </a>
+              </div>
             </motion.div>
 
             {/* Micro Trust Points */}

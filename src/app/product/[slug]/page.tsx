@@ -78,20 +78,7 @@ export default async function ProductDetailPage({
         </div>
 
         {/* Product Card Overview */}
-        <div
-          style={{
-            background: "#ffffff",
-            borderRadius: "20px",
-            border: "1px solid var(--border-color)",
-            boxShadow: "var(--shadow-md)",
-            padding: "36px",
-            display: "grid",
-            gridTemplateColumns: "1.1fr 1.3fr",
-            gap: "40px",
-            alignItems: "start",
-            marginBottom: "48px",
-          }}
-        >
+        <div className="product-detail-overview">
           {/* Image */}
           <div
             style={{
@@ -189,14 +176,7 @@ export default async function ProductDetailPage({
         </div>
 
         {/* What is Included & What is Excluded */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "28px",
-            marginBottom: "40px",
-          }}
-        >
+        <div className="product-detail-inc-exc">
           {/* Inclusions */}
           <div
             style={{

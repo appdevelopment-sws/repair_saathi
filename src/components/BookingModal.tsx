@@ -14,6 +14,11 @@ export interface BookingModalProps {
   categories?: CategoryDto[];
 }
 
+export interface AdditionalApplianceItem {
+  category: CategoryDto;
+  selectedRequirements: string[];
+}
+
 // Default fallback category if none passed
 const DEFAULT_AC_CATEGORY: CategoryDto = {
   id: 1,
@@ -121,6 +126,14 @@ export default function BookingModal({
   const [currentCategory, setCurrentCategory] = useState<CategoryDto>(category || DEFAULT_AC_CATEGORY);
   const [activeTab, setActiveTab] = useState<"book" | "rates" | "faqs">("book");
 
+  // Full categories list for cross-category selection (cart style)
+  const [allCategoriesList, setAllCategoriesList] = useState<CategoryDto[]>(categories || []);
+
+  // Multi-Appliance Cart State
+  const [additionalAppliances, setAdditionalAppliances] = useState<AdditionalApplianceItem[]>([]);
+  const [isAddingCategory, setIsAddingCategory] = useState(false);
+  const [selectedCatIdToAdd, setSelectedCatIdToAdd] = useState("");
+
   // Booking Form State
   const [needWhen, setNeedWhen] = useState("Today");
   const [customDate, setCustomDate] = useState("");
@@ -152,6 +165,10 @@ export default function BookingModal({
   // Sync category when prop changes or modal opens
   useEffect(() => {
     if (!isOpen) return;
+
+    if (categories && categories.length > 0) {
+      setAllCategoriesList(categories);
+    }
 
     if (category) {
       setCurrentCategory(category);
@@ -187,6 +204,7 @@ export default function BookingModal({
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
         if (json?.data && Array.isArray(json.data) && json.data.length > 0) {
+          setAllCategoriesList(json.data);
           const match = json.data.find(
             (c: CategoryDto) =>
               c.serviceId === defaultService ||
@@ -221,7 +239,66 @@ export default function BookingModal({
   // Comma-separated subtitle matching Screenshot 1
   const servicesSubtitle = servicesList.map((s) => s.title).join(", ");
 
-  // Toggle requirement checkbox
+  // Categories available to add (excluding current category and already added ones)
+  const availableCategoriesToAdd = allCategoriesList.filter(
+    (c) =>
+      c.id !== currentCategory.id &&
+      c.name.toLowerCase() !== currentCategory.name.toLowerCase() &&
+      !additionalAppliances.some(
+        (a) => a.category.id === c.id || a.category.name.toLowerCase() === c.name.toLowerCase()
+      )
+  );
+
+  // Add another appliance to booking
+  const handleAddAdditionalAppliance = () => {
+    if (!selectedCatIdToAdd) return;
+    const catObj = allCategoriesList.find((c) => String(c.id) === String(selectedCatIdToAdd));
+    if (!catObj) return;
+
+    const defaultReq =
+      catObj.services && catObj.services.length > 0
+        ? [catObj.services[0].title]
+        : [`${catObj.name} Repair/Service`];
+
+    setAdditionalAppliances((prev) => [
+      ...prev,
+      {
+        category: catObj,
+        selectedRequirements: defaultReq,
+      },
+    ]);
+    setSelectedCatIdToAdd("");
+    setIsAddingCategory(false);
+  };
+
+  // Remove an added appliance
+  const handleRemoveAdditionalAppliance = (catId: string | number) => {
+    setAdditionalAppliances((prev) => prev.filter((a) => a.category.id !== catId));
+  };
+
+  // Toggle requirement for additional appliance
+  const toggleAdditionalRequirement = (catId: string | number, reqTitle: string) => {
+    setAdditionalAppliances((prev) =>
+      prev.map((item) => {
+        if (item.category.id !== catId) return item;
+        const exists = item.selectedRequirements.includes(reqTitle);
+        if (exists) {
+          if (item.selectedRequirements.length === 1) return item;
+          return {
+            ...item,
+            selectedRequirements: item.selectedRequirements.filter((t) => t !== reqTitle),
+          };
+        } else {
+          return {
+            ...item,
+            selectedRequirements: [...item.selectedRequirements, reqTitle],
+          };
+        }
+      })
+    );
+  };
+
+  // Toggle requirement checkbox for primary category
   const toggleRequirement = (title: string) => {
     setSelectedRequirements((prev) => {
       if (prev.includes(title)) {
@@ -241,11 +318,27 @@ export default function BookingModal({
     const newBookingId = "RS-" + Math.floor(100000 + Math.random() * 900000);
     const scheduledDate = needWhen === "Custom Date" && customDate ? customDate : needWhen;
 
+    const allAppliancesBooked = [
+      {
+        name: currentCategory.name,
+        requirements: selectedRequirements,
+      },
+      ...additionalAppliances.map((a) => ({
+        name: a.category.name,
+        requirements: a.selectedRequirements,
+      })),
+    ];
+
+    const combinedServiceName = allAppliancesBooked
+      .map((a) => `${a.name} (${a.requirements.join(", ")})`)
+      .join(" + ");
+
     const bookingItem = {
       id: newBookingId,
-      serviceName: `${currentCategory.name} (${selectedRequirements.join(", ")})`,
+      serviceName: combinedServiceName,
       categoryName: currentCategory.name,
       requirements: selectedRequirements,
+      appliances: allAppliancesBooked,
       customerName: name.trim(),
       phone: phone.trim(),
       address: address.trim(),
@@ -276,6 +369,9 @@ export default function BookingModal({
     setName("");
     setPhone("");
     setAddress("");
+    setAdditionalAppliances([]);
+    setIsAddingCategory(false);
+    setSelectedCatIdToAdd("");
     setActiveTab("book");
     onClose();
   };
@@ -420,6 +516,122 @@ export default function BookingModal({
                         );
                       })}
                     </div>
+                  </div>
+
+                  {/* MULTI-APPLIANCE / CART ADDON SECTION */}
+                  <div className="multi-appliance-section">
+                    {/* Render any added appliances */}
+                    {additionalAppliances.length > 0 && (
+                      <div className="additional-appliances-list">
+                        {additionalAppliances.map((item, idx) => {
+                          const srvList: CategoryServiceItem[] =
+                            item.category.services && item.category.services.length > 0
+                              ? item.category.services
+                              : [
+                                  { id: `${item.category.id}-1`, title: `${item.category.name} Repair/Service` },
+                                  { id: `${item.category.id}-2`, title: `${item.category.name} Installation & Diagnosis` },
+                                  { id: `${item.category.id}-3`, title: `Any Other ${item.category.name} related Service` },
+                                ];
+
+                          return (
+                            <div key={item.category.id} className="additional-appliance-card">
+                              <div className="additional-appliance-header">
+                                <div className="additional-appliance-title">
+                                  <span className="appliance-badge">Appliance #{idx + 2}</span>
+                                  <strong>{item.category.name}</strong>
+                                </div>
+                                <button
+                                  type="button"
+                                  className="btn-remove-appliance"
+                                  onClick={() => handleRemoveAdditionalAppliance(item.category.id)}
+                                >
+                                  ✕ Remove
+                                </button>
+                              </div>
+
+                              <div className="requirement-checkbox-row">
+                                {srvList.map((srv) => {
+                                  const isChecked = item.selectedRequirements.includes(srv.title);
+                                  return (
+                                    <label key={srv.id} className="requirement-item">
+                                      <input
+                                        type="checkbox"
+                                        className="requirement-checkbox-input"
+                                        checked={isChecked}
+                                        onChange={() => toggleAdditionalRequirement(item.category.id, srv.title)}
+                                      />
+                                      <span className="requirement-item-text">{srv.title}</span>
+                                    </label>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {/* Button or Dropdown to Add Another Category */}
+                    {availableCategoriesToAdd.length > 0 && (
+                      <div className="add-appliance-control">
+                        {!isAddingCategory ? (
+                          <button
+                            type="button"
+                            className="btn-add-more-appliance"
+                            onClick={() => setIsAddingCategory(true)}
+                          >
+                            <div className="add-appliance-left">
+                              <span className="add-plus-circle">+</span>
+                              <span>Add Another Appliance for Service</span>
+                            </div>
+                            <span className="cart-badge-chip">
+                              🛒 {1 + additionalAppliances.length} {1 + additionalAppliances.length === 1 ? "Appliance" : "Appliances"}
+                            </span>
+                          </button>
+                        ) : (
+                          <div className="add-category-picker-box">
+                            <div className="add-picker-header">
+                              <span style={{ fontSize: "12.5px", fontWeight: 700, color: "#0f172a" }}>
+                                Select Another Appliance to Add:
+                              </span>
+                              <button
+                                type="button"
+                                className="btn-picker-cancel"
+                                onClick={() => {
+                                  setIsAddingCategory(false);
+                                  setSelectedCatIdToAdd("");
+                                }}
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                            <div className="add-picker-row">
+                              <select
+                                className="form-select-styled"
+                                style={{ flex: 1 }}
+                                value={selectedCatIdToAdd}
+                                onChange={(e) => setSelectedCatIdToAdd(e.target.value)}
+                              >
+                                <option value="">-- Choose Appliance (e.g. AC, Fridge, Geyser) --</option>
+                                {availableCategoriesToAdd.map((c) => (
+                                  <option key={c.id} value={String(c.id)}>
+                                    {c.name}
+                                  </option>
+                                ))}
+                              </select>
+                              <button
+                                type="button"
+                                className="btn-confirm-add-cat"
+                                disabled={!selectedCatIdToAdd}
+                                onClick={handleAddAdditionalAppliance}
+                              >
+                                + Add
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   {/* Customer Information Fields */}
@@ -571,10 +783,17 @@ export default function BookingModal({
                 </span>
               </div>
               <div style={{ fontSize: "13px", color: "#334155", marginBottom: "4px" }}>
-                <strong>Appliance:</strong> {currentCategory.name}
-              </div>
-              <div style={{ fontSize: "13px", color: "#334155" }}>
-                <strong>Requirement(s):</strong> {selectedRequirements.join(", ")}
+                <strong>Booked Appliance(s):</strong>
+                <ul style={{ margin: "6px 0 0 16px", padding: 0 }}>
+                  <li>
+                    <strong>{currentCategory.name}:</strong> {selectedRequirements.join(", ")}
+                  </li>
+                  {additionalAppliances.map((a) => (
+                    <li key={a.category.id} style={{ marginTop: "4px" }}>
+                      <strong>{a.category.name}:</strong> {a.selectedRequirements.join(", ")}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
 
@@ -587,7 +806,12 @@ export default function BookingModal({
                 Done
               </button>
               <a
-                href={`https://wa.me/919304415657?text=Hi%20Repair%20Saathi%2C%20I%20booked%20${encodeURIComponent(currentCategory.name)}%20(Ref%3A%20${bookingId})%20for%20${encodeURIComponent(name)}.`}
+                href={`https://wa.me/919304415657?text=${encodeURIComponent(
+                  `Hi Repair Saathi, I booked service for ${[
+                    `${currentCategory.name} (${selectedRequirements.join(", ")})`,
+                    ...additionalAppliances.map((a) => `${a.category.name} (${a.selectedRequirements.join(", ")})`),
+                  ].join(" + ")} (Ref: ${bookingId}) for ${name}.`
+                )}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{

@@ -19,10 +19,10 @@ export const metadata: Metadata = {
     description:
       "Expert tips, troubleshooting guides, and home appliance maintenance advice written by certified Repair Saathi technicians in Patna.",
     type: "website",
-    url: "https://repairsaathi.com/home-appliance-repair-blog/",
+    url: "https://repairsaathi.in/home-appliance-repair-blog/",
   },
   alternates: {
-    canonical: "https://repairsaathi.com/home-appliance-repair-blog/",
+    canonical: "https://repairsaathi.in/home-appliance-repair-blog/",
   },
 };
 

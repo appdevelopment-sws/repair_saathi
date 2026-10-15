@@ -4,6 +4,9 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Privacy Policy | Repair Saathi Appliance Services",
   description: "Privacy policy describing how Repair Saathi collects and protects customer data.",
+  alternates: {
+    canonical: "https://repairsaathi.in/privacy-policy/",
+  },
 };
 
 export default function PrivacyPolicyPage() {

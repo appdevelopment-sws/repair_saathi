@@ -19,10 +19,10 @@ export const metadata: Metadata = {
     description:
       "Get in touch with Patna's leading doorstep appliance repair service. Direct call helpline +91-9304415657, WhatsApp support, and Saguna More workshop.",
     type: "website",
-    url: "https://repairsaathi.com/contact-repair-saathi/",
+    url: "https://repairsaathi.in/contact-repair-saathi/",
   },
   alternates: {
-    canonical: "https://repairsaathi.com/contact-repair-saathi/",
+    canonical: "https://repairsaathi.in/contact-repair-saathi/",
   },
 };
 

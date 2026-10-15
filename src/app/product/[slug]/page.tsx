@@ -23,6 +23,27 @@ export async function generateMetadata({
   return {
     title: `${service.title} | Doorstep Service | Repair Saathi`,
     description: service.description,
+    alternates: {
+      canonical: `https://repairsaathi.in/product/${service.slug}/`,
+    },
+    openGraph: {
+      title: `${service.title} | Doorstep Service | Repair Saathi`,
+      description: service.description,
+      url: `https://repairsaathi.in/product/${service.slug}/`,
+      type: "website",
+      images: [
+        {
+          url: service.image,
+          alt: service.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${service.title} | Repair Saathi`,
+      description: service.description,
+      images: [service.image],
+    },
   };
 }
 

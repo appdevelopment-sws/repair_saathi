@@ -4,6 +4,9 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Refund and Returns Policy | Repair Saathi",
   description: "Transparent refund and cancellation policy for Repair Saathi doorstep appliance repairs in Patna.",
+  alternates: {
+    canonical: "https://repairsaathi.in/refund-and-returns-policy/",
+  },
 };
 
 export default function RefundPolicyPage() {

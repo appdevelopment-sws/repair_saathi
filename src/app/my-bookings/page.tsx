@@ -12,15 +12,19 @@ export const metadata: Metadata = {
     "appliance service status bihar",
     "technician tracking patna",
   ],
+  robots: {
+    index: false,
+    follow: false,
+  },
   openGraph: {
     title: "My Bookings & Service Tracking | Repair Saathi Patna",
     description:
       "Track your home appliance repair booking status, assigned technician, and service history with Repair Saathi in Patna.",
     type: "website",
-    url: "https://repairsaathi.com/my-bookings/",
+    url: "https://repairsaathi.in/my-bookings/",
   },
   alternates: {
-    canonical: "https://repairsaathi.com/my-bookings/",
+    canonical: "https://repairsaathi.in/my-bookings/",
   },
 };
 

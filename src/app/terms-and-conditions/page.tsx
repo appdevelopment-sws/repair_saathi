@@ -4,6 +4,9 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Terms and Conditions | Repair Saathi",
   description: "Terms and conditions governing the use of Repair Saathi home appliance repair services in Patna.",
+  alternates: {
+    canonical: "https://repairsaathi.in/terms-and-conditions/",
+  },
 };
 
 export default function TermsPage() {

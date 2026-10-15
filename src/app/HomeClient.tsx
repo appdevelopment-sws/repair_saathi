@@ -4,12 +4,15 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { servicesData } from "@/data/servicesData";
+import { CategoryDto } from "@/app/api/categories/route";
 import BookingModal from "@/components/BookingModal";
 import HeroSection from "@/components/HeroSection";
 import FeaturedCategories from "@/components/FeaturedCategories";
 
 export default function HomeClient() {
+  const [selectedCategory, setSelectedCategory] = useState<CategoryDto | null>(null);
   const [selectedService, setSelectedService] = useState<string>("ac-repair");
+  const [allCategories, setAllCategories] = useState<CategoryDto[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Form state
@@ -19,8 +22,20 @@ export default function HomeClient() {
   const [queryMessage, setQueryMessage] = useState("");
   const [querySent, setQuerySent] = useState(false);
 
-  const handleOpenBooking = (serviceId: string) => {
-    setSelectedService(serviceId);
+  const handleOpenBooking = (target: CategoryDto | string) => {
+    if (typeof target === "string") {
+      setSelectedService(target);
+      const matched = allCategories.find(
+        (c) =>
+          c.serviceId === target ||
+          c.slug === target ||
+          (c.name && c.name.toLowerCase().includes(target.toLowerCase().split("-")[0]))
+      );
+      setSelectedCategory(matched || null);
+    } else {
+      setSelectedCategory(target);
+      setSelectedService(target.serviceId || target.slug || "ac-repair");
+    }
     setIsModalOpen(true);
   };
 
@@ -43,7 +58,10 @@ export default function HomeClient() {
       <HeroSection />
 
       {/* 2. DYNAMIC FEATURED SERVICES / CATEGORIES (MATCHING SCREENSHOT 1) */}
-      <FeaturedCategories onOpenBooking={handleOpenBooking} />
+      <FeaturedCategories
+        onOpenBooking={handleOpenBooking}
+        onLoadedCategories={setAllCategories}
+      />
 
       {/* 3. SEO SECTION 1: AC REPAIR IN PATNA */}
       <section className="content-block-section">
@@ -454,7 +472,9 @@ export default function HomeClient() {
       <BookingModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        category={selectedCategory}
         defaultService={selectedService}
+        categories={allCategories}
       />
     </>
   );

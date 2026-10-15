@@ -1,69 +1,368 @@
-/* MODAL STYLES */
+/* MODAL STYLES - REPAIR SAATHI BOOKING SYSTEM */
+
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.65);
-  z-index: 9999;
+  background: rgba(15, 23, 42, 0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 9999999;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: 24px 16px;
+  animation: modalFadeIn 0.22s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .modal-card {
   background: #ffffff;
   width: 100%;
-  max-width: 500px;
+  max-width: 660px;
   border-radius: 16px;
-  padding: 28px 24px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.2);
   position: relative;
-  max-height: 90vh;
-  overflow-y: auto;
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin: auto;
+  animation: modalSlideUp 0.24s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* MODAL CLOSE BUTTON */
 .modal-close-btn {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  background: #f1f5f9;
-  border: none;
+  top: 18px;
+  right: 18px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #ffffff;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  font-size: 16px;
+  width: 34px;
+  height: 34px;
+  font-size: 15px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 30;
 }
 
-.modal-title {
-  font-size: 20px;
+.modal-close-btn:hover {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #ffffff;
+  transform: rotate(90deg);
+}
+
+/* UPPER BANNER HEADER (SCREENSHOT 1 & SCREENSHOT 2 STYLED) */
+.modal-banner-header {
+  position: relative;
+  background: linear-gradient(135deg, #111827 0%, #1e293b 60%, #0f172a 100%);
+  padding: 26px 28px 22px 28px;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.modal-banner-bg-img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 45%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.28;
+  mask-image: linear-gradient(to left, black 25%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to left, black 25%, transparent 100%);
+  pointer-events: none;
+}
+
+.modal-banner-content {
+  position: relative;
+  z-index: 2;
+  max-width: 580px;
+}
+
+/* RED BRUSH STROKE RIBBON BANNER (SCREENSHOT 2 DESIGN) */
+.brush-ribbon-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  margin-top: 2px;
+}
+
+.brush-ribbon-svg-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 2px 8px rgba(239, 68, 68, 0.45));
+}
+
+.brush-ribbon-svg {
+  width: 320px;
+  height: 40px;
+  display: block;
+}
+
+.brush-ribbon-text {
+  position: absolute;
+  font-family: inherit;
+  font-style: italic;
+  font-weight: 900;
+  color: #ffffff;
+  font-size: 14.5px;
+  letter-spacing: -0.3px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+  user-select: none;
+  padding: 0 16px;
+}
+
+/* TITLE & SUBTITLE */
+.modal-banner-title {
+  font-size: 23px;
   font-weight: 800;
-  color: #1a1a1a;
-  margin-bottom: 4px;
+  color: #ffffff;
+  letter-spacing: -0.4px;
+  margin: 0 0 6px 0;
+  line-height: 1.25;
 }
 
-.modal-subtitle {
-  font-size: 13px;
-  color: #718096;
-  margin-bottom: 18px;
+.modal-banner-subtitle {
+  font-size: 13.5px;
+  color: #cbd5e1;
+  margin: 0 0 14px 0;
+  line-height: 1.45;
+  font-weight: 500;
 }
 
+/* TRUST BADGES ROW (SCREENSHOT 1) */
+.modal-trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 18px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.modal-trust-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.trust-check-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 1.5px solid #10b981;
+  color: #10b981;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+/* TABS HEADER (SCREENSHOT 1) */
+.modal-tabs-header {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-bottom: 2px solid #f1f5f9;
+  padding: 0 28px;
+  gap: 28px;
+}
+
+.modal-tab-btn {
+  background: none;
+  border: none;
+  padding: 14px 2px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.18s ease;
+  color: #0284c7;
+}
+
+.modal-tab-btn.active {
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.modal-tab-btn.active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #0f172a;
+  border-radius: 2px 2px 0 0;
+}
+
+.modal-tab-btn:hover:not(.active) {
+  color: #0369a1;
+}
+
+/* SCROLLABLE MODAL BODY */
+.modal-scroll-body {
+  padding: 22px 28px 28px 28px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modal-scroll-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-scroll-body::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+.modal-scroll-body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+/* FORM GROUPS */
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
+  margin-bottom: 16px;
 }
 
 .form-label {
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 700;
-  color: #2d3748;
+  color: #1e293b;
 }
 
-.form-input, .form-textarea, .form-select {
+.form-select-styled {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  background-color: #ffffff;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.18s ease;
+}
+
+.form-select-styled:focus {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
+}
+
+/* REQUIREMENTS CHECKBOXES (SCREENSHOT 1) */
+.requirement-section {
+  margin-bottom: 18px;
+}
+
+.requirement-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.requirement-checkbox-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 22px;
+  background: transparent;
+  padding: 2px 0;
+  border: none;
+}
+
+.requirement-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.requirement-checkbox-input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1.8px solid #0369a1;
+  border-radius: 4px;
+  background: #ffffff;
+  cursor: pointer;
+  display: inline-grid;
+  place-content: center;
+  transition: all 0.15s ease;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.requirement-checkbox-input:checked {
+  background: #0284c7;
+  border-color: #0284c7;
+}
+
+.requirement-checkbox-input:checked::before {
+  content: "✔";
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.requirement-item-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0369a1;
+  line-height: 1.35;
+}
+
+.requirement-item:hover .requirement-item-text {
+  color: #0284c7;
+}
+
+/* FORM INPUTS */
+.form-input,
+.form-textarea {
   width: 100%;
   padding: 10px 14px;
   border: 1.5px solid #e2e8f0;
@@ -71,19 +370,231 @@
   font-size: 14px;
   outline: none;
   background: #ffffff;
+  color: #0f172a;
+  transition: border-color 0.18s ease;
 }
 
-.form-input:focus, .form-textarea:focus, .form-select:focus {
-  border-color: #fbbc34;
+.form-input:focus,
+.form-textarea:focus {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
 }
 
-.btn-submit-query {
-  background-color: #fbbc34;
-  color: #1a1a1a;
-  font-size: 14px;
+.btn-book-submit {
+  width: 100%;
+  background: linear-gradient(180deg, #fbbc34 0%, #f59e0b 100%);
+  color: #0f172a;
+  font-size: 15px;
   font-weight: 800;
-  padding: 12px 24px;
-  border-radius: 8px;
+  padding: 13px 24px;
+  border-radius: 10px;
   border: none;
   cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-book-submit:hover {
+  background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(245, 158, 11, 0.45);
+}
+
+.booking-form-assurance {
+  text-align: center;
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+/* RATES TAB */
+.rates-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rate-card-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  gap: 12px;
+}
+
+.rate-card-info h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+}
+
+.rate-card-info p {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0;
+}
+
+.rate-card-action {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rate-card-price {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0284c7;
+  white-space: nowrap;
+}
+
+.rate-card-btn {
+  background: #0284c7;
+  color: #ffffff;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.rate-card-btn:hover {
+  background: #0369a1;
+}
+
+/* FAQS TAB */
+.faqs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faq-modal-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.faq-modal-trigger {
+  width: 100%;
+  text-align: left;
+  padding: 14px 16px;
+  background: #f8fafc;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.faq-modal-answer {
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.5;
+  background: #ffffff;
+  border-top: 1px solid #f1f5f9;
+}
+
+/* SUCCESS SCREEN */
+.modal-success-box {
+  text-align: center;
+  padding: 32px 16px;
+}
+
+.success-check-circle {
+  width: 64px;
+  height: 64px;
+  background: #dcfce7;
+  color: #16a34a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 900;
+  margin: 0 auto 16px auto;
+}
+
+/* RESPONSIVE MEDIA QUERIES */
+@media (max-width: 640px) {
+  .modal-card {
+    max-height: 95vh;
+    border-radius: 12px;
+  }
+
+  .modal-banner-header {
+    padding: 20px 18px 16px 18px;
+  }
+
+  .brush-ribbon-svg {
+    width: 270px;
+    height: 34px;
+  }
+
+  .brush-ribbon-text {
+    font-size: 12.5px;
+  }
+
+  .modal-banner-title {
+    font-size: 19px;
+  }
+
+  .modal-banner-subtitle {
+    font-size: 12.5px;
+    margin-bottom: 10px;
+  }
+
+  .modal-trust-row {
+    gap: 8px 12px;
+  }
+
+  .modal-trust-item {
+    font-size: 11px;
+  }
+
+  .modal-tabs-header {
+    padding: 0 18px;
+    gap: 16px;
+  }
+
+  .modal-tab-btn {
+    font-size: 13.5px;
+    padding: 12px 2px;
+  }
+
+  .modal-scroll-body {
+    padding: 18px;
+  }
+
+  .requirement-checkbox-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .rate-card-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .rate-card-action {
+    width: 100%;
+    justify-content: space-between;
+  }
 }

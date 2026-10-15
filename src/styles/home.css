@@ -422,6 +422,10 @@
   cursor: pointer;
   padding: 10px 8px;
   border-radius: 14px;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  width: 100%;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 

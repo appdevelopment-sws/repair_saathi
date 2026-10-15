@@ -1,5 +1,14 @@
 import { NextResponse } from "next/server";
 
+export interface CategoryServiceItem {
+  id: number | string;
+  title: string;
+  price?: number | string | null;
+  rateType?: string;
+  duration?: string;
+  shortDescription?: string;
+}
+
 export interface CategoryDto {
   id: string | number;
   name: string;
@@ -8,6 +17,7 @@ export interface CategoryDto {
   image?: string | null;
   icon?: string | null;
   serviceId?: string;
+  services?: CategoryServiceItem[];
 }
 
 const DEFAULT_CATEGORIES: CategoryDto[] = [
@@ -16,56 +26,154 @@ const DEFAULT_CATEGORIES: CategoryDto[] = [
     name: "Air Conditioner Repair",
     slug: "ac-repair-in-patna",
     serviceId: "ac-repair",
+    icon: "Wind",
     description: "Complete AC repair, power jet chemical wash, gas filling and installation service in Patna.",
+    services: [
+      { id: "ac-1", title: "AC Repair/Service", price: "₹299" },
+      { id: "ac-2", title: "AC Installation/ Removal", price: "₹499" },
+      { id: "ac-3", title: "AC Gas Charging & Jet Service", price: "₹1,499" },
+      { id: "ac-4", title: "Any Other AC related Service", price: "Inspection" },
+    ],
   },
   {
     id: 2,
     name: "Refrigerator Repair",
     slug: "refrigerator-service-in-patna",
     serviceId: "refrigerator-repair",
+    icon: "Snowflake",
     description: "Single and double door refrigerator repair, compressor fixing and gas refilling.",
+    services: [
+      { id: "ref-1", title: "Refrigerator Repair/Service", price: "₹199" },
+      { id: "ref-2", title: "Gas Refilling & Leak Fix", price: "₹899" },
+      { id: "ref-3", title: "Compressor Replacement", price: "₹1,499" },
+      { id: "ref-4", title: "Any Other Refrigerator related Service", price: "Inspection" },
+    ],
   },
   {
     id: 3,
     name: "Washing Machine Repair",
     slug: "washing-machine-repair-service-in-patna",
     serviceId: "washing-machine",
+    icon: "Shirt",
     description: "Expert washing machine repair in Patna for front-load, top-load, and semi-automatic machines.",
+    services: [
+      { id: "wm-1", title: "Washing Machine Repair/Service", price: "₹199" },
+      { id: "wm-2", title: "Drum & Vibration Repair", price: "₹399" },
+      { id: "wm-3", title: "Motor & PCB Motherboard Servicing", price: "₹699" },
+      { id: "wm-4", title: "Any Other Washing Machine related Service", price: "Inspection" },
+    ],
   },
   {
     id: 4,
     name: "Water Purifier Repair",
     slug: "water-cooler-services",
     serviceId: "water-cooler",
+    icon: "Droplets",
     description: "RO water purifier service, membrane change, filter replacement and repair.",
+    services: [
+      { id: "ro-1", title: "RO Service & Filter Replacement", price: "₹299" },
+      { id: "ro-2", title: "Membrane Change & TDS Tuning", price: "₹799" },
+      { id: "ro-3", title: "Booster Pump & Leakage Fix", price: "₹499" },
+      { id: "ro-4", title: "Any Other Water Purifier related Service", price: "Inspection" },
+    ],
   },
   {
     id: 5,
     name: "Geyser Repair",
     slug: "geyser-repair-in-patna",
     serviceId: "geyser-repair",
+    icon: "Flame",
     description: "Geyser repair, installation and maintenance service for instant and storage water heaters.",
+    services: [
+      { id: "gey-1", title: "Geyser Repair/Service", price: "₹199" },
+      { id: "gey-2", title: "Heating Element / Coil Replacement", price: "₹399" },
+      { id: "gey-3", title: "Thermostat & Water Leakage Fix", price: "₹299" },
+      { id: "gey-4", title: "Any Other Geyser related Service", price: "Inspection" },
+    ],
   },
   {
     id: 6,
     name: "Microwave Repair",
     slug: "microwave-repair-in-patna",
     serviceId: "microwave-repair",
+    icon: "Zap",
     description: "Microwave oven repair and servicing for all solo, grill and convection models.",
+    services: [
+      { id: "mw-1", title: "Microwave Repair/Service", price: "₹199" },
+      { id: "mw-2", title: "Magnetron & Not Heating Fix", price: "₹499" },
+      { id: "mw-3", title: "Keypad & Turntable Motor Repair", price: "₹349" },
+      { id: "mw-4", title: "Any Other Microwave related Service", price: "Inspection" },
+    ],
   },
   {
     id: 7,
     name: "Kitchen Chimney Repair",
     slug: "kitchen-chimney-repair-in-patna",
     serviceId: "chimney-repair",
+    icon: "Fan",
     description: "Kitchen chimney deep cleaning, motor repair, duct fixing and servicing.",
+    services: [
+      { id: "ch-1", title: "Kitchen Chimney Deep Cleaning", price: "₹399" },
+      { id: "ch-2", title: "Motor & Suction Repair", price: "₹499" },
+      { id: "ch-3", title: "Baffle Filter Chemical Wash", price: "₹299" },
+      { id: "ch-4", title: "Any Other Chimney related Service", price: "Inspection" },
+    ],
   },
   {
     id: 8,
     name: "Window AC Services",
     slug: "window-ac-service-in-patna",
     serviceId: "window-ac",
+    icon: "Wind",
     description: "Window AC cleaning, gas charging and cooling repair in Patna.",
+    services: [
+      { id: "wac-1", title: "Window AC Servicing & Cleaning", price: "₹299" },
+      { id: "wac-2", title: "Window AC Gas Refilling", price: "₹1,299" },
+      { id: "wac-3", title: "Installation & Uninstallation", price: "₹499" },
+      { id: "wac-4", title: "Any Other Window AC related Service", price: "Inspection" },
+    ],
+  },
+  {
+    id: 9,
+    name: "Television Repair",
+    slug: "television-repair-in-patna",
+    serviceId: "television",
+    icon: "Tv",
+    description: "Smart LED, LCD, OLED and Android TV screen, power board and audio repair.",
+    services: [
+      { id: "tv-1", title: "TV Screen Display & Backlight Fix", price: "₹499" },
+      { id: "tv-2", title: "Motherboard & Power Board Repair", price: "₹699" },
+      { id: "tv-3", title: "Sound & Speaker Repair", price: "₹349" },
+      { id: "tv-4", title: "Any Other TV related Service", price: "Inspection" },
+    ],
+  },
+  {
+    id: 10,
+    name: "Laptop Repair",
+    slug: "laptop-repair-in-patna",
+    serviceId: "laptop",
+    icon: "Laptop",
+    description: "Laptop screen, keyboard, battery, motherboard and Windows OS repair.",
+    services: [
+      { id: "lap-1", title: "Laptop Screen / Display Replacement", price: "₹499" },
+      { id: "lap-2", title: "Motherboard & Chip-Level Servicing", price: "₹799" },
+      { id: "lap-3", title: "Keyboard & Battery Replacement", price: "₹299" },
+      { id: "lap-4", title: "Any Other Laptop related Service", price: "Inspection" },
+    ],
+  },
+  {
+    id: 11,
+    name: "Home Decorator",
+    slug: "home-decorator-services-in-patna",
+    serviceId: "home-decorator",
+    icon: "Home",
+    description: "Professional home painting, interior decor and wall finishing services.",
+    services: [
+      { id: "dec-1", title: "Interior Wall Painting & Texture", price: "₹999" },
+      { id: "dec-2", title: "Waterproofing & Crack Filling", price: "₹799" },
+      { id: "dec-3", title: "Full Home Decor Consultation", price: "Free" },
+      { id: "dec-4", title: "Any Other Home Decor Service", price: "Inspection" },
+    ],
   },
 ];
 
@@ -129,8 +237,29 @@ function resolveCategoryMapping(name: string): { slug: string; serviceId: string
       formattedName: lower.includes("repair") ? name : `${name} Repair`,
     };
   }
+  if (lower.includes("television") || lower.includes("tv")) {
+    return {
+      slug: "television-repair-in-patna",
+      serviceId: "television",
+      formattedName: lower.includes("repair") ? name : `${name} Repair`,
+    };
+  }
+  if (lower.includes("laptop") || lower.includes("computer")) {
+    return {
+      slug: "laptop-repair-in-patna",
+      serviceId: "laptop",
+      formattedName: lower.includes("repair") ? name : `${name} Repair`,
+    };
+  }
+  if (lower.includes("decor") || lower.includes("paint")) {
+    return {
+      slug: "home-decorator-services-in-patna",
+      serviceId: "home-decorator",
+      formattedName: name,
+    };
+  }
 
-  // Fallback slug for other categories (like Home Decorator, Laptop, etc.)
+  // Fallback slug for other categories
   const fallbackSlug = name
     .toLowerCase()
     .trim()
@@ -183,6 +312,30 @@ export async function GET() {
               imageUrl = `${backendUrl}${imageUrl.startsWith("/") ? "" : "/"}${imageUrl}`;
             }
 
+            let categoryServices: CategoryServiceItem[] = [];
+            if (Array.isArray(cat.services) && cat.services.length > 0) {
+              categoryServices = cat.services.map((s: any) => ({
+                id: s.id,
+                title: s.title || s.name,
+                price: s.price ? `₹${s.price}` : null,
+                rateType: s.rateType,
+                duration: s.duration,
+                shortDescription: s.shortDescription,
+              }));
+            } else {
+              const defaultMatch = DEFAULT_CATEGORIES.find(
+                (d) =>
+                  d.slug === mapping.slug ||
+                  d.serviceId === mapping.serviceId ||
+                  (cat.name && d.name.toLowerCase().includes(cat.name.toLowerCase().split(" ")[0]))
+              );
+              categoryServices = defaultMatch?.services || [
+                { id: `${cat.id}-1`, title: `${cat.name} Repair/Service` },
+                { id: `${cat.id}-2`, title: `${cat.name} Installation & Diagnosis` },
+                { id: `${cat.id}-3`, title: `Any Other ${cat.name} related Service` },
+              ];
+            }
+
             return {
               id: cat.id,
               name: mapping.formattedName,
@@ -191,6 +344,7 @@ export async function GET() {
               description: cat.description || "",
               image: imageUrl,
               icon: cat.icon || null,
+              services: categoryServices,
             };
           });
 

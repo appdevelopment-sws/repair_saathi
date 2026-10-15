@@ -1,45 +1,256 @@
 "use client";
 
-import React, { useState } from "react";
-import { servicesData } from "@/data/servicesData";
+import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
+import Image from "next/image";
+import { CategoryDto, CategoryServiceItem } from "@/app/api/categories/route";
 import WhatsAppIcon from "./WhatsAppIcon";
 
-interface BookingModalProps {
+export interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
+  category?: CategoryDto | null;
   defaultService?: string;
+  categories?: CategoryDto[];
+}
+
+// Default fallback category if none passed
+const DEFAULT_AC_CATEGORY: CategoryDto = {
+  id: 1,
+  name: "Air Conditioner Repair",
+  slug: "ac-repair-in-patna",
+  serviceId: "ac-repair",
+  services: [
+    { id: "ac-1", title: "AC Repair/Service", price: "₹299" },
+    { id: "ac-2", title: "AC Installation/ Removal", price: "₹499" },
+    { id: "ac-3", title: "Any Other AC related Service", price: "Inspection" },
+  ],
+};
+
+// Helper to pick banner background image based on category
+function getCategoryBannerImage(slug: string = "", name: string = ""): string {
+  const lower = (slug + " " + name).toLowerCase();
+  if (lower.includes("window ac")) return "/images/window-ac-dark.webp";
+  if (lower.includes("ac") || lower.includes("air condition")) return "/images/ac-repair-dark.webp";
+  if (lower.includes("fridge") || lower.includes("refrigerator")) return "/images/freeze-repair-dark.webp";
+  if (lower.includes("wash")) return "/images/washing-dark.webp";
+  if (lower.includes("purifier") || lower.includes("ro") || lower.includes("water")) return "/images/water-purifier.webp";
+  if (lower.includes("geyser") || lower.includes("heater")) return "/images/geyser-repair.webp";
+  if (lower.includes("microwave") || lower.includes("oven")) return "/images/microwave-repair.webp";
+  if (lower.includes("chimney")) return "/images/chimney-repair.webp";
+  return "/images/ac-repair-dark.webp";
+}
+
+// Red Brush Stroke Ribbon Banner Component (meticulously styled after Screenshot 2)
+function BrushRibbon({ text = "#ApkeGharKaServicePartner" }: { text?: string }) {
+  return (
+    <div className="brush-ribbon-container">
+      <div className="brush-ribbon-svg-wrap">
+        <svg
+          viewBox="0 0 540 80"
+          className="brush-ribbon-svg"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+        >
+          <defs>
+            <linearGradient id="brushGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#EA4335" />
+              <stop offset="50%" stopColor="#EF4444" />
+              <stop offset="100%" stopColor="#DC2626" />
+            </linearGradient>
+          </defs>
+          {/* Main ragged brush body */}
+          <path
+            d="M 38,42 
+               C 22,30 8,24 -2,27 
+               C 12,23 26,20 44,18 
+               C 88,13 174,11 270,11 
+               C 366,11 452,13 496,18 
+               C 514,20 528,23 542,27 
+               C 532,24 518,30 502,42 
+               C 518,44 530,48 540,52 
+               C 524,54 508,52 494,56 
+               C 514,59 524,64 516,67 
+               C 498,66 476,64 454,66 
+               C 376,69 280,71 190,70 
+               C 126,70 62,68 26,65 
+               C 8,63 -2,59 -2,55 
+               C 12,53 22,54 28,50 
+               C 16,48 8,44 2,40 
+               C 12,39 24,40 38,42 Z"
+            fill="url(#brushGrad)"
+          />
+          {/* Top/bottom paint bristle streaks */}
+          <path
+            d="M 60,15 Q 180,10 270,10 Q 360,10 480,15"
+            stroke="#EF4444"
+            strokeWidth="3"
+            strokeLinecap="round"
+            opacity="0.9"
+          />
+          <path
+            d="M 40,68 Q 160,72 270,72 Q 380,72 500,68"
+            stroke="#DC2626"
+            strokeWidth="3"
+            strokeLinecap="round"
+            opacity="0.85"
+          />
+          {/* Horizontal paint splatters */}
+          <line x1="-10" y1="28" x2="26" y2="26" stroke="#EA4335" strokeWidth="2.5" strokeLinecap="round" />
+          <line x1="-6" y1="36" x2="32" y2="35" stroke="#EA4335" strokeWidth="3" strokeLinecap="round" />
+          <line x1="-12" y1="44" x2="20" y2="43" stroke="#EA4335" strokeWidth="2" strokeLinecap="round" />
+          <line x1="518" y1="28" x2="548" y2="30" stroke="#DC2626" strokeWidth="2.5" strokeLinecap="round" />
+          <line x1="510" y1="36" x2="544" y2="37" stroke="#DC2626" strokeWidth="3" strokeLinecap="round" />
+          <line x1="522" y1="44" x2="550" y2="45" stroke="#DC2626" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+        <span className="brush-ribbon-text">{text}</span>
+      </div>
+    </div>
+  );
 }
 
 export default function BookingModal({
   isOpen,
   onClose,
+  category,
   defaultService = "ac-repair",
+  categories = [],
 }: BookingModalProps) {
-  const [service, setService] = useState(defaultService);
+  // Active Category State
+  const [mounted, setMounted] = useState(false);
+  const [currentCategory, setCurrentCategory] = useState<CategoryDto>(category || DEFAULT_AC_CATEGORY);
+  const [activeTab, setActiveTab] = useState<"book" | "rates" | "faqs">("book");
+
+  // Booking Form State
+  const [needWhen, setNeedWhen] = useState("Today");
+  const [customDate, setCustomDate] = useState("");
+  const [selectedRequirements, setSelectedRequirements] = useState<string[]>([]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [date, setDate] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [bookingId, setBookingId] = useState("");
 
-  if (!isOpen) return null;
+  // FAQ open/close accordion state
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  // Sync category when prop changes or modal opens
+  useEffect(() => {
+    if (!isOpen) return;
+
+    if (category) {
+      setCurrentCategory(category);
+      const srvs = category.services || [];
+      if (srvs.length > 0) {
+        setSelectedRequirements([srvs[0].title]);
+      } else {
+        setSelectedRequirements([`${category.name} Repair/Service`]);
+      }
+      return;
+    }
+
+    // Try finding matching category from provided categories list
+    if (categories && categories.length > 0) {
+      const match = categories.find(
+        (c) =>
+          c.serviceId === defaultService ||
+          c.slug === defaultService ||
+          (c.name && c.name.toLowerCase().includes(defaultService.toLowerCase().split("-")[0]))
+      );
+      if (match) {
+        setCurrentCategory(match);
+        const srvs = match.services || [];
+        if (srvs.length > 0) {
+          setSelectedRequirements([srvs[0].title]);
+        }
+        return;
+      }
+    }
+
+    // Fallback: fetch dynamic categories
+    fetch("/api/categories")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        if (json?.data && Array.isArray(json.data) && json.data.length > 0) {
+          const match = json.data.find(
+            (c: CategoryDto) =>
+              c.serviceId === defaultService ||
+              c.slug === defaultService ||
+              (c.name && c.name.toLowerCase().includes(defaultService.toLowerCase().split("-")[0]))
+          );
+          const target = match || json.data[0];
+          setCurrentCategory(target);
+          if (target.services && target.services.length > 0) {
+            setSelectedRequirements([target.services[0].title]);
+          }
+        }
+      })
+      .catch(() => {
+        setCurrentCategory(DEFAULT_AC_CATEGORY);
+        setSelectedRequirements(["AC Repair/Service"]);
+      });
+  }, [isOpen, category, defaultService, categories]);
+
+  if (!isOpen || !mounted) return null;
+
+  // Available services list for current category
+  const servicesList: CategoryServiceItem[] =
+    currentCategory.services && currentCategory.services.length > 0
+      ? currentCategory.services
+      : [
+          { id: "1", title: `${currentCategory.name} Repair/Service`, price: "₹299" },
+          { id: "2", title: `${currentCategory.name} Installation & Diagnosis`, price: "₹499" },
+          { id: "3", title: `Any Other ${currentCategory.name} related Service`, price: "Inspection" },
+        ];
+
+  // Comma-separated subtitle matching Screenshot 1
+  const servicesSubtitle = servicesList.map((s) => s.title).join(", ");
+
+  // Toggle requirement checkbox
+  const toggleRequirement = (title: string) => {
+    setSelectedRequirements((prev) => {
+      if (prev.includes(title)) {
+        if (prev.length === 1) return prev;
+        return prev.filter((t) => t !== title);
+      } else {
+        return [...prev, title];
+      }
+    });
+  };
+
+  // Submit Handler
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !phone || !address) return;
+    if (!name.trim() || !phone.trim() || !address.trim()) return;
 
     const newBookingId = "RS-" + Math.floor(100000 + Math.random() * 900000);
-    const selectedServiceObj = servicesData.find((s) => s.id === service) || servicesData[0];
+    const scheduledDate = needWhen === "Custom Date" && customDate ? customDate : needWhen;
 
     const bookingItem = {
       id: newBookingId,
-      serviceName: selectedServiceObj.title,
-      price: selectedServiceObj.price,
-      customerName: name,
-      phone,
-      address,
-      date: date || new Date().toISOString().split("T")[0],
+      serviceName: `${currentCategory.name} (${selectedRequirements.join(", ")})`,
+      categoryName: currentCategory.name,
+      requirements: selectedRequirements,
+      customerName: name.trim(),
+      phone: phone.trim(),
+      address: address.trim(),
+      scheduledDate,
+      date: new Date().toISOString().split("T")[0],
       status: "Confirmed",
       bookedAt: new Date().toLocaleDateString("en-IN", {
         month: "short",
@@ -48,13 +259,12 @@ export default function BookingModal({
       }),
     };
 
-    // Store in localStorage
     try {
       const existing = JSON.parse(localStorage.getItem("rs_bookings") || "[]");
       existing.unshift(bookingItem);
       localStorage.setItem("rs_bookings", JSON.stringify(existing));
     } catch {
-      // fallback
+      // Fallback
     }
 
     setBookingId(newBookingId);
@@ -66,148 +276,318 @@ export default function BookingModal({
     setName("");
     setPhone("");
     setAddress("");
+    setActiveTab("book");
     onClose();
   };
 
-  return (
+  const bannerImg = getCategoryBannerImage(currentCategory.slug, currentCategory.name);
+
+  // Category Title formatted as "${Name} in Patna"
+  const displayTitle = currentCategory.name.toLowerCase().includes("in patna")
+    ? currentCategory.name
+    : `${currentCategory.name} in Patna`;
+
+  return createPortal(
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close-btn" onClick={onClose}>
+        {/* Close Button */}
+        <button
+          className="modal-close-btn"
+          onClick={onClose}
+          aria-label="Close modal"
+        >
           ✕
         </button>
 
         {!submitted ? (
           <>
-            <h3 className="modal-title">⚡ Quick Doorstep Service Booking</h3>
-            <p className="modal-subtitle">
-              Expert technicians at your doorstep in Patna within 60–90 minutes.
-            </p>
-
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-              <div className="form-group">
-                <label className="form-label">Select Appliance Service</label>
-                <select
-                  className="form-select"
-                  value={service}
-                  onChange={(e) => setService(e.target.value)}
-                  required
-                >
-                  {servicesData.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.title} ({s.price})
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Full Name</label>
-                <input
-                  type="text"
-                  className="form-input"
-                  placeholder="e.g. Ramesh Kumar"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
+            {/* UPPER DARK BANNER SECTION (MATCHING SCREENSHOT 1 & SCREENSHOT 2) */}
+            <div className="modal-banner-header">
+              {/* Subtle background image */}
+              <div className="modal-banner-bg-img">
+                <Image
+                  src={bannerImg}
+                  alt={currentCategory.name}
+                  fill
+                  sizes="350px"
+                  style={{ objectFit: "cover" }}
                 />
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Mobile Number</label>
-                <input
-                  type="tel"
-                  className="form-input"
-                  placeholder="e.g. 9304415657"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  required
-                />
-              </div>
+              <div className="modal-banner-content">
+                {/* Red Brush Stroke Ribbon Accent (Screenshot 2) */}
+                <BrushRibbon text="#ApkeGharKaServicePartner" />
 
-              <div className="form-group">
-                <label className="form-label">Preferred Date</label>
-                <input
-                  type="date"
-                  className="form-input"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                />
-              </div>
+                {/* Heading (Screenshot 1) */}
+                <h3 className="modal-banner-title">{displayTitle}</h3>
 
-              <div className="form-group">
-                <label className="form-label">Service Address (Patna & nearby)</label>
-                <textarea
-                  className="form-textarea"
-                  style={{ minHeight: "65px" }}
-                  placeholder="Flat/House No, Colony, Landmark, Area in Patna"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  required
-                />
-              </div>
+                {/* Subtitle listing dynamic services (Screenshot 1) */}
+                <p className="modal-banner-subtitle">{servicesSubtitle}</p>
 
+                {/* 4 Green Checkmark Trust Badges (Screenshot 1) */}
+                <div className="modal-trust-row">
+                  <span className="modal-trust-item">
+                    <span className="trust-check-badge">✓</span>
+                    Low Cost
+                  </span>
+                  <span className="modal-trust-item">
+                    <span className="trust-check-badge">✓</span>
+                    Expert Own Technician(No Tie-Up)
+                  </span>
+                  <span className="modal-trust-item">
+                    <span className="trust-check-badge">✓</span>
+                    Free Inspection
+                  </span>
+                  <span className="modal-trust-item">
+                    <span className="trust-check-badge">✓</span>
+                    15 days Warranty*
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* THREE TABS HEADER (SCREENSHOT 1) */}
+            <div className="modal-tabs-header">
               <button
-                type="submit"
-                className="btn-submit-query"
-                style={{ width: "100%", marginTop: "8px" }}
+                type="button"
+                className={`modal-tab-btn ${activeTab === "book" ? "active" : ""}`}
+                onClick={() => setActiveTab("book")}
               >
-                Confirm Doorstep Booking
+                Book Free Visit
               </button>
-            </form>
+              <button
+                type="button"
+                className={`modal-tab-btn ${activeTab === "rates" ? "active" : ""}`}
+                onClick={() => setActiveTab("rates")}
+              >
+                Rate(s)
+              </button>
+              <button
+                type="button"
+                className={`modal-tab-btn ${activeTab === "faqs" ? "active" : ""}`}
+                onClick={() => setActiveTab("faqs")}
+              >
+                FAQs
+              </button>
+            </div>
+
+            {/* SCROLLABLE MODAL BODY */}
+            <div className="modal-scroll-body">
+              {/* TAB 1: BOOK FREE VISIT */}
+              {activeTab === "book" && (
+                <form onSubmit={handleSubmit}>
+                  {/* Field 1: When do you Need Service? (Screenshot 1) */}
+                  <div className="form-group">
+                    <label className="form-label">When do you Need Service?</label>
+                    <select
+                      className="form-select-styled"
+                      value={needWhen}
+                      onChange={(e) => setNeedWhen(e.target.value)}
+                    >
+                      <option value="Today">Today</option>
+                      <option value="Tomorrow">Tomorrow</option>
+                      <option value="Custom Date">Pick a Custom Date</option>
+                    </select>
+
+                    {needWhen === "Custom Date" && (
+                      <input
+                        type="date"
+                        className="form-input"
+                        style={{ marginTop: "8px" }}
+                        value={customDate}
+                        onChange={(e) => setCustomDate(e.target.value)}
+                        required
+                      />
+                    )}
+                  </div>
+
+                  {/* Field 2: Requirment(s) - DYNAMIC CHECKBOXES (Screenshot 1) */}
+                  <div className="requirement-section">
+                    <label className="requirement-label">Requirment(s)</label>
+                    <div className="requirement-checkbox-row">
+                      {servicesList.map((srv) => {
+                        const isChecked = selectedRequirements.includes(srv.title);
+                        return (
+                          <label key={srv.id} className="requirement-item">
+                            <input
+                              type="checkbox"
+                              className="requirement-checkbox-input"
+                              checked={isChecked}
+                              onChange={() => toggleRequirement(srv.title)}
+                            />
+                            <span className="requirement-item-text">{srv.title}</span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Customer Information Fields */}
+                  <div className="form-group">
+                    <label className="form-label">Full Name</label>
+                    <input
+                      type="text"
+                      className="form-input"
+                      placeholder="e.g. Rahul Sharma"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">Mobile Number</label>
+                    <input
+                      type="tel"
+                      className="form-input"
+                      placeholder="e.g. 9304415657"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      pattern="[0-9]{10}"
+                      title="Please enter a valid 10-digit mobile number"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">Service Address (Patna & nearby)</label>
+                    <textarea
+                      className="form-textarea"
+                      style={{ minHeight: "72px" }}
+                      placeholder="Flat/House No, Colony, Landmark, Area in Patna"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      required
+                    />
+                  </div>
+
+                  <button type="submit" className="btn-book-submit">
+                    ⚡ Confirm Free Visit Booking
+                  </button>
+
+                  <p className="booking-form-assurance">
+                    🔒 Zero cancellation charge • Pay only after 100% service satisfaction
+                  </p>
+                </form>
+              )}
+
+              {/* TAB 2: RATE(S) */}
+              {activeTab === "rates" && (
+                <div className="rates-list-container">
+                  {servicesList.map((srv) => (
+                    <div key={srv.id} className="rate-card-item">
+                      <div className="rate-card-info">
+                        <h4>{srv.title}</h4>
+                        <p>{srv.shortDescription || "Includes complete diagnosis & 15 days service warranty"}</p>
+                      </div>
+                      <div className="rate-card-action">
+                        <span className="rate-card-price">{srv.price || "Free Inspection"}</span>
+                        <button
+                          type="button"
+                          className="rate-card-btn"
+                          onClick={() => {
+                            setSelectedRequirements([srv.title]);
+                            setActiveTab("book");
+                          }}
+                        >
+                          Book Now
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  <div style={{ marginTop: "12px", fontSize: "12px", color: "#64748b", textAlign: "center" }}>
+                    *Final pricing depends on spare parts if needed. Technician will provide a clear upfront quote before starting.
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 3: FAQS */}
+              {activeTab === "faqs" && (
+                <div className="faqs-container">
+                  {[
+                    {
+                      q: "Is the technician visit really free?",
+                      a: "Yes! Doorstep inspection is 100% free with zero cancellation fee. If you choose not to proceed with the repair after inspection, you pay nothing.",
+                    },
+                    {
+                      q: "How fast can the technician arrive in Patna?",
+                      a: "Our certified in-house technicians arrive within 60 to 90 minutes across all major Patna areas including Boring Road, Kankarbagh, Bailey Road, Saguna More, Danapur, and Rajendra Nagar.",
+                    },
+                    {
+                      q: "Do you offer a warranty on the repair service?",
+                      a: "Yes, every service comes with a 15-day service guarantee. If the same problem reoccurs within 15 days, we fix it completely free of charge.",
+                    },
+                    {
+                      q: "Are your technicians verified and direct employees?",
+                      a: "Yes! We do not tie up with unverified freelancers. All Repair Saathi technicians are thoroughly background-verified with uniform and official ID.",
+                    },
+                  ].map((faq, idx) => (
+                    <div key={idx} className="faq-modal-card">
+                      <button
+                        type="button"
+                        className="faq-modal-trigger"
+                        onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}
+                      >
+                        <span>{faq.q}</span>
+                        <span>{expandedFaq === idx ? "▲" : "▼"}</span>
+                      </button>
+                      {expandedFaq === idx && (
+                        <div className="faq-modal-answer">{faq.a}</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </>
         ) : (
-          <div style={{ textAlign: "center", padding: "16px 0" }}>
-            <div
-              style={{
-                width: "60px",
-                height: "60px",
-                background: "#dcfce7",
-                color: "#16a34a",
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "28px",
-                margin: "0 auto 16px auto",
-              }}
-            >
-              ✓
-            </div>
-            <h3 className="modal-title" style={{ color: "#16a34a" }}>
-              Booking Confirmed!
+          /* SUCCESS CONFIRMATION STATE */
+          <div className="modal-success-box">
+            <div className="success-check-circle">✓</div>
+            <h3 className="modal-banner-title" style={{ color: "#16a34a", fontSize: "22px" }}>
+              Free Visit Confirmed!
             </h3>
             <p style={{ fontSize: "14px", color: "#475569", margin: "8px 0 16px 0" }}>
-              Thank you, <strong>{name}</strong>! Your technician will reach out to{" "}
+              Thank you, <strong>{name}</strong>! Our technician will call you on{" "}
               <strong>{phone}</strong> shortly.
             </p>
 
             <div
               style={{
                 background: "#f8fafc",
-                padding: "12px",
-                borderRadius: "10px",
-                border: "1px dashed #cbd5e1",
+                padding: "16px",
+                borderRadius: "12px",
+                border: "1.5px dashed #cbd5e1",
                 marginBottom: "20px",
+                textAlign: "left",
               }}
             >
-              <span style={{ fontSize: "12px", color: "#64748b", textTransform: "uppercase" }}>
-                Booking Reference ID
-              </span>
-              <div style={{ fontSize: "20px", fontWeight: "900", color: "#1e293b", marginTop: "2px" }}>
-                {bookingId}
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                <span style={{ fontSize: "12px", color: "#64748b", textTransform: "uppercase", fontWeight: 700 }}>
+                  Booking Reference ID
+                </span>
+                <span style={{ fontSize: "16px", fontWeight: "900", color: "#0f172a" }}>
+                  {bookingId}
+                </span>
+              </div>
+              <div style={{ fontSize: "13px", color: "#334155", marginBottom: "4px" }}>
+                <strong>Appliance:</strong> {currentCategory.name}
+              </div>
+              <div style={{ fontSize: "13px", color: "#334155" }}>
+                <strong>Requirement(s):</strong> {selectedRequirements.join(", ")}
               </div>
             </div>
 
-            <div style={{ display: "flex", gap: "10px" }}>
+            <div style={{ display: "flex", gap: "12px" }}>
               <button
                 onClick={handleReset}
-                className="btn-submit-query"
+                className="btn-book-submit"
                 style={{ flex: 1, padding: "10px" }}
               >
                 Done
               </button>
               <a
-                href={`https://wa.me/919304415657?text=Hi%20Repair%20Saathi%2C%20I%20booked%20service%20${bookingId}%20for%20${encodeURIComponent(name)}.`}
+                href={`https://wa.me/919304415657?text=Hi%20Repair%20Saathi%2C%20I%20booked%20${encodeURIComponent(currentCategory.name)}%20(Ref%3A%20${bookingId})%20for%20${encodeURIComponent(name)}.`}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -221,6 +601,7 @@ export default function BookingModal({
                   borderRadius: "10px",
                   fontWeight: "700",
                   fontSize: "14px",
+                  textDecoration: "none",
                 }}
               >
                 <WhatsAppIcon size={18} color="#fff" />
@@ -230,6 +611,7 @@ export default function BookingModal({
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

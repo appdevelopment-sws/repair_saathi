@@ -6,7 +6,8 @@ import Image from "next/image";
 import { CategoryDto } from "@/app/api/categories/route";
 
 interface FeaturedCategoriesProps {
-  onOpenBooking?: (serviceId: string) => void;
+  onOpenBooking?: (category: CategoryDto) => void;
+  onLoadedCategories?: (categories: CategoryDto[]) => void;
 }
 
 // High-fidelity custom SVGs meticulously matching Screenshot 1
@@ -272,7 +273,10 @@ function getCategoryIllustration(name: string, iconKey?: string | null) {
   return <WrenchIcon />;
 }
 
-export default function FeaturedCategories({ onOpenBooking }: FeaturedCategoriesProps) {
+export default function FeaturedCategories({
+  onOpenBooking,
+  onLoadedCategories,
+}: FeaturedCategoriesProps) {
   const [categories, setCategories] = useState<CategoryDto[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -286,6 +290,7 @@ export default function FeaturedCategories({ onOpenBooking }: FeaturedCategories
           const json = await res.json();
           if (json.data && Array.isArray(json.data) && json.data.length > 0 && isMounted) {
             setCategories(json.data);
+            onLoadedCategories?.(json.data);
             setLoading(false);
             return;
           }
@@ -296,13 +301,70 @@ export default function FeaturedCategories({ onOpenBooking }: FeaturedCategories
 
       if (isMounted) {
         // Fallback initial list
-        setCategories([
-          { id: 1, name: "Air Conditioner Repair", slug: "ac-repair-in-patna", serviceId: "ac-repair" },
-          { id: 2, name: "Refrigerator Repair", slug: "refrigerator-service-in-patna", serviceId: "refrigerator-repair" },
-          { id: 3, name: "Washing Machine Repair", slug: "washing-machine-repair-service-in-patna", serviceId: "washing-machine" },
-          { id: 4, name: "Water Purifier Repair", slug: "water-cooler-services", serviceId: "water-cooler" },
-          { id: 5, name: "Geyser Repair", slug: "geyser-repair-in-patna", serviceId: "geyser-repair" },
-        ]);
+        const fallbackList: CategoryDto[] = [
+          {
+            id: 1,
+            name: "Air Conditioner Repair",
+            slug: "ac-repair-in-patna",
+            serviceId: "ac-repair",
+            icon: "Wind",
+            services: [
+              { id: "ac-1", title: "AC Repair/Service", price: "₹299" },
+              { id: "ac-2", title: "AC Installation/ Removal", price: "₹499" },
+              { id: "ac-3", title: "Any Other AC related Service", price: "Inspection" },
+            ],
+          },
+          {
+            id: 2,
+            name: "Refrigerator Repair",
+            slug: "refrigerator-service-in-patna",
+            serviceId: "refrigerator-repair",
+            icon: "Snowflake",
+            services: [
+              { id: "ref-1", title: "Refrigerator Repair/Service", price: "₹199" },
+              { id: "ref-2", title: "Gas Refilling & Leak Fix", price: "₹899" },
+              { id: "ref-3", title: "Any Other Refrigerator related Service", price: "Inspection" },
+            ],
+          },
+          {
+            id: 3,
+            name: "Washing Machine Repair",
+            slug: "washing-machine-repair-service-in-patna",
+            serviceId: "washing-machine",
+            icon: "Shirt",
+            services: [
+              { id: "wm-1", title: "Washing Machine Repair/Service", price: "₹199" },
+              { id: "wm-2", title: "Drum & Vibration Repair", price: "₹399" },
+              { id: "wm-3", title: "Any Other Washing Machine related Service", price: "Inspection" },
+            ],
+          },
+          {
+            id: 4,
+            name: "Water Purifier Repair",
+            slug: "water-cooler-services",
+            serviceId: "water-cooler",
+            icon: "Droplets",
+            services: [
+              { id: "ro-1", title: "RO Service & Filter Replacement", price: "₹299" },
+              { id: "ro-2", title: "Membrane Change & TDS Tuning", price: "₹799" },
+              { id: "ro-3", title: "Any Other Water Purifier related Service", price: "Inspection" },
+            ],
+          },
+          {
+            id: 5,
+            name: "Geyser Repair",
+            slug: "geyser-repair-in-patna",
+            serviceId: "geyser-repair",
+            icon: "Flame",
+            services: [
+              { id: "gey-1", title: "Geyser Repair/Service", price: "₹199" },
+              { id: "gey-2", title: "Heating Element Replacement", price: "₹399" },
+              { id: "gey-3", title: "Any Other Geyser related Service", price: "Inspection" },
+            ],
+          },
+        ];
+        setCategories(fallbackList);
+        onLoadedCategories?.(fallbackList);
         setLoading(false);
       }
     }
@@ -312,7 +374,7 @@ export default function FeaturedCategories({ onOpenBooking }: FeaturedCategories
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [onLoadedCategories]);
 
   return (
     <section className="featured-services-section" id="featured-services">
@@ -322,41 +384,37 @@ export default function FeaturedCategories({ onOpenBooking }: FeaturedCategories
           <h2 className="featured-services-title">Featured Services</h2>
         </div>
 
-        {/* Categories Grid - Matching Screenshot 1 UI */}
+        {/* Categories Grid - Clicking opens Booking Modal for that Category */}
         <div className="featured-categories-grid">
-          {categories.map((cat) => {
-            const hasDirectProduct = cat.slug && !cat.slug.includes("home-decorator") && !cat.slug.includes("laptop");
-            const targetUrl = hasDirectProduct ? `/product/${cat.slug}/` : `/home-appliance-repair-services-patna/`;
-
-            return (
-              <Link
-                key={cat.id}
-                href={targetUrl}
-                className="category-item-card"
-                title={cat.name}
-              >
-                <div className="category-icon-wrapper">
-                  {cat.icon ? (
-                    getCategoryIllustration(cat.name, cat.icon)
-                  ) : cat.image ? (
-                    <div className="category-uploaded-image">
-                      <Image
-                        src={cat.image}
-                        alt={cat.name}
-                        width={64}
-                        height={64}
-                        className="category-img-element"
-                        unoptimized
-                      />
-                    </div>
-                  ) : (
-                    getCategoryIllustration(cat.name)
-                  )}
-                </div>
-                <span className="category-item-name">{cat.name}</span>
-              </Link>
-            );
-          })}
+          {categories.map((cat) => (
+            <button
+              type="button"
+              key={cat.id}
+              onClick={() => onOpenBooking?.(cat)}
+              className="category-item-card"
+              title={`Book ${cat.name}`}
+            >
+              <div className="category-icon-wrapper">
+                {cat.icon ? (
+                  getCategoryIllustration(cat.name, cat.icon)
+                ) : cat.image ? (
+                  <div className="category-uploaded-image">
+                    <Image
+                      src={cat.image}
+                      alt={cat.name}
+                      width={64}
+                      height={64}
+                      className="category-img-element"
+                      unoptimized
+                    />
+                  </div>
+                ) : (
+                  getCategoryIllustration(cat.name)
+                )}
+              </div>
+              <span className="category-item-name">{cat.name}</span>
+            </button>
+          ))}
 
           {/* Plus (+) "All Services" Icon Card - Exactly as in Screenshot 1 */}
           <Link

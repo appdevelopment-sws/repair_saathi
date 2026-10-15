@@ -6,6 +6,7 @@ import Link from "next/link";
 import { servicesData } from "@/data/servicesData";
 import BookingModal from "@/components/BookingModal";
 import HeroSection from "@/components/HeroSection";
+import FeaturedCategories from "@/components/FeaturedCategories";
 
 export default function HomeClient() {
   const [selectedService, setSelectedService] = useState<string>("ac-repair");
@@ -41,60 +42,8 @@ export default function HomeClient() {
       {/* 1. HERO SECTION WITH APPLIANCE CAROUSEL */}
       <HeroSection />
 
-      {/* 2. HOME APPLIANCES REPAIR SERVICES (8 CARDS) */}
-      <section className="services-main-section" id="services">
-        <div className="container">
-          <div className="services-heading-wrap">
-            <h2 className="services-main-heading">Home Appliances Repair Services</h2>
-            <p className="services-sub-heading">Starts from ₹199 • Fast Doorstep Service in Patna</p>
-          </div>
-
-          <div className="services-grid-8">
-            {servicesData.map((item) => (
-              <div key={item.id} className="appliance-service-card">
-                <Link href={`/product/${item.slug}/`} className="service-card-thumbnail">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    className="service-thumb-img"
-                  />
-                </Link>
-                <div className="service-card-details">
-                  <Link href={`/product/${item.slug}/`}>
-                    <h3 className="service-title">{item.title}</h3>
-                  </Link>
-
-                  <div className="service-price-row">
-                    <span className="service-price-text">Starts from</span>
-                    <div>
-                      <span className="service-price-current">{item.price}</span>
-                      {item.originalPrice && (
-                        <span className="service-price-strike">
-                          {item.originalPrice}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="service-action-buttons">
-                    <button
-                      onClick={() => handleOpenBooking(item.id)}
-                      className="btn-book-service"
-                    >
-                      Book Now
-                    </button>
-                    <Link href={`/product/${item.slug}/`} className="btn-details-service">
-                      Details
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* 2. DYNAMIC FEATURED SERVICES / CATEGORIES (MATCHING SCREENSHOT 1) */}
+      <FeaturedCategories onOpenBooking={handleOpenBooking} />
 
       {/* 3. SEO SECTION 1: AC REPAIR IN PATNA */}
       <section className="content-block-section">

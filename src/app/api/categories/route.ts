@@ -314,14 +314,23 @@ export async function GET() {
 
             let categoryServices: CategoryServiceItem[] = [];
             if (Array.isArray(cat.services) && cat.services.length > 0) {
-              categoryServices = cat.services.map((s: any) => ({
-                id: s.id,
-                title: s.title || s.name,
-                price: s.price ? `₹${s.price}` : null,
-                rateType: s.rateType,
-                duration: s.duration,
-                shortDescription: s.shortDescription,
-              }));
+              categoryServices = cat.services.map((s: any) => {
+                const priceVal = s.effectivePrice ?? s.price;
+                let formattedPrice = "Inspection";
+                if (priceVal != null && priceVal !== "") {
+                  const str = String(priceVal).trim();
+                  formattedPrice = str.startsWith("₹") ? str : `₹${str}`;
+                }
+
+                return {
+                  id: s.id,
+                  title: s.title || s.name,
+                  price: formattedPrice,
+                  rateType: s.rateType || "fixed",
+                  duration: s.duration,
+                  shortDescription: s.shortDescription || "Includes complete diagnosis & 15 days service warranty",
+                };
+              });
             } else {
               const defaultMatch = DEFAULT_CATEGORIES.find(
                 (d) =>
@@ -330,9 +339,9 @@ export async function GET() {
                   (cat.name && d.name.toLowerCase().includes(cat.name.toLowerCase().split(" ")[0]))
               );
               categoryServices = defaultMatch?.services || [
-                { id: `${cat.id}-1`, title: `${cat.name} Repair/Service` },
-                { id: `${cat.id}-2`, title: `${cat.name} Installation & Diagnosis` },
-                { id: `${cat.id}-3`, title: `Any Other ${cat.name} related Service` },
+                { id: `${cat.id}-1`, title: `${cat.name} Repair/Service`, price: "₹299", shortDescription: "Includes complete diagnosis & 15 days service warranty" },
+                { id: `${cat.id}-2`, title: `${cat.name} Installation & Diagnosis`, price: "₹499", shortDescription: "Includes complete diagnosis & 15 days service warranty" },
+                { id: `${cat.id}-3`, title: `Any Other ${cat.name} related Service`, price: "Inspection", shortDescription: "Includes complete diagnosis & 15 days service warranty" },
               ];
             }
 

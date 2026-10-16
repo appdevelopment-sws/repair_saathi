@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -31,39 +31,111 @@ export default function BlogClient() {
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [bookingDefaultService, setBookingDefaultService] = useState("ac-repair");
   const [copiedSlug, setCopiedSlug] = useState(false);
+  const [allBlogs, setAllBlogs] = useState<BlogPost[]>(blogsData);
+
+  // Fetch dynamic blogs from Backend API
+  useEffect(() => {
+    const fetchLiveBlogs = async () => {
+      try {
+        const backendBase =
+          process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8008";
+        const res = await fetch(`${backendBase}/api/blogs?status=published`, {
+          cache: "no-store",
+        });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+            const apiPosts: BlogPost[] = json.data.map((item: any) => ({
+              id: String(item.id),
+              slug: item.slug,
+              title: item.title,
+              author: item.author || "Repair Saathi Technical Team",
+              date: new Date(item.publishedAt || item.createdAt).toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              }),
+              readTime: item.readTime || "5 min read",
+              category: item.category || "General",
+              image: item.image || "/images/ac-repair-sec.webp",
+              excerpt: item.excerpt || "",
+              content: item.content,
+              tags: Array.isArray(item.tags)
+                ? item.tags
+                : typeof item.tags === "string"
+                ? JSON.parse(item.tags || "[]")
+                : [],
+              isFeatured: !!item.isFeatured,
+            }));
+
+            // Prioritize API blogs, keep unique slugs
+            const apiSlugs = new Set(apiPosts.map((p) => p.slug));
+            const staticRemain = blogsData.filter((p) => !apiSlugs.has(p.slug));
+            setAllBlogs([...apiPosts, ...staticRemain]);
+          }
+        }
+      } catch (err) {
+        // Fallback silently to static blogsData
+        console.warn("Could not fetch dynamic blogs from API, using static data:", err);
+      }
+    };
+
+    fetchLiveBlogs();
+  }, []);
+
+  // Auto-open blog if ?slug= or #slug is provided in URL
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash.replace("#", "");
+      const params = new URLSearchParams(window.location.search);
+      const querySlug = params.get("slug") || hash;
+      if (querySlug) {
+        const found = allBlogs.find((b) => b.slug === querySlug);
+        if (found) {
+          setSelectedPost(found);
+        }
+      }
+    }
+  }, [allBlogs]);
 
   // Categories list with counts
   const categories = useMemo(() => {
     const list = ["All"];
-    blogsData.forEach((post) => {
+    allBlogs.forEach((post) => {
       if (!list.includes(post.category)) {
         list.push(post.category);
       }
     });
     return list;
-  }, []);
+  }, [allBlogs]);
 
   const getCategoryCount = (cat: string) => {
-    if (cat === "All") return blogsData.length;
-    return blogsData.filter((p) => p.category === cat).length;
+    if (cat === "All") return allBlogs.length;
+    return allBlogs.filter((p) => p.category === cat).length;
   };
 
   // Filtered posts
   const filteredPosts = useMemo(() => {
-    return blogsData.filter((post) => {
+    return allBlogs.filter((post) => {
+      const contentMatches = Array.isArray(post.content)
+        ? post.content.some((c) => c.toLowerCase().includes(searchTerm.toLowerCase()))
+        : typeof post.content === "string"
+        ? post.content.toLowerCase().includes(searchTerm.toLowerCase())
+        : false;
+
       const matchesSearch =
         searchTerm === "" ||
         post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
         post.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.content.some((c) => c.toLowerCase().includes(searchTerm.toLowerCase()));
+        contentMatches;
 
       const matchesCategory =
         selectedCategory === "All" || post.category === selectedCategory;
 
       return matchesSearch && matchesCategory;
     });
-  }, [searchTerm, selectedCategory]);
+  }, [searchTerm, selectedCategory, allBlogs]);
 
   // Featured post (latest or first) when on "All" and no search
   const isDefaultView = selectedCategory === "All" && searchTerm.trim() === "";
@@ -84,14 +156,15 @@ export default function BlogClient() {
 
   const handleShare = (post: BlogPost) => {
     if (typeof window !== "undefined") {
+      const shareUrl = `${window.location.origin}/home-appliance-repair-blog?slug=${post.slug}`;
       if (navigator.share) {
         navigator.share({
           title: post.title,
           text: post.excerpt,
-          url: window.location.href,
+          url: shareUrl,
         }).catch(() => {});
       } else {
-        navigator.clipboard.writeText(window.location.href);
+        navigator.clipboard.writeText(shareUrl);
         setCopiedSlug(true);
         setTimeout(() => setCopiedSlug(false), 2000);
       }
@@ -526,55 +599,63 @@ export default function BlogClient() {
                 </div>
 
                 {/* Article Content with Rich Parsed Formatting */}
-                <div className="modal-paragraphs-wrap">
-                  {selectedPost.content.map((paragraph, pIdx) => {
-                    const isNumbered = /^[0-9]+\.\s/.test(paragraph);
-                    const isBullet = paragraph.startsWith("- ");
-                    const isHeading =
-                      paragraph.endsWith(":") ||
-                      paragraph.includes("Warning Signs") ||
-                      paragraph.includes("Frequent Geyser Faults") ||
-                      paragraph.includes("Top Reasons") ||
-                      paragraph.includes("Why Scheduled") ||
-                      paragraph.includes("Why Choose Doorstep") ||
-                      paragraph.includes("Safety First");
+                {typeof selectedPost.content === "string" ? (
+                  <div
+                    className="modal-rich-html-content"
+                    dangerouslySetInnerHTML={{ __html: selectedPost.content }}
+                  />
+                ) : (
+                  <div className="modal-paragraphs-wrap">
+                    {Array.isArray(selectedPost.content) &&
+                      selectedPost.content.map((paragraph, pIdx) => {
+                        const isNumbered = /^[0-9]+\.\s/.test(paragraph);
+                        const isBullet = paragraph.startsWith("- ");
+                        const isHeading =
+                          paragraph.endsWith(":") ||
+                          paragraph.includes("Warning Signs") ||
+                          paragraph.includes("Frequent Geyser Faults") ||
+                          paragraph.includes("Top Reasons") ||
+                          paragraph.includes("Why Scheduled") ||
+                          paragraph.includes("Why Choose Doorstep") ||
+                          paragraph.includes("Safety First");
 
-                    if (isHeading) {
-                      return (
-                        <h3 key={pIdx} className="article-section-heading">
-                          <Wrench size={16} className="heading-icon" />
-                          <span>{paragraph}</span>
-                        </h3>
-                      );
-                    }
+                        if (isHeading) {
+                          return (
+                            <h3 key={pIdx} className="article-section-heading">
+                              <Wrench size={16} className="heading-icon" />
+                              <span>{paragraph}</span>
+                            </h3>
+                          );
+                        }
 
-                    if (isNumbered) {
-                      const number = paragraph.match(/^[0-9]+/)?.[0] || "•";
-                      const cleanText = paragraph.replace(/^[0-9]+\.\s*/, "");
-                      return (
-                        <div key={pIdx} className="article-step-card">
-                          <div className="step-number">{number}</div>
-                          <div className="step-text">{cleanText}</div>
-                        </div>
-                      );
-                    }
+                        if (isNumbered) {
+                          const number = paragraph.match(/^[0-9]+/)?.[0] || "•";
+                          const cleanText = paragraph.replace(/^[0-9]+\.\s*/, "");
+                          return (
+                            <div key={pIdx} className="article-step-card">
+                              <div className="step-number">{number}</div>
+                              <div className="step-text">{cleanText}</div>
+                            </div>
+                          );
+                        }
 
-                    if (isBullet) {
-                      return (
-                        <div key={pIdx} className="article-bullet-item">
-                          <span className="bullet-dot">•</span>
-                          <span>{paragraph.replace(/^-\s*/, "")}</span>
-                        </div>
-                      );
-                    }
+                        if (isBullet) {
+                          return (
+                            <div key={pIdx} className="article-bullet-item">
+                              <span className="bullet-dot">•</span>
+                              <span>{paragraph.replace(/^-\s*/, "")}</span>
+                            </div>
+                          );
+                        }
 
-                    return (
-                      <p key={pIdx} className="article-p">
-                        {paragraph}
-                      </p>
-                    );
-                  })}
-                </div>
+                        return (
+                          <p key={pIdx} className="article-p">
+                            {paragraph}
+                          </p>
+                        );
+                      })}
+                  </div>
+                )}
 
                 {/* Expert Pro Tip Callout Box */}
                 <div className="modal-expert-tip-box">

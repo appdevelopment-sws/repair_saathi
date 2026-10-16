@@ -1237,3 +1237,139 @@
     width: 100%;
   }
 }
+
+/* ==========================================================================
+   RICH HTML BLOG CONTENT STYLING (ADMIN WORD-LIKE RENDERER)
+   ========================================================================== */
+.modal-rich-html-content {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #334155;
+  margin-bottom: 24px;
+}
+
+.modal-rich-html-content h1,
+.modal-rich-html-content h2,
+.modal-rich-html-content h3,
+.modal-rich-html-content h4 {
+  color: #0f172a;
+  font-weight: 800;
+  line-height: 1.35;
+  margin-top: 28px;
+  margin-bottom: 14px;
+  letter-spacing: -0.02em;
+}
+
+.modal-rich-html-content h1 {
+  font-size: 26px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 8px;
+}
+
+.modal-rich-html-content h2 {
+  font-size: 22px;
+  color: #0369a1;
+  border-left: 4px solid #0284c7;
+  padding-left: 12px;
+}
+
+.modal-rich-html-content h3 {
+  font-size: 19px;
+  color: #0f172a;
+}
+
+.modal-rich-html-content p {
+  margin-bottom: 16px;
+  color: #334155;
+}
+
+.modal-rich-html-content ul,
+.modal-rich-html-content ol {
+  margin: 16px 0 20px 24px;
+  padding-left: 12px;
+}
+
+.modal-rich-html-content ul li {
+  list-style-type: disc;
+  margin-bottom: 8px;
+  color: #334155;
+}
+
+.modal-rich-html-content ol li {
+  list-style-type: decimal;
+  margin-bottom: 8px;
+  color: #334155;
+}
+
+.modal-rich-html-content blockquote {
+  border-left: 4px solid #f59e0b;
+  background: #fffbeb;
+  padding: 14px 20px;
+  border-radius: 0 10px 10px 0;
+  margin: 20px 0;
+  font-style: italic;
+  color: #92400e;
+}
+
+.modal-rich-html-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14.5px;
+  background: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.modal-rich-html-content th {
+  background: #0f172a;
+  color: #ffffff;
+  font-weight: 700;
+  padding: 12px 14px;
+  text-align: left;
+  border: 1px solid #1e293b;
+}
+
+.modal-rich-html-content td {
+  padding: 12px 14px;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+}
+
+.modal-rich-html-content tr:nth-child(even) td {
+  background: #f8fafc;
+}
+
+.modal-rich-html-content .tip-callout {
+  background: rgba(16, 185, 129, 0.08) !important;
+  border-left: 4px solid #10b981 !important;
+  padding: 14px 18px !important;
+  border-radius: 8px !important;
+  margin: 20px 0 !important;
+  color: #065f46 !important;
+}
+
+.modal-rich-html-content .warning-callout {
+  background: rgba(239, 68, 68, 0.08) !important;
+  border-left: 4px solid #ef4444 !important;
+  padding: 14px 18px !important;
+  border-radius: 8px !important;
+  margin: 20px 0 !important;
+  color: #991b1b !important;
+}
+
+.modal-rich-html-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin: 20px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.modal-rich-html-content hr {
+  border: 0;
+  border-top: 1px solid #e2e8f0;
+  margin: 28px 0;
+}
+

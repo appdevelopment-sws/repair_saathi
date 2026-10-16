@@ -8,7 +8,11 @@ export interface BlogPost {
   category: string;
   image: string;
   excerpt: string;
-  content: string[];
+  content: string[] | string;
+  tags?: string[];
+  metaTitle?: string;
+  metaDescription?: string;
+  isFeatured?: boolean;
 }
 
 export const blogsData: BlogPost[] = [

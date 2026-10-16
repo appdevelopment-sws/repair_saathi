@@ -89,3 +89,36 @@ button, input, textarea, select {
   padding-left: 15px;
   padding-right: 15px;
 }
+
+/* ==========================================================================
+   GLOBAL GSAP ADVANCED ANIMATIONS & HARDWARE ACCELERATION
+   ========================================================================== */
+.gsap-page-root {
+  width: 100%;
+  position: relative;
+}
+
+[data-gsap="magnetic"] {
+  will-change: transform;
+  display: inline-flex;
+}
+
+[data-gsap="tilt"] {
+  transform-style: preserve-3d;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Glassmorphic interactive lighting on hover */
+[data-gsap="tilt"],
+.content-block-card,
+.category-item-card,
+.yoga-highlight-card {
+  position: relative;
+}
+
+[data-gsap="image-reveal"] {
+  overflow: hidden;
+  will-change: clip-path, transform, opacity;
+}
+

@@ -252,7 +252,7 @@ export default function Navbar() {
 
           {/* Right Action CTAs */}
           <div className="floating-actions-wrap">
-            <a href="tel:+919304415657" className="pill-call-btn" title="Call Repair Saathi">
+            <a href="tel:+919304415657" className="pill-call-btn" title="Call Repair Saathi" data-gsap="magnetic">
               <Phone size={14} className="call-icon" />
               <span className="call-number">+91-9304415657</span>
               <span className="call-label-mobile">Call</span>
@@ -262,6 +262,7 @@ export default function Navbar() {
               onClick={() => setBookingModalOpen(true)}
               className="pill-book-btn desktop-only-cta"
               type="button"
+              data-gsap="magnetic"
             >
               <span>Book Service</span>
               <ArrowRight size={14} />

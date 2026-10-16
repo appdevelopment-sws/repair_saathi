@@ -166,11 +166,12 @@ export default function AboutClient() {
               onClick={() => setModalOpen(true)}
               className="about-btn-primary"
               type="button"
+              data-gsap="magnetic"
             >
               <span>⚡ Book Doorstep Service</span>
               <ArrowRight size={16} />
             </button>
-            <a href="tel:+919304415657" className="about-btn-secondary">
+            <a href="tel:+919304415657" className="about-btn-secondary" data-gsap="magnetic">
               <Phone size={15} />
               <span>Call +91-9304415657</span>
             </a>

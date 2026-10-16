@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingActions from "@/components/FloatingActions";
 import ThreeBackground from "@/components/ThreeBackground";
+import GsapProvider from "@/components/GsapProvider";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -249,12 +250,14 @@ export default function RootLayout({
       </head>
       <body>
         <ThreeBackground />
-        <Navbar />
-        <div className="site-content-wrapper">
-          <main>{children}</main>
-          <Footer />
-        </div>
-        <FloatingActions />
+        <GsapProvider>
+          <Navbar />
+          <div className="site-content-wrapper">
+            <main>{children}</main>
+            <Footer />
+          </div>
+          <FloatingActions />
+        </GsapProvider>
       </body>
     </html>
   );

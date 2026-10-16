@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { CategoryDto } from "@/app/api/categories/route";
+import { gsap, apply3DTilt, applyMagnetic } from "@/lib/gsap";
 
 interface FeaturedCategoriesProps {
   onOpenBooking?: (category: CategoryDto) => void;
@@ -376,8 +377,45 @@ export default function FeaturedCategories({
     };
   }, [onLoadedCategories]);
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!gridRef.current || categories.length === 0) return;
+
+    const ctx = gsap.context(() => {
+      const cards = gridRef.current?.querySelectorAll(".category-item-card");
+      if (cards && cards.length > 0) {
+        gsap.fromTo(
+          cards,
+          { opacity: 0, y: 35, scale: 0.9 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            stagger: 0.08,
+            duration: 0.7,
+            ease: "back.out(1.5)",
+            scrollTrigger: {
+              trigger: gridRef.current,
+              start: "top 85%",
+              once: true,
+            },
+          }
+        );
+
+        // Apply 3D tilt & magnetic effect
+        cards.forEach((card) => {
+          apply3DTilt(card as HTMLElement, 10);
+        });
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, [categories]);
+
   return (
-    <section className="featured-services-section" id="featured-services">
+    <section ref={sectionRef} className="featured-services-section" id="featured-services">
       <div className="container">
         {/* Section Heading - Clean & Modern matching Screenshot 1 */}
         <div className="featured-services-header">
@@ -385,7 +423,7 @@ export default function FeaturedCategories({
         </div>
 
         {/* Categories Grid - Clicking opens Booking Modal for that Category */}
-        <div className="featured-categories-grid">
+        <div ref={gridRef} className="featured-categories-grid">
           {categories.map((cat) => (
             <button
               type="button"

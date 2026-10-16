@@ -167,9 +167,9 @@ export default function ContactClient() {
         </section>
 
         {/* 4 DIRECT CONTACT CHANNELS */}
-        <div className="contact-channels-grid">
+        <div className="contact-channels-grid" data-gsap="stagger-cards">
           {/* Card 1: Direct Helpline */}
-          <div className="contact-channel-card amber-accent">
+          <div className="contact-channel-card amber-accent" data-gsap="tilt">
             <div className="channel-icon-wrap amber">
               <Phone size={22} />
             </div>

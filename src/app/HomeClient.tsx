@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { servicesData } from "@/data/servicesData";
@@ -8,6 +8,7 @@ import { CategoryDto } from "@/app/api/categories/route";
 import BookingModal from "@/components/BookingModal";
 import HeroSection from "@/components/HeroSection";
 import FeaturedCategories from "@/components/FeaturedCategories";
+import { gsap, apply3DTilt, applyMagnetic } from "@/lib/gsap";
 
 export default function HomeClient() {
   const [selectedCategory, setSelectedCategory] = useState<CategoryDto | null>(null);
@@ -21,6 +22,47 @@ export default function HomeClient() {
   const [queryMobile, setQueryMobile] = useState("");
   const [queryMessage, setQueryMessage] = useState("");
   const [querySent, setQuerySent] = useState(false);
+
+  const homeRootRef = useRef<HTMLDivElement>(null);
+
+  // GSAP ScrollTrigger & Parallax effect for SEO content blocks
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // 1. 3D tilt on all content block cards
+      const cards = document.querySelectorAll<HTMLElement>(".content-block-card, .query-card, .contact-card-box");
+      cards.forEach((card) => {
+        apply3DTilt(card, 6);
+      });
+
+      // 2. Magnetic pull on service CTA buttons
+      const ctaBtns = document.querySelectorAll<HTMLElement>(".btn-book-service, .btn-details-service, .query-btn-submit");
+      ctaBtns.forEach((btn) => {
+        applyMagnetic(btn, 0.25);
+      });
+
+      // 3. Subtle image parallax scrub as visitor scrolls past sections
+      const images = document.querySelectorAll<HTMLElement>(".content-block-img");
+      images.forEach((img) => {
+        gsap.fromTo(
+          img,
+          { y: 25, scale: 1.04 },
+          {
+            y: -25,
+            scale: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: img,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1.2,
+            },
+          }
+        );
+      });
+    }, homeRootRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const handleOpenBooking = (target: CategoryDto | string) => {
     if (typeof target === "string") {
@@ -87,7 +129,7 @@ export default function HomeClient() {
   };
 
   return (
-    <>
+    <div ref={homeRootRef}>
       {/* 1. HERO SECTION WITH APPLIANCE CAROUSEL */}
       <HeroSection />
 
@@ -98,7 +140,7 @@ export default function HomeClient() {
       />
 
       {/* 3. SEO SECTION 1: AC REPAIR IN PATNA */}
-      <section className="content-block-section">
+      <section className="content-block-section" data-gsap="fade-up">
         <div className="container">
           <div className="content-block-card">
             <div className="content-block-grid">
@@ -137,7 +179,7 @@ export default function HomeClient() {
                 </div>
               </div>
 
-              <div className="content-block-img-wrap">
+              <div className="content-block-img-wrap" data-gsap="image-reveal">
                 <Image
                   src="/images/ac-repair-sec.webp"
                   alt="Affordable AC Repair in Patna"
@@ -152,7 +194,7 @@ export default function HomeClient() {
       </section>
 
       {/* 4. SEO SECTION 2: WASHING MACHINE SERVICE IN PATNA */}
-      <section className="content-block-section">
+      <section className="content-block-section" data-gsap="fade-up">
         <div className="container">
           <div className="content-block-card">
             <div className="content-block-grid reverse">
@@ -191,7 +233,7 @@ export default function HomeClient() {
                 </div>
               </div>
 
-              <div className="content-block-img-wrap">
+              <div className="content-block-img-wrap" data-gsap="image-reveal">
                 <Image
                   src="/images/washing-machine-sec.webp"
                   alt="Washing Machine Service in Patna"
@@ -206,7 +248,7 @@ export default function HomeClient() {
       </section>
 
       {/* 5. SEO SECTION 3: REFRIGERATOR REPAIR IN PATNA */}
-      <section className="content-block-section">
+      <section className="content-block-section" data-gsap="fade-up">
         <div className="container">
           <div className="content-block-card">
             <div className="content-block-grid">
@@ -245,7 +287,7 @@ export default function HomeClient() {
                 </div>
               </div>
 
-              <div className="content-block-img-wrap">
+              <div className="content-block-img-wrap" data-gsap="image-reveal">
                 <Image
                   src="/images/refrigerator-sec.webp"
                   alt="Refrigerator Repair in Patna"
@@ -260,7 +302,7 @@ export default function HomeClient() {
       </section>
 
       {/* 6. SEO SECTION 4: GEYSER SERVICE IN PATNA */}
-      <section className="content-block-section">
+      <section className="content-block-section" data-gsap="fade-up">
         <div className="container">
           <div className="content-block-card">
             <div className="content-block-grid reverse">
@@ -299,7 +341,7 @@ export default function HomeClient() {
                 </div>
               </div>
 
-              <div className="content-block-img-wrap">
+              <div className="content-block-img-wrap" data-gsap="image-reveal">
                 <Image
                   src="/images/geyser-repair.webp"
                   alt="Geyser Service in Patna"
@@ -314,7 +356,7 @@ export default function HomeClient() {
       </section>
 
       {/* 7. SEO SECTION 5: OVEN SERVICE IN PATNA */}
-      <section className="content-block-section">
+      <section className="content-block-section" data-gsap="fade-up">
         <div className="container">
           <div className="content-block-card">
             <div className="content-block-grid">
@@ -353,7 +395,7 @@ export default function HomeClient() {
                 </div>
               </div>
 
-              <div className="content-block-img-wrap">
+              <div className="content-block-img-wrap" data-gsap="image-reveal">
                 <Image
                   src="/images/oven-sec.webp"
                   alt="Oven Service in Patna"
@@ -368,11 +410,11 @@ export default function HomeClient() {
       </section>
 
       {/* 8. QUERY FORM & CONTACT SECTION */}
-      <section className="inquiry-section" id="contact">
+      <section className="inquiry-section" id="contact" data-gsap="fade-up">
         <div className="container">
           <div className="inquiry-grid">
             {/* Form */}
-            <div className="query-card">
+            <div className="query-card" data-gsap="slide-left">
               <h3 className="query-title">E-mail Us Your Query</h3>
               <p className="query-desc">
                 Have questions or need doorstep assistance? Fill out the form and our team will get back to you shortly.
@@ -440,7 +482,7 @@ export default function HomeClient() {
                     </div>
                   </div>
 
-                  <button type="submit" className="query-btn-submit">
+                  <button type="submit" className="query-btn-submit" data-gsap="magnetic">
                     Send Message
                   </button>
                 </form>
@@ -448,7 +490,7 @@ export default function HomeClient() {
             </div>
 
             {/* Contact Card */}
-            <div className="contact-card-box">
+            <div className="contact-card-box" data-gsap="slide-right">
               <div>
                 <h3 className="contact-card-title">CONTACT US</h3>
                 <div className="contact-info-list">
@@ -510,6 +552,6 @@ export default function HomeClient() {
         defaultService={selectedService}
         categories={allCategories}
       />
-    </>
+    </div>
   );
 }

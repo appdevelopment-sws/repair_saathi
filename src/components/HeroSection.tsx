@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import {
   Sparkles,
   Clock,
@@ -17,10 +16,22 @@ import {
 import HeroCarousel from "./HeroCarousel";
 import BookingModal from "./BookingModal";
 import WhatsAppIcon from "./WhatsAppIcon";
+import { gsap, applyMagnetic, apply3DTilt } from "@/lib/gsap";
 
 export default function HeroSection() {
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState("ac-repair");
+
+  const heroRef = useRef<HTMLElement>(null);
+  const badgeRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const curvePathRef = useRef<SVGPathElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const highlightsRef = useRef<HTMLDivElement>(null);
+  const ctasRef = useRef<HTMLDivElement>(null);
+  const trustBarRef = useRef<HTMLDivElement>(null);
+  const ambientGlowRef = useRef<HTMLDivElement>(null);
+  const carouselWrapRef = useRef<HTMLDivElement>(null);
 
   const openBooking = (serviceId = "ac-repair") => {
     setSelectedService(serviceId);
@@ -62,22 +73,159 @@ export default function HeroSection() {
     },
   ];
 
+  // GSAP Cinematic Entrance Timeline
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+      // 1. Ambient Glow soft breathing pulsation
+      if (ambientGlowRef.current) {
+        gsap.to(ambientGlowRef.current, {
+          scale: 1.15,
+          opacity: 0.9,
+          duration: 4.5,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+      }
+
+      // 2. Badge entrance with elastic bounce
+      if (badgeRef.current) {
+        tl.fromTo(
+          badgeRef.current,
+          { opacity: 0, y: -30, scale: 0.8 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "back.out(2)" }
+        );
+      }
+
+      // 3. 3D Headline entrance with perspective
+      if (headingRef.current) {
+        tl.fromTo(
+          headingRef.current,
+          {
+            opacity: 0,
+            y: 50,
+            transformPerspective: 800,
+            rotationX: 15,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            rotationX: 0,
+            duration: 0.9,
+            ease: "power4.out",
+          },
+          "-=0.4"
+        );
+      }
+
+      // 4. SVG curved highlight underline animation
+      if (curvePathRef.current) {
+        const length = curvePathRef.current.getTotalLength() || 220;
+        gsap.set(curvePathRef.current, {
+          strokeDasharray: length,
+          strokeDashoffset: length,
+        });
+
+        tl.to(
+          curvePathRef.current,
+          {
+            strokeDashoffset: 0,
+            duration: 0.8,
+            ease: "power2.inOut",
+          },
+          "-=0.3"
+        );
+      }
+
+      // 5. Subtitle fade up
+      if (subtitleRef.current) {
+        tl.fromTo(
+          subtitleRef.current,
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.6 },
+          "-=0.4"
+        );
+      }
+
+      // 6. Feature highlight cards staggered spring pop
+      if (highlightsRef.current) {
+        const cards = highlightsRef.current.querySelectorAll(".yoga-highlight-card");
+        tl.fromTo(
+          cards,
+          { opacity: 0, y: 35, scale: 0.92 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            stagger: 0.1,
+            duration: 0.7,
+            ease: "back.out(1.5)",
+          },
+          "-=0.3"
+        );
+
+        // Add 3D tilt to each card
+        cards.forEach((card) => {
+          apply3DTilt(card as HTMLElement, 8);
+        });
+      }
+
+      // 7. CTAs pop in with magnetic hover
+      if (ctasRef.current) {
+        tl.fromTo(
+          ctasRef.current,
+          { opacity: 0, y: 25 },
+          { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
+          "-=0.3"
+        );
+
+        const primaryBtn = ctasRef.current.querySelector(".yoga-btn-primary") as HTMLElement;
+        const secondaryBtn = ctasRef.current.querySelector(".yoga-btn-secondary") as HTMLElement;
+        const waBtn = ctasRef.current.querySelector(".yoga-btn-whatsapp") as HTMLElement;
+
+        if (primaryBtn) applyMagnetic(primaryBtn, 0.28);
+        if (secondaryBtn) applyMagnetic(secondaryBtn, 0.28);
+        if (waBtn) applyMagnetic(waBtn, 0.28);
+      }
+
+      // 8. Micro Trust points pop in
+      if (trustBarRef.current) {
+        const items = trustBarRef.current.querySelectorAll(".trust-item, .trust-divider");
+        tl.fromTo(
+          items,
+          { opacity: 0, scale: 0.7 },
+          { opacity: 1, scale: 1, stagger: 0.08, duration: 0.5, ease: "back.out(2)" },
+          "-=0.2"
+        );
+      }
+
+      // 9. Hero Carousel slide in from right
+      if (carouselWrapRef.current) {
+        tl.fromTo(
+          carouselWrapRef.current,
+          { opacity: 0, x: 80, scale: 0.95 },
+          { opacity: 1, x: 0, scale: 1, duration: 1.1, ease: "power3.out" },
+          "-=0.7"
+        );
+      }
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <>
-      <section className="yoga-hero-section">
-        {/* Subtle Ambient Background Gradients */}
-        <div className="yoga-hero-ambient-glow" />
+      <section ref={heroRef} className="yoga-hero-section">
+        {/* Subtle Ambient Background Gradients with GSAP breathing */}
+        <div ref={ambientGlowRef} className="yoga-hero-ambient-glow" />
         <div className="yoga-hero-ambient-pattern" />
 
         <div className="container relative z-10">
           <div className="yoga-hero-content">
             {/* Top Offer / Trust Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="yoga-hero-badge"
-            >
+            <div ref={badgeRef} className="yoga-hero-badge">
               <span className="badge-sparkle">
                 <Sparkles size={13} />
               </span>
@@ -88,15 +236,10 @@ export default function HeroSection() {
                 <Star size={11} fill="#f59e0b" color="#f59e0b" />
                 4.9★ (5k+ Reviews)
               </span>
-            </motion.div>
+            </div>
 
             {/* Giant High-Impact Headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="yoga-hero-heading"
-            >
+            <h1 ref={headingRef} className="yoga-hero-heading">
               Fast, Reliable Doorstep <br className="hero-desktop-br" />
               <span className="heading-highlight">
                 Home Appliance Repair
@@ -106,6 +249,7 @@ export default function HeroSection() {
                   fill="none"
                 >
                   <path
+                    ref={curvePathRef}
                     d="M2.00018 7.37072C50.2989 -0.669527 122.956 -1.68412 198.057 7.37072"
                     stroke="#fbbc34"
                     strokeWidth="3.5"
@@ -114,26 +258,16 @@ export default function HeroSection() {
                 </svg>
               </span>{" "}
               in Patna
-            </motion.h1>
+            </h1>
 
             {/* Subtitle */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.25 }}
-              className="yoga-hero-subtitle"
-            >
+            <p ref={subtitleRef} className="yoga-hero-subtitle">
               Expert doorstep service for <strong>AC, Refrigerator, Washing Machine, RO & Microwave</strong>.
               Certified technicians arrive within 30 minutes with genuine spare parts, clear upfront pricing & a 90-day warranty.
-            </motion.p>
+            </p>
 
-            {/* 4 Feature Highlights Grid (Yoga Website Style) */}
-            <motion.div
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="yoga-highlights-grid"
-            >
+            {/* 4 Feature Highlights Grid with 3D Tilt */}
+            <div ref={highlightsRef} className="yoga-highlights-grid">
               {featureCards.map((card) => {
                 const Icon = card.icon;
                 return (
@@ -155,15 +289,10 @@ export default function HeroSection() {
                   </div>
                 );
               })}
-            </motion.div>
+            </div>
 
             {/* CTA Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.55 }}
-              className="yoga-hero-ctas"
-            >
+            <div ref={ctasRef} className="yoga-hero-ctas">
               <button
                 type="button"
                 onClick={() => openBooking("ac-repair")}
@@ -189,15 +318,10 @@ export default function HeroSection() {
                   <span>WhatsApp</span>
                 </a>
               </div>
-            </motion.div>
+            </div>
 
             {/* Micro Trust Points */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-              className="yoga-hero-trust-bar"
-            >
+            <div ref={trustBarRef} className="yoga-hero-trust-bar">
               <span className="trust-item">
                 <CheckCircle2 size={15} style={{ color: "#16a34a" }} />
                 Pay After Service
@@ -212,12 +336,12 @@ export default function HeroSection() {
                 <CheckCircle2 size={15} style={{ color: "#16a34a" }} />
                 All Brands Covered
               </span>
-            </motion.div>
+            </div>
           </div>
         </div>
 
-        {/* Hero Interactive Carousel Slider (with blue << >> buttons) */}
-        <div className="yoga-hero-carousel-wrapper">
+        {/* Hero Interactive Carousel Slider */}
+        <div ref={carouselWrapRef} className="yoga-hero-carousel-wrapper">
           <HeroCarousel />
         </div>
       </section>

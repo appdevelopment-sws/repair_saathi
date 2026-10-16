@@ -354,6 +354,7 @@ export default function BlogClient() {
                   type="button"
                   onClick={() => setSelectedPost(featuredPost)}
                   className="featured-read-btn"
+                  data-gsap="magnetic"
                 >
                   <span>Read Complete Guide</span>
                   <ArrowRight size={16} />
@@ -363,6 +364,7 @@ export default function BlogClient() {
                   type="button"
                   onClick={() => handleOpenBooking(featuredPost.category)}
                   className="featured-book-btn"
+                  data-gsap="magnetic"
                 >
                   ⚡ Book This Repair
                 </button>
@@ -373,7 +375,7 @@ export default function BlogClient() {
 
         {/* POSTS GRID */}
         {gridPosts.length > 0 ? (
-          <div className="blog-grid">
+          <div className="blog-grid" data-gsap="stagger-cards">
             {gridPosts.map((post, idx) => {
               const theme = getCategoryTheme(post.category);
               return (
@@ -383,6 +385,7 @@ export default function BlogClient() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: idx * 0.08 }}
                   className="blog-card"
+                  data-gsap="tilt"
                   onClick={() => setSelectedPost(post)}
                 >
                   {/* Media */}

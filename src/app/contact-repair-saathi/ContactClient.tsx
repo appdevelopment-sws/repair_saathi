@@ -84,9 +84,51 @@ export default function ContactClient() {
     },
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [inquiryId, setInquiryId] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !phone) return;
+    if (!name.trim() || !phone.trim() || isSubmitting) return;
+
+    setIsSubmitting(true);
+    const generatedId = "RS-" + Math.floor(100000 + Math.random() * 900000);
+
+    const payload = {
+      inquiryId: generatedId,
+      customerName: name.trim(),
+      phone: phone.trim(),
+      email: email.trim() || null,
+      serviceName: appliance,
+      category: appliance.split(" ")[0] || "Home Appliance",
+      city: "Patna",
+      address: locationArea.trim() || "Patna",
+      message: message.trim() || `Customer requested priority callback for ${appliance}`,
+      preferredDate: "Today",
+      preferredTime: "Within 15-30 mins (Priority Callback)",
+      source: "Website Contact Page",
+      status: "pending",
+    };
+
+    try {
+      await fetch("/api/web-requests/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } catch {
+      try {
+        await fetch("http://localhost:8008/api/web-requests", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+      } catch {}
+    } finally {
+      setIsSubmitting(false);
+    }
+
+    setInquiryId(generatedId);
     setSubmitted(true);
   };
 

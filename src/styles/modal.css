@@ -258,17 +258,32 @@
 }
 
 /* FORM GROUPS */
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 640px) {
+  .form-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 0px;
+  }
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .form-label {
   font-size: 13px;
   font-weight: 700;
   color: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .form-select-styled {

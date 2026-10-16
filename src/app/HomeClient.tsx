@@ -39,10 +39,44 @@ export default function HomeClient() {
     setIsModalOpen(true);
   };
 
-  const handleQuerySubmit = (e: React.FormEvent) => {
+  const handleQuerySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!queryName || !queryMobile) return;
     setQuerySent(true);
+
+    const generatedId = "RS-" + Math.floor(100000 + Math.random() * 900000);
+    const payload = {
+      inquiryId: generatedId,
+      customerName: queryName.trim(),
+      phone: queryMobile.trim(),
+      email: queryEmail.trim() || null,
+      serviceName: "Website Homepage Query",
+      category: "General Inquiry",
+      city: "Patna",
+      address: "Patna",
+      message: queryMessage.trim() || "Customer submitted query from homepage form.",
+      preferredDate: "Today",
+      preferredTime: "Flexible Callback",
+      source: "Website Query Form",
+      status: "pending",
+    };
+
+    try {
+      await fetch("/api/web-requests/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } catch {
+      try {
+        await fetch("http://localhost:8008/api/web-requests", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+      } catch {}
+    }
+
     setTimeout(() => {
       setQueryName("");
       setQueryEmail("");

@@ -137,12 +137,19 @@ export default function BookingModal({
   // Booking Form State
   const [needWhen, setNeedWhen] = useState("Today");
   const [customDate, setCustomDate] = useState("");
+  const [preferredTime, setPreferredTime] = useState("10:00 AM - 01:00 PM");
+  const [brand, setBrand] = useState("");
+  const [landmark, setLandmark] = useState("");
+  const [alternatePhone, setAlternatePhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [problemNotes, setProblemNotes] = useState("");
   const [selectedRequirements, setSelectedRequirements] = useState<string[]>([]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [bookingId, setBookingId] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // FAQ open/close accordion state
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
@@ -311,38 +318,129 @@ export default function BookingModal({
   };
 
   // Submit Handler
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !phone.trim() || !address.trim()) return;
+    if (!name.trim() || !phone.trim() || !address.trim() || isSubmitting) return;
 
-    const newBookingId = "RS-" + Math.floor(100000 + Math.random() * 900000);
+    setIsSubmitting(true);
+
+    const generatedId = "RS-" + Math.floor(100000 + Math.random() * 900000);
     const scheduledDate = needWhen === "Custom Date" && customDate ? customDate : needWhen;
 
-    const allAppliancesBooked = [
+    const allAppliancesBooked: Array<{ name: string; brand?: string; requirements: string[] }> = [
       {
         name: currentCategory.name,
+        brand: brand.trim() || undefined,
         requirements: selectedRequirements,
       },
       ...additionalAppliances.map((a) => ({
         name: a.category.name,
+        brand: undefined,
         requirements: a.selectedRequirements,
       })),
     ];
 
     const combinedServiceName = allAppliancesBooked
-      .map((a) => `${a.name} (${a.requirements.join(", ")})`)
+      .map((a) => `${a.name}${a.brand ? ` [${a.brand}]` : ""} (${a.requirements.join(", ")})`)
       .join(" + ");
 
+    const formattedAddress = landmark.trim()
+      ? `${address.trim()} (Landmark: ${landmark.trim()})`
+      : address.trim();
+
+    const formattedMessage = [
+      brand.trim() ? `Brand: ${brand.trim()}` : null,
+      landmark.trim() ? `Landmark: ${landmark.trim()}` : null,
+      alternatePhone.trim() ? `Alternate / WhatsApp: ${alternatePhone.trim()}` : null,
+      problemNotes.trim() ? `Issue Details: ${problemNotes.trim()}` : null,
+      allAppliancesBooked.length > 1
+        ? `Multi-Appliances (${allAppliancesBooked.length}):\n` +
+          allAppliancesBooked
+            .map((a, i) => `${i + 1}. ${a.name}${a.brand ? ` (${a.brand})` : ""}: ${a.requirements.join(", ")}`)
+            .join("\n")
+        : null,
+    ]
+      .filter(Boolean)
+      .join("\n\n");
+
+    const webRequestPayload = {
+      inquiryId: generatedId,
+      customerName: name.trim(),
+      phone: phone.trim(),
+      email: email.trim() || null,
+      address: formattedAddress,
+      city: "Patna",
+      category: currentCategory.name,
+      serviceName: combinedServiceName,
+      preferredDate: scheduledDate,
+      preferredTime: preferredTime || "10:00 AM - 01:00 PM",
+      message: formattedMessage || `Booked ${currentCategory.name} Service`,
+      appliances: allAppliancesBooked,
+      source: "Website Booking Modal",
+    };
+
+    let confirmedId = generatedId;
+
+    try {
+      // 1. Send to Next.js API /api/web-requests/ (with trailing slash!)
+      const res = await fetch("/api/web-requests/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(webRequestPayload),
+      });
+
+      if (res.ok) {
+        const json = await res.json();
+        if (json?.data?.id) {
+          confirmedId = json.data.id;
+        }
+      } else {
+        // Fallback: direct to backend if proxy fails
+        const directRes = await fetch("http://localhost:8008/api/web-requests", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(webRequestPayload),
+        });
+        if (directRes.ok) {
+          const directJson = await directRes.json();
+          if (directJson?.data?.id) {
+            confirmedId = directJson.data.id;
+          }
+        }
+      }
+    } catch (err) {
+      console.warn("Failed to send booking to /api/web-requests/, trying direct backend fallback:", err);
+      try {
+        const directRes = await fetch("http://localhost:8008/api/web-requests", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(webRequestPayload),
+        });
+        if (directRes.ok) {
+          const directJson = await directRes.json();
+          if (directJson?.data?.id) {
+            confirmedId = directJson.data.id;
+          }
+        }
+      } catch {
+        // Continue with generated ID
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+
     const bookingItem = {
-      id: newBookingId,
+      id: confirmedId,
       serviceName: combinedServiceName,
       categoryName: currentCategory.name,
+      brand: brand.trim() || undefined,
       requirements: selectedRequirements,
       appliances: allAppliancesBooked,
       customerName: name.trim(),
       phone: phone.trim(),
-      address: address.trim(),
+      address: formattedAddress,
       scheduledDate,
+      preferredTime,
       date: new Date().toISOString().split("T")[0],
       status: "Confirmed",
       bookedAt: new Date().toLocaleDateString("en-IN", {
@@ -360,7 +458,7 @@ export default function BookingModal({
       // Fallback
     }
 
-    setBookingId(newBookingId);
+    setBookingId(confirmedId);
     setSubmitted(true);
   };
 
@@ -369,6 +467,12 @@ export default function BookingModal({
     setName("");
     setPhone("");
     setAddress("");
+    setBrand("");
+    setLandmark("");
+    setAlternatePhone("");
+    setEmail("");
+    setProblemNotes("");
+    setPreferredTime("10:00 AM - 01:00 PM");
     setAdditionalAppliances([]);
     setIsAddingCategory(false);
     setSelectedCatIdToAdd("");
@@ -472,32 +576,79 @@ export default function BookingModal({
               {/* TAB 1: BOOK FREE VISIT */}
               {activeTab === "book" && (
                 <form onSubmit={handleSubmit}>
-                  {/* Field 1: When do you Need Service? (Screenshot 1) */}
-                  <div className="form-group">
-                    <label className="form-label">When do you Need Service?</label>
-                    <select
-                      className="form-select-styled"
-                      value={needWhen}
-                      onChange={(e) => setNeedWhen(e.target.value)}
-                    >
-                      <option value="Today">Today</option>
-                      <option value="Tomorrow">Tomorrow</option>
-                      <option value="Custom Date">Pick a Custom Date</option>
-                    </select>
+                  {/* Field 1: Service Date & Time Slot Grid */}
+                  <div className="form-grid-2">
+                    <div className="form-group">
+                      <label className="form-label">When do you Need Service?</label>
+                      <select
+                        className="form-select-styled"
+                        value={needWhen}
+                        onChange={(e) => setNeedWhen(e.target.value)}
+                      >
+                        <option value="Today">Today (Same Day Service)</option>
+                        <option value="Tomorrow">Tomorrow</option>
+                        <option value="Custom Date">Pick a Custom Date</option>
+                      </select>
 
-                    {needWhen === "Custom Date" && (
-                      <input
-                        type="date"
-                        className="form-input"
-                        style={{ marginTop: "8px" }}
-                        value={customDate}
-                        onChange={(e) => setCustomDate(e.target.value)}
-                        required
-                      />
-                    )}
+                      {needWhen === "Custom Date" && (
+                        <input
+                          type="date"
+                          className="form-input"
+                          style={{ marginTop: "6px" }}
+                          value={customDate}
+                          onChange={(e) => setCustomDate(e.target.value)}
+                          required
+                        />
+                      )}
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label">Preferred Time Slot</label>
+                      <select
+                        className="form-select-styled"
+                        value={preferredTime}
+                        onChange={(e) => setPreferredTime(e.target.value)}
+                      >
+                        <option value="10:00 AM - 01:00 PM">10:00 AM - 01:00 PM (Morning)</option>
+                        <option value="01:00 PM - 04:00 PM">01:00 PM - 04:00 PM (Afternoon)</option>
+                        <option value="04:00 PM - 07:00 PM">04:00 PM - 07:00 PM (Evening)</option>
+                        <option value="07:00 PM - 09:00 PM">07:00 PM - 09:00 PM (Late Slot)</option>
+                      </select>
+                    </div>
                   </div>
 
-                  {/* Field 2: Requirment(s) - DYNAMIC CHECKBOXES (Screenshot 1) */}
+                  {/* Field 2: Appliance Brand (Optional) */}
+                  <div className="form-group">
+                    <label className="form-label">
+                      <span>Appliance Brand / Make</span>
+                      <span style={{ fontSize: "11px", color: "#64748b", fontWeight: 500 }}>(Optional)</span>
+                    </label>
+                    <select
+                      className="form-select-styled"
+                      value={brand}
+                      onChange={(e) => setBrand(e.target.value)}
+                    >
+                      <option value="">-- Select Brand (e.g. Voltas, LG, Samsung) --</option>
+                      <option value="LG">LG</option>
+                      <option value="Samsung">Samsung</option>
+                      <option value="Voltas">Voltas</option>
+                      <option value="Daikin">Daikin</option>
+                      <option value="Whirlpool">Whirlpool</option>
+                      <option value="Godrej">Godrej</option>
+                      <option value="Haier">Haier</option>
+                      <option value="Blue Star">Blue Star</option>
+                      <option value="Lloyd">Lloyd</option>
+                      <option value="Carrier">Carrier</option>
+                      <option value="Panasonic">Panasonic</option>
+                      <option value="Hitachi">Hitachi</option>
+                      <option value="IFB">IFB</option>
+                      <option value="Kent">Kent</option>
+                      <option value="Aquaguard">Aquaguard</option>
+                      <option value="Other / Local">Other / Not Listed</option>
+                    </select>
+                  </div>
+
+                  {/* Field 3: Requirment(s) - DYNAMIC CHECKBOXES (Screenshot 1) */}
                   <div className="requirement-section">
                     <label className="requirement-label">Requirment(s)</label>
                     <div className="requirement-checkbox-row">
@@ -635,46 +786,92 @@ export default function BookingModal({
                   </div>
 
                   {/* Customer Information Fields */}
-                  <div className="form-group">
-                    <label className="form-label">Full Name</label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      placeholder="e.g. Rahul Sharma"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
-                    />
+                  <div className="form-grid-2">
+                    <div className="form-group">
+                      <label className="form-label">Full Name *</label>
+                      <input
+                        type="text"
+                        className="form-input"
+                        placeholder="e.g. Rahul Sharma"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label">Mobile Number *</label>
+                      <input
+                        type="tel"
+                        className="form-input"
+                        placeholder="10-digit number (e.g. 9304415657)"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        pattern="[0-9]{10}"
+                        title="Please enter a valid 10-digit mobile number"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-grid-2">
+                    <div className="form-group">
+                      <label className="form-label">
+                        <span>Area / Colony in Patna *</span>
+                      </label>
+                      <input
+                        type="text"
+                        className="form-input"
+                        placeholder="e.g. Boring Road, Saguna More, Kankarbagh"
+                        value={landmark}
+                        onChange={(e) => setLandmark(e.target.value)}
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label">
+                        <span>Alternate / WhatsApp No.</span>
+                        <span style={{ fontSize: "11px", color: "#64748b", fontWeight: 500 }}>(Optional)</span>
+                      </label>
+                      <input
+                        type="tel"
+                        className="form-input"
+                        placeholder="e.g. 9876543210"
+                        value={alternatePhone}
+                        onChange={(e) => setAlternatePhone(e.target.value)}
+                      />
+                    </div>
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Mobile Number</label>
-                    <input
-                      type="tel"
-                      className="form-input"
-                      placeholder="e.g. 9304415657"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      pattern="[0-9]{10}"
-                      title="Please enter a valid 10-digit mobile number"
-                      required
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Service Address (Patna & nearby)</label>
+                    <label className="form-label">Complete House / Flat Address *</label>
                     <textarea
                       className="form-textarea"
-                      style={{ minHeight: "72px" }}
-                      placeholder="Flat/House No, Colony, Landmark, Area in Patna"
+                      style={{ minHeight: "60px" }}
+                      placeholder="Flat/House No, Building/Apartment Name, Street, Landmark"
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
                       required
                     />
                   </div>
 
-                  <button type="submit" className="btn-book-submit">
-                    ⚡ Confirm Free Visit Booking
+                  <div className="form-group">
+                    <label className="form-label">
+                      <span>Specific Issue / Problem Note</span>
+                      <span style={{ fontSize: "11px", color: "#64748b", fontWeight: 500 }}>(Optional)</span>
+                    </label>
+                    <textarea
+                      className="form-textarea"
+                      style={{ minHeight: "52px" }}
+                      placeholder="e.g. Not cooling, making unusual buzzing noise, water dripping from indoor unit..."
+                      value={problemNotes}
+                      onChange={(e) => setProblemNotes(e.target.value)}
+                    />
+                  </div>
+
+                  <button type="submit" className="btn-book-submit" disabled={isSubmitting}>
+                    {isSubmitting ? "⏳ Processing Your Booking..." : "⚡ Confirm Free Visit Booking"}
                   </button>
 
                   <p className="booking-form-assurance">

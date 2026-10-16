@@ -1462,5 +1462,256 @@
   border-radius: 16px;
 }
 
+/* ==========================================================================
+   FLOATING 3D GLASS MICRO-BADGES (AWWWARDS / LINEAR STYLE)
+   ========================================================================== */
+.floating-hero-pill {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(251, 188, 52, 0.4);
+  box-shadow: 0 14px 34px -8px rgba(15, 23, 42, 0.12), 0 0 18px rgba(251, 188, 52, 0.16);
+  border-radius: 9999px;
+  padding: 8px 16px;
+  gap: 10px;
+  align-items: center;
+  z-index: 15;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
 
+.floating-hero-pill-1 {
+  top: 145px;
+  left: 4%;
+}
 
+.floating-hero-pill-2 {
+  top: 175px;
+  right: 4%;
+}
+
+.floating-hero-pill-3 {
+  top: 480px;
+  left: 2%;
+}
+
+.pill-icon-glow {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pill-icon-glow.emerald {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+}
+
+.pill-icon-glow.amber {
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+}
+
+.pill-icon-glow.sky {
+  background: rgba(14, 165, 233, 0.12);
+  color: #0ea5e9;
+}
+
+.pill-text-wrap {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.pill-bold {
+  font-size: 12px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.pill-dim {
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+/* ============================================================
+   APPLIANCE SVG MICRO-MECHANICS (Awwwards-tier Physics)
+   ============================================================ */
+
+/* Washing Machine Drum Spin */
+@keyframes spinDrum {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.category-item-card:hover .washing-drum-group {
+  animation: spinDrum 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* AC Air Breeze Sway & Flow */
+@keyframes breezeFlow {
+  0% {
+    stroke-dashoffset: 6;
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    transform: translateY(3px);
+    opacity: 0.9;
+  }
+}
+
+.ac-breeze-1 { animation-delay: 0s; }
+.ac-breeze-2 { animation-delay: 0.15s; }
+.ac-breeze-3 { animation-delay: 0.3s; }
+
+.category-item-card:hover .ac-breeze-line {
+  animation: breezeFlow 0.75s ease-in-out infinite alternate;
+}
+
+.category-item-card:hover .ac-status-led {
+  fill: #10b981;
+  filter: drop-shadow(0 0 3px #10b981);
+}
+
+/* Water Purifier Drop Bounce */
+@keyframes waterDropPulse {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    transform: scale(1.08, 0.94) translateY(1.5px);
+  }
+  100% {
+    transform: scale(0.96, 1.05) translateY(-2px);
+  }
+}
+
+.category-item-card:hover .water-drop-primary {
+  animation: waterDropPulse 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) infinite alternate;
+}
+
+.category-item-card:hover .water-drop-warm {
+  animation: waterDropPulse 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s infinite alternate;
+}
+
+/* Geyser Dial Needle Swing & LED */
+@keyframes needleSwing {
+  0% {
+    transform: rotate(-25deg);
+  }
+  100% {
+    transform: rotate(35deg);
+  }
+}
+
+.category-item-card:hover .geyser-gauge-needle {
+  transform-origin: 32px 27px;
+  animation: needleSwing 0.75s ease-in-out infinite alternate;
+}
+
+@keyframes ledBlink {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 4px #ef4444); }
+  50% { opacity: 0.3; filter: none; }
+}
+
+.category-item-card:hover .geyser-led-pulse {
+  animation: ledBlink 0.6s infinite ease-in-out;
+}
+
+/* Microwave Heating Glow */
+.category-item-card:hover .microwave-window-glass {
+  fill: #f59e0b;
+  opacity: 0.75;
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.6));
+  transition: all 0.3s ease;
+}
+
+/* Laptop ECG / Repair Wave */
+@keyframes ecgPulse {
+  0% {
+    stroke-dasharray: 2 15;
+    stroke-dashoffset: 15;
+  }
+  100% {
+    stroke-dasharray: 15 2;
+    stroke-dashoffset: 0;
+  }
+}
+
+.category-item-card:hover .laptop-ecg-pulse {
+  stroke: #10b981;
+  stroke-width: 2.2;
+  filter: drop-shadow(0 0 4px #10b981);
+}
+
+/* Wrench Tool Dynamic Tilt */
+@keyframes wrenchWiggle {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-8deg);
+  }
+  75% {
+    transform: rotate(8deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.category-item-card:hover .wrench-tool-group {
+  animation: wrenchWiggle 0.6s ease-in-out infinite;
+}
+
+/* Sparkles Twinkle */
+@keyframes starTwinkle {
+  0%, 100% {
+    transform: scale(0.85);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+    filter: drop-shadow(0 0 4px #34d399);
+  }
+}
+
+.category-item-card:hover .star-sparkle-main {
+  transform-origin: 32px 28px;
+  animation: starTwinkle 0.8s ease-in-out infinite;
+}
+
+/* All Services Circular Orbit Rotation */
+@keyframes spinOrbit {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.category-item-card:hover .all-services-orbit {
+  animation: spinOrbit 6s linear infinite;
+}
+
+.category-item-card:hover .all-services-plus {
+  transform: scale(1.18);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}

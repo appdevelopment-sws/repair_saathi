@@ -12,6 +12,7 @@ import {
   ArrowRight,
   CheckCircle2,
   Star,
+  Check,
 } from "lucide-react";
 import HeroCarousel from "./HeroCarousel";
 import BookingModal from "./BookingModal";
@@ -33,6 +34,14 @@ export default function HeroSection() {
   const ambientGlowRef = useRef<HTMLDivElement>(null);
   const carouselWrapRef = useRef<HTMLDivElement>(null);
 
+  // Counter values state for animated counting
+  const [counts, setCounts] = useState({
+    time: 0,
+    warranty: 0,
+    reviews: 0,
+    price: 0,
+  });
+
   const openBooking = (serviceId = "ac-repair") => {
     setSelectedService(serviceId);
     setBookingModalOpen(true);
@@ -42,7 +51,7 @@ export default function HeroSection() {
     {
       icon: Clock,
       label: "Fast Response",
-      title: "30-Min Arrival",
+      title: `${counts.time}-Min Arrival`,
       desc: "Doorstep technician in Patna",
       color: "#f59e0b",
       bgColor: "rgba(245, 158, 11, 0.1)",
@@ -50,7 +59,7 @@ export default function HeroSection() {
     {
       icon: ShieldCheck,
       label: "Guaranteed",
-      title: "90-Day Warranty",
+      title: `${counts.warranty}-Day Warranty`,
       desc: "100% genuine spare parts",
       color: "#10b981",
       bgColor: "rgba(16, 185, 129, 0.1)",
@@ -58,7 +67,7 @@ export default function HeroSection() {
     {
       icon: Wrench,
       label: "Certified",
-      title: "Expert Pros",
+      title: `${counts.reviews.toLocaleString()}+ Expert Pros`,
       desc: "5,000+ satisfied families",
       color: "#0284c7",
       bgColor: "rgba(2, 132, 199, 0.1)",
@@ -66,14 +75,14 @@ export default function HeroSection() {
     {
       icon: Zap,
       label: "Upfront",
-      title: "Starts @ ₹199",
+      title: `Starts @ ₹${counts.price}`,
       desc: "Fixed upfront pricing",
       color: "#8b5cf6",
       bgColor: "rgba(139, 92, 246, 0.1)",
     },
   ];
 
-  // GSAP Cinematic Entrance Timeline
+  // GSAP Cinematic Entrance Timeline & Mouse Parallax
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -81,8 +90,8 @@ export default function HeroSection() {
       // 1. Ambient Glow soft breathing pulsation
       if (ambientGlowRef.current) {
         gsap.to(ambientGlowRef.current, {
-          scale: 1.15,
-          opacity: 0.9,
+          scale: 1.18,
+          opacity: 0.95,
           duration: 4.5,
           repeat: -1,
           yoyo: true,
@@ -90,16 +99,37 @@ export default function HeroSection() {
         });
       }
 
-      // 2. Badge entrance with elastic bounce
+      // 2. Numeric Counter Counting Up
+      const counterObj = { time: 0, warranty: 0, reviews: 0, price: 0 };
+      gsap.to(counterObj, {
+        time: 30,
+        warranty: 90,
+        reviews: 5000,
+        price: 199,
+        duration: 1.6,
+        delay: 0.5,
+        ease: "power2.out",
+        onUpdate: () => {
+          setCounts({
+            time: Math.round(counterObj.time),
+            warranty: Math.round(counterObj.warranty),
+            reviews: Math.round(counterObj.reviews),
+            price: Math.round(counterObj.price),
+          });
+        },
+      });
+
+
+      // 4. Badge entrance with elastic bounce
       if (badgeRef.current) {
         tl.fromTo(
           badgeRef.current,
-          { opacity: 0, y: -30, scale: 0.8 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "back.out(2)" }
+          { opacity: 0, y: -35, scale: 0.8 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.75, ease: "back.out(2)" }
         );
       }
 
-      // 3. 3D Headline entrance with perspective
+      // 5. 3D Headline entrance with perspective
       if (headingRef.current) {
         tl.fromTo(
           headingRef.current,
@@ -107,7 +137,7 @@ export default function HeroSection() {
             opacity: 0,
             y: 50,
             transformPerspective: 800,
-            rotationX: 15,
+            rotationX: 18,
           },
           {
             opacity: 1,
@@ -120,7 +150,7 @@ export default function HeroSection() {
         );
       }
 
-      // 4. SVG curved highlight underline animation
+      // 6. SVG curved highlight underline animation
       if (curvePathRef.current) {
         const length = curvePathRef.current.getTotalLength() || 220;
         gsap.set(curvePathRef.current, {
@@ -132,14 +162,14 @@ export default function HeroSection() {
           curvePathRef.current,
           {
             strokeDashoffset: 0,
-            duration: 0.8,
+            duration: 0.85,
             ease: "power2.inOut",
           },
           "-=0.3"
         );
       }
 
-      // 5. Subtitle fade up
+      // 7. Subtitle fade up
       if (subtitleRef.current) {
         tl.fromTo(
           subtitleRef.current,
@@ -149,7 +179,7 @@ export default function HeroSection() {
         );
       }
 
-      // 6. Feature highlight cards staggered spring pop
+      // 8. Feature highlight cards staggered spring pop
       if (highlightsRef.current) {
         const cards = highlightsRef.current.querySelectorAll(".yoga-highlight-card");
         tl.fromTo(
@@ -172,7 +202,7 @@ export default function HeroSection() {
         });
       }
 
-      // 7. CTAs pop in with magnetic hover
+      // 9. CTAs pop in with magnetic hover
       if (ctasRef.current) {
         tl.fromTo(
           ctasRef.current,
@@ -190,7 +220,7 @@ export default function HeroSection() {
         if (waBtn) applyMagnetic(waBtn, 0.28);
       }
 
-      // 8. Micro Trust points pop in
+      // 10. Micro Trust points pop in
       if (trustBarRef.current) {
         const items = trustBarRef.current.querySelectorAll(".trust-item, .trust-divider");
         tl.fromTo(
@@ -201,7 +231,7 @@ export default function HeroSection() {
         );
       }
 
-      // 9. Hero Carousel slide in from right
+      // 11. Hero Carousel slide in from right
       if (carouselWrapRef.current) {
         tl.fromTo(
           carouselWrapRef.current,
@@ -215,12 +245,34 @@ export default function HeroSection() {
     return () => ctx.revert();
   }, []);
 
+  // Mousemove dynamic depth parallax for floating badges
+  const handleHeroMouseMove = (e: React.MouseEvent) => {
+    if (!heroRef.current) return;
+    const rect = heroRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+
+    if (ambientGlowRef.current) {
+      gsap.to(ambientGlowRef.current, {
+        x: x * 0.06,
+        y: y * 0.06,
+        duration: 1.2,
+        ease: "power2.out",
+      });
+    }
+  };
+
   return (
     <>
-      <section ref={heroRef} className="yoga-hero-section">
+      <section
+        ref={heroRef}
+        className="yoga-hero-section"
+        onMouseMove={handleHeroMouseMove}
+      >
         {/* Subtle Ambient Background Gradients with GSAP breathing */}
         <div ref={ambientGlowRef} className="yoga-hero-ambient-glow" />
         <div className="yoga-hero-ambient-pattern" />
+
 
         <div className="container relative z-10">
           <div className="yoga-hero-content">
@@ -266,12 +318,12 @@ export default function HeroSection() {
               Certified technicians arrive within 30 minutes with genuine spare parts, clear upfront pricing & a 90-day warranty.
             </p>
 
-            {/* 4 Feature Highlights Grid with 3D Tilt */}
+            {/* 4 Feature Highlights Grid with 3D Tilt & Animated Counters */}
             <div ref={highlightsRef} className="yoga-highlights-grid">
               {featureCards.map((card) => {
                 const Icon = card.icon;
                 return (
-                  <div key={card.title} className="yoga-highlight-card">
+                  <div key={card.label} className="yoga-highlight-card">
                     <div
                       className="highlight-icon-wrap"
                       style={{

@@ -15,7 +15,10 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
     ],
-    sitemap: "https://repairsaathi.in/sitemap.xml",
+    sitemap: [
+      "https://repairsaathi.in/sitemap.xml",
+      "https://repairsaathi.in/post-sitemap.xml",
+    ],
     host: "https://repairsaathi.in",
   };
 }

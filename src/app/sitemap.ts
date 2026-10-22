@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { servicesData } from "@/data/servicesData";
+import { blogsData } from "@/data/blogsData";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://repairsaathi.in";
@@ -63,5 +64,58 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.85,
   }));
 
-  return [...staticPages, ...servicePages];
+  const blogPages: MetadataRoute.Sitemap = blogsData.map((blog) => ({
+    url: `${baseUrl}/home-appliance-repair-blog/?slug=${blog.slug}`,
+    lastModified: currentDate,
+    changeFrequency: "weekly",
+    priority: 0.75,
+  }));
+
+  // Legacy WordPress blog URLs from live post-sitemap.xml
+  const legacyLivePostPages: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}/ac-service-in-saguna-more/`,
+      lastModified: currentDate,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/home-appliance-repair-in-patna/`,
+      lastModified: currentDate,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/my-refrigerator-not-cooling/`,
+      lastModified: currentDate,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/geyser-repair-phulwari-sharif-common-problems-solutions/`,
+      lastModified: currentDate,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/ac-repair-danapur-saguna-khagaul/`,
+      lastModified: currentDate,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/washing-machine-repair-danapur/`,
+      lastModified: currentDate,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/kitchen-chimney-repair-bailey-road/`,
+      lastModified: currentDate,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+  ];
+
+  return [...staticPages, ...servicePages, ...blogPages, ...legacyLivePostPages];
 }

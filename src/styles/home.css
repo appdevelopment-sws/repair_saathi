@@ -1895,6 +1895,78 @@
   line-height: 1.45;
 }
 
+/* 4-Step Process Cards (01 Book, 02 Assign, 03 Repair, 04 Test) */
+.process-four-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+@media (max-width: 1024px) {
+  .process-four-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .process-four-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.process-step-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 28px 24px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.process-step-card:hover {
+  transform: translateY(-4px);
+  border-color: #fbbc34;
+  box-shadow: 0 10px 24px rgba(251, 188, 52, 0.12);
+}
+
+.process-step-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #f59e0b;
+  color: #0f172a;
+  font-weight: 900;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.process-step-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 12px;
+  line-height: 1.35;
+}
+
+.process-step-desc {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.process-step-desc strong {
+  color: #334155;
+  font-weight: 700;
+}
+
 /* Bottom CTA Banner */
 .seo-bottom-cta-banner {
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);

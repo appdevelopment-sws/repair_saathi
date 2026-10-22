@@ -398,6 +398,49 @@ export default function GeyserRepairSeoContent() {
           </div>
         </section>
 
+        {/* Section: Our Work process (4-step process cards) */}
+        <section className="seo-content-block" style={{ marginTop: "32px" }}>
+          <h2
+            className="seo-section-heading"
+            style={{ textAlign: "center", marginBottom: "28px" }}
+          >
+            Our Work process
+          </h2>
+          <div className="process-four-cards-grid">
+            <div className="process-step-card">
+              <div className="process-step-circle">01</div>
+              <h3 className="process-step-title">Book Your Service</h3>
+              <p className="process-step-desc">
+                Submit a service request through our website, call us, or contact us on WhatsApp. Share your appliance issue and preferred time.
+              </p>
+            </div>
+
+            <div className="process-step-card">
+              <div className="process-step-circle">02</div>
+              <h3 className="process-step-title">Technician Assignment</h3>
+              <p className="process-step-desc">
+                We assign a <strong>trained and verified technician</strong> who contacts you and visits your location as per the scheduled time.
+              </p>
+            </div>
+
+            <div className="process-step-card">
+              <div className="process-step-circle">03</div>
+              <h3 className="process-step-title">Inspection &amp; Repair</h3>
+              <p className="process-step-desc">
+                The technician inspects the appliance, explains the problem, and performs the repair using <strong>genuine spare parts</strong> after your approval.
+              </p>
+            </div>
+
+            <div className="process-step-card">
+              <div className="process-step-circle">04</div>
+              <h3 className="process-step-title">Testing &amp; Support</h3>
+              <p className="process-step-desc">
+                After repair, the appliance is tested thoroughly. We provide <strong>service warranty and post-service support</strong> for complete peace of mind.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* Section: Book Geyser Service and Repair in Patna Today */}
         <div className="seo-bottom-cta-banner">
           <div className="seo-bottom-cta-badge">

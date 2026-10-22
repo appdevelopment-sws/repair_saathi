@@ -4,6 +4,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { servicesData, ServiceItem } from "@/data/servicesData";
 import ProductBookingClient from "./ProductBookingClient";
+import RefrigeratorSeoContent from "@/components/RefrigeratorSeoContent";
+import WashingMachineSeoContent from "@/components/WashingMachineSeoContent";
+import AcRepairSeoContent from "@/components/AcRepairSeoContent";
+import WindowAcSeoContent from "@/components/WindowAcSeoContent";
+import ChimneyRepairSeoContent from "@/components/ChimneyRepairSeoContent";
+import MicrowaveRepairSeoContent from "@/components/MicrowaveRepairSeoContent";
+import WaterCoolerSeoContent from "@/components/WaterCoolerSeoContent";
+import GeyserRepairSeoContent from "@/components/GeyserRepairSeoContent";
 
 export async function generateStaticParams() {
   return servicesData.map((service) => ({
@@ -20,28 +28,73 @@ export async function generateMetadata({
   const service = servicesData.find((s) => s.slug === slug);
   if (!service) return { title: "Service Not Found | Repair Saathi" };
 
+  const isFridge = slug === "refrigerator-service-in-patna";
+  const isWashingMachine = slug === "washing-machine-repair-service-in-patna";
+  const isAc = slug === "ac-repair-in-patna";
+  const isWindowAc = slug === "window-ac-service-in-patna";
+  const isChimney = slug === "kitchen-chimney-repair-in-patna";
+  const isMicrowave = slug === "microwave-repair-in-patna";
+  const isWaterCooler = slug === "water-cooler-services";
+  const isGeyser = slug === "geyser-repair-in-patna";
+
+  const title = isFridge
+    ? "Fridge Repair in Patna | Fridge Technician Near Me | Repair Saathi"
+    : isWashingMachine
+    ? "Washing Machine Repair Patna | Washing Machine Repair Near Me | Repair Saathi"
+    : isAc
+    ? "Trusted AC Service in Patna | AC Servicing Near Me | Split & Window AC Repair"
+    : isWindowAc
+    ? "Fast & Reliable Window AC Repair Services in Patna | Repair Saathi"
+    : isChimney
+    ? "Kitchen Chimney Repair in Patna | Fast Service at Home | RepairSaathi"
+    : isMicrowave
+    ? "Microwave Repair in Patna | Fast & Affordable Doorstep Service | RepairSaathi"
+    : isWaterCooler
+    ? "Water Cooler Repair & Service in Patna | Repair Saathi"
+    : isGeyser
+    ? "Geyser Service and Repair in Patna | Doorstep Water Heater Repair | Repair Saathi"
+    : `${service.title} | Doorstep Service | Repair Saathi`;
+
+  const description = isFridge
+    ? "Top-rated fridge repair in Patna by skilled fridge technicians. Same-day doorstep refrigerator repair near me for LG, Samsung, Whirlpool with transparent pricing."
+    : isWashingMachine
+    ? "Expert doorstep washing machine repair in Patna for front-load, top-load & semi-automatic models. Fast same-day service by verified technicians across Patna."
+    : isAc
+    ? "Trusted AC service in Patna. Expert Split and Window AC repair, gas refilling, jet cleaning & installation near you. Same-day doorstep support across Patna."
+    : isWindowAc
+    ? "Professional window AC repair and service across Patna with trained technicians, transparent pricing, and fast doorstep support. Book same-day service."
+    : isChimney
+    ? "Kitchen Chimney Repair in Patna by expert technicians. Same day doorstep electric chimney repair, motor repair, PCB fix, filter cleaning across Patna. Call now!"
+    : isMicrowave
+    ? "Microwave Repair in Patna by expert technicians. Fast and affordable doorstep microwave oven repair for solo, grill, convection models from all brands."
+    : isWaterCooler
+    ? "Expert Water Cooler Repair & Service in Patna for homes, offices, schools, and hospitals. Fast, reliable, and affordable doorstep service by Repair Saathi."
+    : isGeyser
+    ? "Fast and reliable geyser service and repair in Patna directly at your doorstep. Same-day repair for electric and instant water heaters from all top brands."
+    : service.description;
+
   return {
-    title: `${service.title} | Doorstep Service | Repair Saathi`,
-    description: service.description,
+    title,
+    description,
     alternates: {
       canonical: `https://repairsaathi.in/product/${service.slug}/`,
     },
     openGraph: {
-      title: `${service.title} | Doorstep Service | Repair Saathi`,
-      description: service.description,
+      title,
+      description,
       url: `https://repairsaathi.in/product/${service.slug}/`,
       type: "website",
       images: [
         {
           url: service.image,
-          alt: service.title,
+          alt: title,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${service.title} | Repair Saathi`,
-      description: service.description,
+      title,
+      description,
       images: [service.image],
     },
   };
@@ -221,6 +274,30 @@ export default async function ProductDetailPage({
             </ul>
           </div>
         </div>
+
+        {/* Detailed SEO Content Section for Refrigerator Repair in Patna */}
+        {slug === "refrigerator-service-in-patna" && <RefrigeratorSeoContent />}
+
+        {/* Detailed SEO Content Section for Washing Machine Repair in Patna */}
+        {slug === "washing-machine-repair-service-in-patna" && <WashingMachineSeoContent />}
+
+        {/* Detailed SEO Content Section for AC Repair & Service in Patna */}
+        {slug === "ac-repair-in-patna" && <AcRepairSeoContent />}
+
+        {/* Detailed SEO Content Section for Window AC Services in Patna */}
+        {slug === "window-ac-service-in-patna" && <WindowAcSeoContent />}
+
+        {/* Detailed SEO Content Section for Kitchen Chimney Repair in Patna */}
+        {slug === "kitchen-chimney-repair-in-patna" && <ChimneyRepairSeoContent />}
+
+        {/* Detailed SEO Content Section for Microwave Repair in Patna */}
+        {slug === "microwave-repair-in-patna" && <MicrowaveRepairSeoContent />}
+
+        {/* Detailed SEO Content Section for Water Cooler & RO Services in Patna */}
+        {slug === "water-cooler-services" && <WaterCoolerSeoContent />}
+
+        {/* Detailed SEO Content Section for Geyser Service and Repair in Patna */}
+        {slug === "geyser-repair-in-patna" && <GeyserRepairSeoContent />}
       </div>
     </div>
   );

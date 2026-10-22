@@ -3,9 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { initGlobalScrollTriggers, ScrollTrigger } from "@/lib/gsap";
-import GsapCursor from "./GsapCursor";
 import GsapProgressBar from "./GsapProgressBar";
-
 export default function GsapProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -26,7 +24,6 @@ export default function GsapProvider({ children }: { children: React.ReactNode }
   return (
     <div ref={containerRef} className="gsap-page-root">
       <GsapProgressBar />
-      <GsapCursor />
       {children}
     </div>
   );

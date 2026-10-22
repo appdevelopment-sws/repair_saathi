@@ -46,7 +46,7 @@ export async function generateMetadata({
     : isWindowAc
     ? "Fast & Reliable Window AC Repair Services in Patna | Repair Saathi"
     : isChimney
-    ? "Kitchen Chimney Repair in Patna | Fast Service at Home | RepairSaathi"
+    ? "Kitchen Chimney Repair in Patna | Fast Service at Home"
     : isMicrowave
     ? "Microwave Repair in Patna | Fast & Affordable Doorstep Service | RepairSaathi"
     : isWaterCooler
@@ -64,7 +64,7 @@ export async function generateMetadata({
     : isWindowAc
     ? "Professional window AC repair and service across Patna with trained technicians, transparent pricing, and fast doorstep support. Book same-day service."
     : isChimney
-    ? "Kitchen Chimney Repair in Patna by expert technicians. Same day doorstep electric chimney repair, motor repair, PCB fix, filter cleaning across Patna. Call now!"
+    ? "Looking for Kitchen Chimney Repair in Patna? Fast, reliable chimney repair, cleaning & service at your doorstep with expert technicians. Book today!"
     : isMicrowave
     ? "Microwave Repair in Patna by expert technicians. Fast and affordable doorstep microwave oven repair for solo, grill, convection models from all brands."
     : isWaterCooler

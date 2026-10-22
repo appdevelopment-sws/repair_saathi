@@ -4,6 +4,8 @@ import React, { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { initGlobalScrollTriggers, ScrollTrigger } from "@/lib/gsap";
 import GsapProgressBar from "./GsapProgressBar";
+import MagicButtonEnhancer from "./MagicButtonEnhancer";
+
 export default function GsapProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -24,6 +26,7 @@ export default function GsapProvider({ children }: { children: React.ReactNode }
   return (
     <div ref={containerRef} className="gsap-page-root">
       <GsapProgressBar />
+      <MagicButtonEnhancer />
       {children}
     </div>
   );

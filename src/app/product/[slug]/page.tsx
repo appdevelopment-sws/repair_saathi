@@ -52,7 +52,7 @@ export async function generateMetadata({
     : isWaterCooler
     ? "Water Cooler Repair & Service in Patna | Repair Saathi"
     : isGeyser
-    ? "Geyser Service and Repair in Patna | Doorstep Water Heater Repair | Repair Saathi"
+    ? "Geyser Service and Repair in Patna | Doorstep Water Heater Repair Near You"
     : `${service.title} | Doorstep Service | Repair Saathi`;
 
   const description = isFridge
@@ -70,11 +70,13 @@ export async function generateMetadata({
     : isWaterCooler
     ? "Expert Water Cooler Repair & Service in Patna for homes, offices, schools, and hospitals. Fast, reliable, and affordable doorstep service by Repair Saathi."
     : isGeyser
-    ? "Fast and reliable geyser service and repair in Patna directly at your doorstep. Same-day repair for electric and instant water heaters from all top brands."
+    ? "Looking for reliable geyser service and repair in Patna? We provide doorstep water heater repair, installation, and maintenance by expert technicians."
     : service.description;
 
   return {
-    title,
+    title: {
+      absolute: title,
+    },
     description,
     alternates: {
       canonical: `https://repairsaathi.in/product/${service.slug}/`,

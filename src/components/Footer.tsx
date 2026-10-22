@@ -25,7 +25,7 @@ export default function Footer() {
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
               <Image
                 src="/images/logo.webp"
-                alt="Repair Saathi"
+                alt="Repair Saathi - Home Appliance Repair Service in Patna"
                 width={40}
                 height={40}
                 style={{ borderRadius: "6px" }}

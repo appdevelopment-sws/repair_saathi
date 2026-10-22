@@ -111,7 +111,7 @@ export default function Navbar() {
             <div className="floating-logo-wrap">
               <Image
                 src="/images/logo.webp"
-                alt="Repair Saathi"
+                alt="Repair Saathi - Home Appliance Repair Service in Patna"
                 width={42}
                 height={42}
                 className="floating-logo-img"
@@ -303,7 +303,7 @@ export default function Navbar() {
                 <div className="drawer-brand">
                   <Image
                     src="/images/logo.webp"
-                    alt="Logo"
+                    alt="Repair Saathi - Home Appliance Repair Service in Patna"
                     width={38}
                     height={38}
                     className="drawer-logo"

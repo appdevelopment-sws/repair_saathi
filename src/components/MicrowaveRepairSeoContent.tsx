@@ -465,6 +465,106 @@ export default function MicrowaveRepairSeoContent() {
           </div>
         </section>
 
+        {/* Section: Frequently Asked Questions */}
+        <section className="seo-content-block">
+          <h2 className="seo-section-heading">Frequently Asked Questions</h2>
+          <div className="seo-block-body">
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">What is the cost of microwave repair in Patna?</h3>
+                <p>
+                  Our visiting and inspection charge starts at just <strong>₹199</strong>. The total cost depends on the problem and parts required (such as magnetron, high-voltage diode, capacitor, fuse, or touch keypad). The technician provides a clear, transparent quote before starting any repair.
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">Why is my microwave running but not heating food?</h3>
+                <p>
+                  When a microwave turns on and spins but fails to heat, the most common issue is a faulty <strong>magnetron</strong>, a blown high-voltage diode, or a capacitor failure. Our Patna technicians carry compatible testing instruments and replacement parts to fix heating issues on the spot.
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">Do you repair all types and brands of microwaves?</h3>
+                <p>
+                  Yes, we repair <strong>Solo, Grill, and Convection</strong> microwave ovens from all leading brands including LG, Samsung, IFB, Whirlpool, Godrej, Panasonic, Bajaj, Morphy Richards, and Haier.
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">Do you offer same-day doorstep service across Patna?</h3>
+                <p>
+                  Yes! We provide same-day doorstep microwave repair within 60 to 90 minutes across Kankarbagh, Boring Road, Bailey Road, Danapur, Patliputra Colony, Ashiana Nagar, Rajendra Nagar, and surrounding localities.
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">Do you provide a warranty on replaced microwave spare parts?</h3>
+                <p>
+                  Yes. All compatible spare parts and major repair services come with an assured warranty of up to <strong>90 days</strong>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section: Reviews */}
+        <section className="seo-content-block" style={{ marginTop: "32px" }}>
+          <h2 className="seo-section-heading">Reviews</h2>
+          <p style={{ color: "#64748b", fontSize: "15px", marginTop: "4px" }}>
+            What our verified customers in Patna say about our microwave repair services.
+          </p>
+          <div className="reviews-three-cards-grid">
+            <div className="customer-review-card">
+              <div>
+                <div className="review-stars">★★★★★</div>
+                <p className="review-quote">
+                  &ldquo;My IFB convection microwave was not heating food at all. RepairSaathi’s technician arrived at my home in Danapur within 90 minutes. He tested the magnetron and replaced the diode. Works like new now!&rdquo;
+                </p>
+              </div>
+              <div className="review-author-wrap">
+                <div className="review-avatar">V</div>
+                <div>
+                  <div className="review-author-name">Vikas Singh</div>
+                  <div className="review-author-loc">Danapur Cantt, Patna</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="customer-review-card">
+              <div>
+                <div className="review-stars">★★★★★</div>
+                <p className="review-quote">
+                  &ldquo;The touch panel on our LG microwave stopped responding completely. Called RepairSaathi and they repaired the membrane keypad the very same day in Boring Road. Very reasonable price compared to the official service center.&rdquo;
+                </p>
+              </div>
+              <div className="review-author-wrap">
+                <div className="review-avatar">S</div>
+                <div>
+                  <div className="review-author-name">Sunita Sinha</div>
+                  <div className="review-author-loc">Boring Road, Patna</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="customer-review-card">
+              <div>
+                <div className="review-stars">★★★★★</div>
+                <p className="review-quote">
+                  &ldquo;Fast, polite, and completely transparent service in Kankarbagh. They diagnosed a shorted fuse and door microswitch and fixed it in 45 minutes with a 90-day warranty. Highly recommended!&rdquo;
+                </p>
+              </div>
+              <div className="review-author-wrap">
+                <div className="review-avatar">M</div>
+                <div>
+                  <div className="review-author-name">Manish Verma</div>
+                  <div className="review-author-loc">Kankarbagh, Patna</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Bottom Conversion Banner with Magic Buttons */}
         <div className="seo-bottom-cta-banner">
           <div className="seo-bottom-cta-badge">

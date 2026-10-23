@@ -374,6 +374,149 @@ export default function WashingMachineSeoContent() {
           </div>
         </section>
 
+        {/* Section: Frequently Asked Questions */}
+        <section className="seo-content-block">
+          <h2 className="seo-section-heading">Frequently Asked Questions</h2>
+          <div className="seo-block-body">
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">What is the cost of washing machine repair in Patna?</h3>
+                <p>
+                  Our visiting and diagnosis charge starts at just <strong>₹199</strong>. The total repair cost depends on the exact issue and whether any spare parts (such as drain pump, motor capacitor, drive belt, or PCB) need replacement. Our technician always quotes the transparent estimate before starting any repair work.
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">Do you provide doorstep service for washing machines?</h3>
+                <p>
+                  Yes! We provide 100% doorstep washing machine service across Patna. You do not need to transport your heavy washing machine anywhere. Our verified technician visits your home with the required tools and parts.
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">Which washing machine types and brands do you repair?</h3>
+                <p>
+                  We service all models: <strong>Front Load, Top Load, Semi-Automatic, and Fully Automatic</strong> machines. Supported brands include LG, Samsung, Whirlpool, IFB, Bosch, Haier, Godrej, Panasonic, and Voltas Beko.
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">How soon can a technician visit my location in Patna?</h3>
+                <p>
+                  We offer same-day service across Patna within 60 to 90 minutes of booking in areas like Kankarbagh, Boring Road, Bailey Road, Danapur, Saguna More, Rajendra Nagar, and Patliputra Colony.
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">Do you provide a warranty on repairs?</h3>
+                <p>
+                  Yes, we provide up to <strong>90 days service warranty</strong> on replaced spare parts and professional workmanship for complete peace of mind.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section: Our Work Process (01, 02, 03, 04) */}
+        <section className="seo-content-block" style={{ marginTop: "32px" }}>
+          <h2
+            className="seo-section-heading"
+            style={{ textAlign: "center", marginBottom: "28px" }}
+          >
+            Our Work Process
+          </h2>
+          <div className="process-four-cards-grid">
+            <div className="process-step-card">
+              <div className="process-step-circle">01</div>
+              <h3 className="process-step-title">Book Service</h3>
+              <p className="process-step-desc">
+                Submit a service request online, call <strong>+91-9304415657</strong>, or message us on WhatsApp with your machine brand and problem.
+              </p>
+            </div>
+
+            <div className="process-step-card">
+              <div className="process-step-circle">02</div>
+              <h3 className="process-step-title">Technician Visit</h3>
+              <p className="process-step-desc">
+                A certified <strong>washing machine technician</strong> visits your doorstep at your preferred time slot with diagnostic equipment.
+              </p>
+            </div>
+
+            <div className="process-step-card">
+              <div className="process-step-circle">03</div>
+              <h3 className="process-step-title">Accurate Repair</h3>
+              <p className="process-step-desc">
+                The technician inspects the appliance, provides a clear upfront quote, and fixes the issue using <strong>genuine compatible spare parts</strong>.
+              </p>
+            </div>
+
+            <div className="process-step-card">
+              <div className="process-step-circle">04</div>
+              <h3 className="process-step-title">Testing &amp; Warranty</h3>
+              <p className="process-step-desc">
+                We perform spin, drain, and wash cycle tests before completion and provide an official <strong>service warranty</strong>.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Section: Reviews */}
+        <section className="seo-content-block" style={{ marginTop: "32px" }}>
+          <h2 className="seo-section-heading">Reviews</h2>
+          <p style={{ color: "#64748b", fontSize: "15px", marginTop: "4px" }}>
+            Real feedback from verified homeowners and families across Patna.
+          </p>
+          <div className="reviews-three-cards-grid">
+            <div className="customer-review-card">
+              <div>
+                <div className="review-stars">★★★★★</div>
+                <p className="review-quote">
+                  &ldquo;My LG front load washing machine stopped spinning and was making a loud noise. RepairSaathi sent a technician within 2 hours in Kankarbagh. He replaced the drum bearing on the spot at a very reasonable price. Highly recommended!&rdquo;
+                </p>
+              </div>
+              <div className="review-author-wrap">
+                <div className="review-avatar">R</div>
+                <div>
+                  <div className="review-author-name">Ramesh Kumar</div>
+                  <div className="review-author-loc">Kankarbagh, Patna</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="customer-review-card">
+              <div>
+                <div className="review-stars">★★★★★</div>
+                <p className="review-quote">
+                  &ldquo;Best washing machine service in Patna! Our Samsung top-load machine had a water drainage error (5E). The technician cleaned the drain filter and fixed the pressure sensor in 30 minutes. Very polite and professional.&rdquo;
+                </p>
+              </div>
+              <div className="review-author-wrap">
+                <div className="review-avatar">P</div>
+                <div>
+                  <div className="review-author-name">Pooja Sharma</div>
+                  <div className="review-author-loc">Boring Road, Patna</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="customer-review-card">
+              <div>
+                <div className="review-stars">★★★★★</div>
+                <p className="review-quote">
+                  &ldquo;Honest pricing and genuine parts. Other mechanics were asking ₹2500 just to check the motor, but RepairSaathi fixed the wiring issue in ₹499. Very satisfied with their doorstep service in Bailey Road.&rdquo;
+                </p>
+              </div>
+              <div className="review-author-wrap">
+                <div className="review-avatar">A</div>
+                <div>
+                  <div className="review-author-name">Anand Prakash</div>
+                  <div className="review-author-loc">Bailey Road, Patna</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Bottom Conversion Banner with Magic Buttons */}
         <div className="seo-bottom-cta-banner">
           <div className="seo-bottom-cta-badge">

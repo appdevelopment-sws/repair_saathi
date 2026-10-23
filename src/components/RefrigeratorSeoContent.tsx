@@ -328,6 +328,149 @@ export default function RefrigeratorSeoContent() {
           </div>
         </section>
 
+        {/* Section: Frequently Asked Questions */}
+        <section className="seo-content-block">
+          <h2 className="seo-section-heading">Frequently Asked Questions</h2>
+          <div className="seo-block-body">
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">What is the refrigerator repair charge in Patna?</h3>
+                <p>
+                  Our doorstep inspection and diagnosis fee starts at only <strong>₹199</strong>. The exact repair cost depends on the problem (e.g. gas refilling, thermostat repair, relay replacement, or fan motor). Our technician always gives you a clear quote before starting any work.
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">Why is my refrigerator not cooling but the light is on?</h3>
+                <p>
+                  If the fridge light is on but it is not cooling, the problem is usually caused by a faulty starter relay, a failing compressor, low refrigerant gas, or a blocked condenser coil. Our Patna fridge technicians carry testing meters to pinpoint and fix the exact issue on the first visit.
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">Which refrigerator brands do you service in Patna?</h3>
+                <p>
+                  We provide expert doorstep service for all top brands including <strong>LG, Samsung, Whirlpool, Godrej, Haier, Bosch, Panasonic, and Kelvinator</strong> for single-door, double-door, and side-by-side inverter models.
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">How quickly can a fridge mechanic visit my home?</h3>
+                <p>
+                  We offer same-day emergency fridge service within 60 to 90 minutes across Kankarbagh, Boring Road, Bailey Road, Danapur, Saguna More, Rajendra Nagar, and surrounding Patna areas.
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">Do you offer a warranty on fridge repair and gas charging?</h3>
+                <p>
+                  Yes! We provide up to a <strong>90-day warranty</strong> on replacement parts and leak-proof gas refilling for complete peace of mind.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section: Our Work Process (01, 02, 03, 04) */}
+        <section className="seo-content-block" style={{ marginTop: "32px" }}>
+          <h2
+            className="seo-section-heading"
+            style={{ textAlign: "center", marginBottom: "28px" }}
+          >
+            Our Work Process
+          </h2>
+          <div className="process-four-cards-grid">
+            <div className="process-step-card">
+              <div className="process-step-circle">01</div>
+              <h3 className="process-step-title">Book Service</h3>
+              <p className="process-step-desc">
+                Contact us online or call <strong>+91-9304415657</strong>. Tell us your fridge brand, model, and the cooling issue you are facing.
+              </p>
+            </div>
+
+            <div className="process-step-card">
+              <div className="process-step-circle">02</div>
+              <h3 className="process-step-title">Doorstep Visit</h3>
+              <p className="process-step-desc">
+                A skilled <strong>fridge technician near you</strong> reaches your home at your scheduled time with proper diagnostic tools and parts.
+              </p>
+            </div>
+
+            <div className="process-step-card">
+              <div className="process-step-circle">03</div>
+              <h3 className="process-step-title">Honest Diagnosis &amp; Repair</h3>
+              <p className="process-step-desc">
+                We explain the fault clearly, provide an upfront estimate, and perform the repair using <strong>genuine compatible spares</strong>.
+              </p>
+            </div>
+
+            <div className="process-step-card">
+              <div className="process-step-circle">04</div>
+              <h3 className="process-step-title">Cooling Test &amp; Warranty</h3>
+              <p className="process-step-desc">
+                We test the cooling temperature and compressor cycle to ensure optimal operation and give you an official <strong>service warranty</strong>.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Section: Reviews */}
+        <section className="seo-content-block" style={{ marginTop: "32px" }}>
+          <h2 className="seo-section-heading">Reviews</h2>
+          <p style={{ color: "#64748b", fontSize: "15px", marginTop: "4px" }}>
+            Real reviews from homeowners and businesses across Patna.
+          </p>
+          <div className="reviews-three-cards-grid">
+            <div className="customer-review-card">
+              <div>
+                <div className="review-stars">★★★★★</div>
+                <p className="review-quote">
+                  &ldquo;Our Whirlpool double door fridge stopped cooling suddenly during peak summer. RepairSaathi sent a technician to our house in Bailey Road within an hour. He recharged the gas and checked for leaks. Very satisfied!&rdquo;
+                </p>
+              </div>
+              <div className="review-author-wrap">
+                <div className="review-avatar">A</div>
+                <div>
+                  <div className="review-author-name">Alok Ranjan</div>
+                  <div className="review-author-loc">Bailey Road, Patna</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="customer-review-card">
+              <div>
+                <div className="review-stars">★★★★★</div>
+                <p className="review-quote">
+                  &ldquo;Very honest fridge mechanics in Patna. The technician diagnosed that only the relay switch was burnt, rather than telling us the compressor was dead like others did. Saved us thousands of rupees. 5 stars!&rdquo;
+                </p>
+              </div>
+              <div className="review-author-wrap">
+                <div className="review-avatar">M</div>
+                <div>
+                  <div className="review-author-name">Madhu Srivastava</div>
+                  <div className="review-author-loc">Rajendra Nagar, Patna</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="customer-review-card">
+              <div>
+                <div className="review-stars">★★★★★</div>
+                <p className="review-quote">
+                  &ldquo;Got my Samsung inverter refrigerator repaired in Saguna More. Prompt doorstep service, polite technician, transparent billing, and 90-day warranty card provided. Best service in Patna!&rdquo;
+                </p>
+              </div>
+              <div className="review-author-wrap">
+                <div className="review-avatar">N</div>
+                <div>
+                  <div className="review-author-name">Naveen Kumar</div>
+                  <div className="review-author-loc">Saguna More, Patna</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Bottom Conversion Banner with Magic Buttons */}
         <div className="seo-bottom-cta-banner">
           <div className="seo-bottom-cta-badge">

@@ -161,6 +161,18 @@
   white-space: normal;
 }
 
+/* Invisible hover bridge spanning the 14px gap so mouse movements never lose hover focus */
+.services-dropdown-panel::before {
+  content: "";
+  position: absolute;
+  top: -24px;
+  left: 0;
+  right: 0;
+  height: 24px;
+  background: transparent;
+  pointer-events: auto;
+}
+
 .services-dropdown-card {
   background: #ffffff;
   border-radius: 20px;

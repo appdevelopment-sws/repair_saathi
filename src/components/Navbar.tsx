@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
@@ -32,12 +32,45 @@ export default function Navbar() {
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
 
+  const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseEnterDropdown = () => {
+    if (dropdownTimeoutRef.current) {
+      clearTimeout(dropdownTimeoutRef.current);
+      dropdownTimeoutRef.current = null;
+    }
+    setServicesDropdownOpen(true);
+  };
+
+  const handleMouseLeaveDropdown = () => {
+    if (dropdownTimeoutRef.current) {
+      clearTimeout(dropdownTimeoutRef.current);
+    }
+    // Gracious 350ms delay so dropdown stays open comfortably even with slow mouse movements
+    dropdownTimeoutRef.current = setTimeout(() => {
+      setServicesDropdownOpen(false);
+    }, 350);
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 40);
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
+        setServicesDropdownOpen(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("mousedown", handleClickOutside);
+      if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
+    };
   }, []);
 
   const serviceDropdownItems = [
@@ -137,9 +170,10 @@ export default function Navbar() {
 
             {/* Services Dropdown */}
             <div
+              ref={dropdownRef}
               className="services-dropdown-anchor"
-              onMouseEnter={() => setServicesDropdownOpen(true)}
-              onMouseLeave={() => setServicesDropdownOpen(false)}
+              onMouseEnter={handleMouseEnterDropdown}
+              onMouseLeave={handleMouseLeaveDropdown}
             >
               <button
                 type="button"
@@ -148,7 +182,10 @@ export default function Navbar() {
                     ? "active"
                     : ""
                 }`}
-                onClick={() => setServicesDropdownOpen((prev) => !prev)}
+                onClick={() => {
+                  if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
+                  setServicesDropdownOpen((prev) => !prev);
+                }}
               >
                 Services
                 <ChevronDown
@@ -158,7 +195,11 @@ export default function Navbar() {
               </button>
 
               {servicesDropdownOpen && (
-                <div className="services-dropdown-panel animate-dropdown-fade">
+                <div
+                  className="services-dropdown-panel animate-dropdown-fade"
+                  onMouseEnter={handleMouseEnterDropdown}
+                  onMouseLeave={handleMouseLeaveDropdown}
+                >
                     <div className="services-dropdown-card">
                       <div className="services-dropdown-header">
                         <span className="dropdown-label">

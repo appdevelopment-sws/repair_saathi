@@ -22,7 +22,7 @@ export function applyMagnetic(
   element: HTMLElement | null,
   strength: number = 0.35
 ): () => void {
-  if (!element || typeof window === "undefined") return () => {};
+  if (!element || typeof window === "undefined" || window.innerWidth < 768) return () => {};
 
   const xTo = gsap.quickTo(element, "x", { duration: 0.4, ease: "power3.out" });
   const yTo = gsap.quickTo(element, "y", { duration: 0.4, ease: "power3.out" });
@@ -63,7 +63,7 @@ export function apply3DTilt(
   element: HTMLElement | null,
   maxTilt: number = 10
 ): () => void {
-  if (!element || typeof window === "undefined") return () => {};
+  if (!element || typeof window === "undefined" || window.innerWidth < 768) return () => {};
 
   gsap.set(element, { transformPerspective: 1000, transformStyle: "preserve-3d" });
 
@@ -114,7 +114,7 @@ export function applyFloating(
   duration: number = 3.5,
   rotation: number = 2
 ): gsap.core.Tween | null {
-  if (!element || typeof window === "undefined") return null;
+  if (!element || typeof window === "undefined" || window.innerWidth < 768) return null;
 
   return gsap.to(element, {
     y: `+=${yOffset}`,
@@ -127,10 +127,10 @@ export function applyFloating(
 }
 
 /**
- * Global ScrollTrigger scanner that activates professional scroll entrance animations
+ * Global ScrollTrigger scanner that activates professional scroll entrance animations (desktop only)
  */
 export function initGlobalScrollTriggers(scope?: HTMLElement): () => void {
-  if (typeof window === "undefined") return () => {};
+  if (typeof window === "undefined" || window.innerWidth < 768) return () => {};
 
   const ctx = gsap.context(() => {
     // 1. Generic fade-up elements

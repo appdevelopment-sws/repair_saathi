@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { CategoryDto } from "@/app/api/categories/route";
+import { CategoryDto, DEFAULT_CATEGORIES } from "@/app/api/categories/route";
 import { gsap, apply3DTilt, applyMagnetic } from "@/lib/gsap";
 
 interface FeaturedCategoriesProps {
@@ -293,15 +293,16 @@ export default function FeaturedCategories({
   onOpenBooking,
   onLoadedCategories,
 }: FeaturedCategoriesProps) {
-  const [categories, setCategories] = useState<CategoryDto[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Initialize with DEFAULT_CATEGORIES so SSR has all content immediately, zero CLS
+  const [categories, setCategories] = useState<CategoryDto[]>(DEFAULT_CATEGORIES);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
 
     async function loadDynamicCategories() {
       try {
-        const res = await fetch("/api/categories", { cache: "no-store" });
+        const res = await fetch("/api/categories", { cache: "default" });
         if (res.ok) {
           const json = await res.json();
           if (json.data && Array.isArray(json.data) && json.data.length > 0 && isMounted) {
@@ -312,75 +313,11 @@ export default function FeaturedCategories({
           }
         }
       } catch (err) {
-        console.warn("Failed to fetch dynamic categories:", err);
+        // Keep fallback categories without breaking UI
       }
 
       if (isMounted) {
-        // Fallback initial list
-        const fallbackList: CategoryDto[] = [
-          {
-            id: 1,
-            name: "Air Conditioner Repair",
-            slug: "ac-repair-in-patna",
-            serviceId: "ac-repair",
-            icon: "Wind",
-            services: [
-              { id: "ac-1", title: "AC Repair/Service", price: "₹299" },
-              { id: "ac-2", title: "AC Installation/ Removal", price: "₹499" },
-              { id: "ac-3", title: "Any Other AC related Service", price: "Inspection" },
-            ],
-          },
-          {
-            id: 2,
-            name: "Refrigerator Repair",
-            slug: "refrigerator-service-in-patna",
-            serviceId: "refrigerator-repair",
-            icon: "Snowflake",
-            services: [
-              { id: "ref-1", title: "Refrigerator Repair/Service", price: "₹199" },
-              { id: "ref-2", title: "Gas Refilling & Leak Fix", price: "₹899" },
-              { id: "ref-3", title: "Any Other Refrigerator related Service", price: "Inspection" },
-            ],
-          },
-          {
-            id: 3,
-            name: "Washing Machine Repair",
-            slug: "washing-machine-repair-service-in-patna",
-            serviceId: "washing-machine",
-            icon: "Shirt",
-            services: [
-              { id: "wm-1", title: "Washing Machine Repair/Service", price: "₹199" },
-              { id: "wm-2", title: "Drum & Vibration Repair", price: "₹399" },
-              { id: "wm-3", title: "Any Other Washing Machine related Service", price: "Inspection" },
-            ],
-          },
-          {
-            id: 4,
-            name: "Water Purifier Repair",
-            slug: "water-cooler-services",
-            serviceId: "water-cooler",
-            icon: "Droplets",
-            services: [
-              { id: "ro-1", title: "RO Service & Filter Replacement", price: "₹299" },
-              { id: "ro-2", title: "Membrane Change & TDS Tuning", price: "₹799" },
-              { id: "ro-3", title: "Any Other Water Purifier related Service", price: "Inspection" },
-            ],
-          },
-          {
-            id: 5,
-            name: "Geyser Repair",
-            slug: "geyser-repair-in-patna",
-            serviceId: "geyser-repair",
-            icon: "Flame",
-            services: [
-              { id: "gey-1", title: "Geyser Repair/Service", price: "₹199" },
-              { id: "gey-2", title: "Heating Element Replacement", price: "₹399" },
-              { id: "gey-3", title: "Any Other Geyser related Service", price: "Inspection" },
-            ],
-          },
-        ];
-        setCategories(fallbackList);
-        onLoadedCategories?.(fallbackList);
+        onLoadedCategories?.(DEFAULT_CATEGORIES);
         setLoading(false);
       }
     }
@@ -396,7 +333,7 @@ export default function FeaturedCategories({
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!gridRef.current || categories.length === 0) return;
+    if (!gridRef.current || categories.length === 0 || typeof window === "undefined" || window.innerWidth < 768) return;
 
     const ctx = gsap.context(() => {
       const cards = gridRef.current?.querySelectorAll(".category-item-card");
@@ -419,7 +356,7 @@ export default function FeaturedCategories({
           }
         );
 
-        // Apply 3D tilt & magnetic effect
+        // Apply 3D tilt & magnetic effect on desktop
         cards.forEach((card) => {
           apply3DTilt(card as HTMLElement, 10);
         });

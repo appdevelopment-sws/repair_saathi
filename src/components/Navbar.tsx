@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   Phone,
   ChevronDown,
@@ -20,7 +20,10 @@ import {
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
-import BookingModal from "./BookingModal";
+
+// Dynamically import heavy booking modal so it doesn't block initial page render
+const BookingModal = dynamic(() => import("./BookingModal"), { ssr: false });
+
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -100,10 +103,7 @@ export default function Navbar() {
     <>
       {/* Floating Pill Navbar Wrapper (Yoga Style) */}
       <div className="floating-navbar-container">
-        <motion.nav
-          initial={{ y: -80, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        <nav
           className={`floating-navbar-pill ${isScrolled ? "is-scrolled" : ""}`}
         >
           {/* Logo & Brand */}
@@ -157,15 +157,8 @@ export default function Navbar() {
                 />
               </button>
 
-              <AnimatePresence>
-                {servicesDropdownOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 12, scale: 0.96 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.96 }}
-                    transition={{ duration: 0.2 }}
-                    className="services-dropdown-panel"
-                  >
+              {servicesDropdownOpen && (
+                <div className="services-dropdown-panel animate-dropdown-fade">
                     <div className="services-dropdown-card">
                       <div className="services-dropdown-header">
                         <span className="dropdown-label">
@@ -216,9 +209,8 @@ export default function Navbar() {
                         </span>
                       </div>
                     </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                  </div>
+              )}
             </div>
 
             <Link
@@ -278,27 +270,19 @@ export default function Navbar() {
               <Menu size={20} />
             </button>
           </div>
-        </motion.nav>
+        </nav>
       </div>
 
       {/* Mobile Drawer Menu (Yoga Style Full Drawer) */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="mobile-menu-backdrop"
-            onClick={() => setMobileMenuOpen(false)}
+      {mobileMenuOpen && (
+        <div
+          className="mobile-menu-backdrop"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <div
+            className="mobile-menu-drawer animate-drawer-slide"
+            onClick={(e) => e.stopPropagation()}
           >
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 26, stiffness: 220 }}
-              className="mobile-menu-drawer"
-              onClick={(e) => e.stopPropagation()}
-            >
               <div className="mobile-drawer-header">
                 <div className="drawer-brand">
                   <Image
@@ -386,10 +370,9 @@ export default function Navbar() {
                   <Phone size={16} /> Call +91-9304415657
                 </a>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         )}
-      </AnimatePresence>
 
       {/* Booking Modal */}
       <BookingModal

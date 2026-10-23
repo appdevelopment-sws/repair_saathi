@@ -88,8 +88,17 @@ export async function generateMetadata({
       type: "website",
       images: [
         {
-          url: service.image,
+          url: service.image.startsWith("http")
+            ? service.image
+            : `https://repairsaathi.in${service.image}`,
           alt: title,
+        },
+        {
+          url: "https://repairsaathi.in/images/og-repair-saathi.png",
+          width: 1200,
+          height: 630,
+          type: "image/png",
+          alt: "Repair Saathi - Home Appliance Repair in Patna",
         },
       ],
     },
@@ -97,7 +106,11 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: [service.image],
+      images: [
+        service.image.startsWith("http")
+          ? service.image
+          : `https://repairsaathi.in${service.image}`,
+      ],
     },
   };
 }

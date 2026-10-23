@@ -7,7 +7,7 @@ export default function GsapProgressBar() {
   const barRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!barRef.current || typeof window === "undefined") return;
+    if (!barRef.current || typeof window === "undefined" || window.innerWidth < 768) return;
 
     const progressTween = gsap.to(barRef.current, {
       scaleX: 1,

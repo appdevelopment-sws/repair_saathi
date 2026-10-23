@@ -112,7 +112,7 @@ export default function HeroCarousel() {
 
         {/* Carousel Scroll Container */}
         <div className="hero-slider-track" ref={scrollContainerRef}>
-          {bannerItems.map((item) => (
+          {bannerItems.map((item, index) => (
             <Link
               key={item.id}
               href={item.link}
@@ -126,7 +126,9 @@ export default function HeroCarousel() {
                   width={600}
                   height={400}
                   className="slider-banner-img"
-                  priority
+                  priority={index === 0}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 360px"
                 />
               </div>
             </Link>

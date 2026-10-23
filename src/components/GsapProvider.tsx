@@ -11,16 +11,25 @@ export default function GsapProvider({ children }: { children: React.ReactNode }
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const cleanup = initGlobalScrollTriggers(containerRef.current || undefined);
+    let cleanupFn: (() => void) | null = null;
+    const schedule =
+      typeof window !== "undefined" && typeof window.requestIdleCallback === "function"
+        ? window.requestIdleCallback
+        : (cb: () => void) => window.setTimeout(cb, 200);
+
+    const handle = schedule(() => {
+      cleanupFn = initGlobalScrollTriggers(containerRef.current || undefined);
       ScrollTrigger.refresh();
+    });
 
-      return () => {
-        cleanup();
-      };
-    }, 120);
-
-    return () => clearTimeout(timer);
+    return () => {
+      if (typeof window !== "undefined" && typeof window.cancelIdleCallback === "function") {
+        window.cancelIdleCallback(handle);
+      } else {
+        clearTimeout(handle);
+      }
+      if (cleanupFn) cleanupFn();
+    };
   }, [pathname]);
 
   return (

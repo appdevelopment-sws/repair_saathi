@@ -1,10 +1,19 @@
 import type { Metadata, Viewport } from "next";
+import { Nunito } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingActions from "@/components/FloatingActions";
-import ThreeBackground from "@/components/ThreeBackground";
 import GsapProvider from "@/components/GsapProvider";
+import ThreeBackground from "@/components/ThreeBackground";
+
+const nunito = Nunito({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  display: "swap",
+  variable: "--font-nunito",
+  preload: true,
+});
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -57,11 +66,11 @@ export const metadata: Metadata = {
     siteName: "Repair Saathi Patna | Home Appliance Repair Experts",
     images: [
       {
-        url: "https://repairsaathi.in/wp-content/uploads/2025/12/Repair-Saathi-Home-Service-Logo.webp",
-        width: 1125,
-        height: 1125,
-        type: "image/webp",
-        alt: "Repair Saathi Home Service Logo",
+        url: "https://repairsaathi.in/images/og-repair-saathi.png",
+        width: 1200,
+        height: 630,
+        type: "image/png",
+        alt: "Repair Saathi - Patna's Trusted Home Appliance Repair Services",
       },
     ],
     locale: "en_US",
@@ -73,12 +82,12 @@ export const metadata: Metadata = {
     description:
       "Trusted home appliance repair service in Patna for AC, refrigerator, washing machine, RO and more.",
     images: [
-      "https://repairsaathi.in/wp-content/uploads/2025/12/Repair-Saathi-Home-Service-Logo.webp",
+      "https://repairsaathi.in/images/og-repair-saathi.png",
     ],
   },
   icons: {
-    icon: "/images/logo.webp",
-    apple: "/images/logo.webp",
+    icon: "/images/logo.png",
+    apple: "/images/logo.png",
   },
   other: {
     "article:publisher": "https://www.facebook.com/profile.php?id=61583969564683",
@@ -104,7 +113,7 @@ export default function RootLayout({
         primaryImageOfPage: { "@id": "https://repairsaathi.in/#primaryimage" },
         image: { "@id": "https://repairsaathi.in/#primaryimage" },
         thumbnailUrl:
-          "https://repairsaathi.in/wp-content/uploads/2025/12/Repair-Saathi-Home-Service-Logo.webp",
+          "https://repairsaathi.in/images/logo.png",
         datePublished: "2025-10-03T06:56:30+00:00",
         dateModified: "2026-01-22T13:02:21+00:00",
         description:
@@ -122,12 +131,12 @@ export default function RootLayout({
         "@type": "ImageObject",
         inLanguage: "en-US",
         "@id": "https://repairsaathi.in/#primaryimage",
-        url: "https://repairsaathi.in/wp-content/uploads/2025/12/Repair-Saathi-Home-Service-Logo.webp",
+        url: "https://repairsaathi.in/images/og-repair-saathi.png",
         contentUrl:
-          "https://repairsaathi.in/wp-content/uploads/2025/12/Repair-Saathi-Home-Service-Logo.webp",
-        width: 1125,
-        height: 1125,
-        caption: "Repair Saathi Home Service Logo",
+          "https://repairsaathi.in/images/og-repair-saathi.png",
+        width: 1200,
+        height: 630,
+        caption: "Repair Saathi - Home Appliance Repair in Patna",
       },
       {
         "@type": "BreadcrumbList",
@@ -172,11 +181,11 @@ export default function RootLayout({
           "@type": "ImageObject",
           inLanguage: "en-US",
           "@id": "https://repairsaathi.in/#/schema/logo/image/",
-          url: "https://repairsaathi.in/wp-content/uploads/2025/12/Repair-Saathi-Home-Service-Logo.webp",
+          url: "https://repairsaathi.in/images/logo.png",
           contentUrl:
-            "https://repairsaathi.in/wp-content/uploads/2025/12/Repair-Saathi-Home-Service-Logo.webp",
-          width: 1125,
-          height: 1125,
+            "https://repairsaathi.in/images/logo.png",
+          width: 512,
+          height: 512,
           caption: "Repair Saathi",
         },
         image: { "@id": "https://repairsaathi.in/#/schema/logo/image/" },
@@ -187,7 +196,7 @@ export default function RootLayout({
         "@id": "https://repairsaathi.in/#localbusiness",
         name: "Repair Saathi",
         image:
-          "https://repairsaathi.in/wp-content/uploads/2025/12/Repair-Saathi-Home-Service-Logo.webp",
+          "https://repairsaathi.in/images/logo.png",
         telephone: "+91-9304415657",
         email: "infohrepairsaathi@gmail.com",
         url: "https://repairsaathi.in/",
@@ -248,7 +257,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaGraph) }}
         />
       </head>
-      <body>
+      <body className={nunito.variable}>
         <ThreeBackground />
         <GsapProvider>
           <Navbar />

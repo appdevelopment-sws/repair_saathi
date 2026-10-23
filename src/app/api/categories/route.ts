@@ -20,7 +20,7 @@ export interface CategoryDto {
   services?: CategoryServiceItem[];
 }
 
-const DEFAULT_CATEGORIES: CategoryDto[] = [
+export const DEFAULT_CATEGORIES: CategoryDto[] = [
   {
     id: 1,
     name: "Air Conditioner Repair",

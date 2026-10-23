@@ -3,12 +3,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { servicesData } from "@/data/servicesData";
 import { CategoryDto } from "@/app/api/categories/route";
-import BookingModal from "@/components/BookingModal";
 import HeroSection from "@/components/HeroSection";
 import FeaturedCategories from "@/components/FeaturedCategories";
-import { gsap, apply3DTilt, applyMagnetic } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
+
+const BookingModal = dynamic(() => import("@/components/BookingModal"), { ssr: false });
 
 export default function HomeClient() {
   const [selectedCategory, setSelectedCategory] = useState<CategoryDto | null>(null);
@@ -25,22 +27,12 @@ export default function HomeClient() {
 
   const homeRootRef = useRef<HTMLDivElement>(null);
 
-  // GSAP ScrollTrigger & Parallax effect for SEO content blocks
+  // GSAP ScrollTrigger & Parallax effect for SEO content blocks (desktop only)
   useEffect(() => {
+    if (typeof window === "undefined" || window.innerWidth < 768) return;
+
     const ctx = gsap.context(() => {
-      // 1. 3D tilt on all content block cards
-      const cards = document.querySelectorAll<HTMLElement>(".content-block-card, .query-card, .contact-card-box");
-      cards.forEach((card) => {
-        apply3DTilt(card, 6);
-      });
-
-      // 2. Magnetic pull on service CTA buttons
-      const ctaBtns = document.querySelectorAll<HTMLElement>(".btn-book-service, .btn-details-service, .query-btn-submit");
-      ctaBtns.forEach((btn) => {
-        applyMagnetic(btn, 0.25);
-      });
-
-      // 3. Subtle image parallax scrub as visitor scrolls past sections
+      // Subtle image parallax scrub as visitor scrolls past sections
       const images = document.querySelectorAll<HTMLElement>(".content-block-img");
       images.forEach((img) => {
         gsap.fromTo(

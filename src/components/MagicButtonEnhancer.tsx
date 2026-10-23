@@ -10,7 +10,7 @@ import { useEffect } from "react";
  */
 export default function MagicButtonEnhancer() {
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || window.innerWidth < 768) return;
 
     const buttonSelector =
       'button, .btn, [class*="btn-"], [class*="-btn"], [class*="-cta"], a[role="button"]';

@@ -32,11 +32,11 @@ export const metadata: Metadata = {
     siteName: "Repair Saathi Patna | Home Appliance Repair Experts",
     images: [
       {
-        url: "https://repairsaathi.in/wp-content/uploads/2025/12/Repair-Saathi-Home-Service-Logo.webp",
-        width: 1125,
-        height: 1125,
-        type: "image/webp",
-        alt: "Repair Saathi Home Service Logo",
+        url: "https://repairsaathi.in/images/og-repair-saathi.png",
+        width: 1200,
+        height: 630,
+        type: "image/png",
+        alt: "Repair Saathi - Home Appliance Repair Service in Patna",
       },
     ],
   },
@@ -45,9 +45,7 @@ export const metadata: Metadata = {
     title: "Home Appliance Repair Service in Patna | Repair Saathi",
     description:
       "Trusted home appliance repair service in Patna for AC, refrigerator, washing machine, RO and more.",
-    images: [
-      "https://repairsaathi.in/wp-content/uploads/2025/12/Repair-Saathi-Home-Service-Logo.webp",
-    ],
+    images: ["https://repairsaathi.in/images/og-repair-saathi.png"],
   },
   other: {
     "article:publisher": "https://www.facebook.com/profile.php?id=61583969564683",

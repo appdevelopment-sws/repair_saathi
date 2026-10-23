@@ -15,9 +15,11 @@ import {
   Check,
 } from "lucide-react";
 import HeroCarousel from "./HeroCarousel";
-import BookingModal from "./BookingModal";
 import WhatsAppIcon from "./WhatsAppIcon";
 import { gsap, applyMagnetic, apply3DTilt } from "@/lib/gsap";
+import dynamic from "next/dynamic";
+
+const BookingModal = dynamic(() => import("./BookingModal"), { ssr: false });
 
 export default function HeroSection() {
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
@@ -34,12 +36,12 @@ export default function HeroSection() {
   const ambientGlowRef = useRef<HTMLDivElement>(null);
   const carouselWrapRef = useRef<HTMLDivElement>(null);
 
-  // Counter values state for animated counting
-  const [counts, setCounts] = useState({
-    time: 0,
-    warranty: 0,
-    reviews: 0,
-    price: 0,
+  // Counter values state with realistic defaults to eliminate Cumulative Layout Shift (CLS)
+  const [counts] = useState({
+    time: 30,
+    warranty: 90,
+    reviews: 5000,
+    price: 199,
   });
 
   const openBooking = (serviceId = "ac-repair") => {
@@ -82,8 +84,10 @@ export default function HeroSection() {
     },
   ];
 
-  // GSAP Cinematic Entrance Timeline & Mouse Parallax
+  // GSAP Cinematic Entrance Timeline & Mouse Parallax (desktop only to prevent mobile main-thread blocking)
   useEffect(() => {
+    if (typeof window === "undefined" || window.innerWidth < 768) return;
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
@@ -98,27 +102,6 @@ export default function HeroSection() {
           ease: "sine.inOut",
         });
       }
-
-      // 2. Numeric Counter Counting Up
-      const counterObj = { time: 0, warranty: 0, reviews: 0, price: 0 };
-      gsap.to(counterObj, {
-        time: 30,
-        warranty: 90,
-        reviews: 5000,
-        price: 199,
-        duration: 1.6,
-        delay: 0.5,
-        ease: "power2.out",
-        onUpdate: () => {
-          setCounts({
-            time: Math.round(counterObj.time),
-            warranty: Math.round(counterObj.warranty),
-            reviews: Math.round(counterObj.reviews),
-            price: Math.round(counterObj.price),
-          });
-        },
-      });
-
 
       // 4. Badge entrance with elastic bounce
       if (badgeRef.current) {
@@ -245,9 +228,9 @@ export default function HeroSection() {
     return () => ctx.revert();
   }, []);
 
-  // Mousemove dynamic depth parallax for floating badges
+  // Mousemove dynamic depth parallax for floating badges (desktop only)
   const handleHeroMouseMove = (e: React.MouseEvent) => {
-    if (!heroRef.current) return;
+    if (typeof window === "undefined" || window.innerWidth < 768 || !heroRef.current) return;
     const rect = heroRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;

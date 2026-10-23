@@ -9,7 +9,6 @@ import ThreeBackground from "@/components/ThreeBackground";
 
 const nunito = Nunito({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
   display: "swap",
   variable: "--font-nunito",
   preload: true,
@@ -250,6 +249,19 @@ export default function RootLayout({
         <meta
           property="article:modified_time"
           content="2026-01-22T13:02:21+00:00"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/images/freeze-repair-dark.webp"
+          type="image/webp"
+          fetchPriority="high"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/images/logo.webp"
+          type="image/webp"
         />
         <script
           type="application/ld+json"

@@ -133,17 +133,22 @@ export function initGlobalScrollTriggers(scope?: HTMLElement): () => void {
   if (typeof window === "undefined" || window.innerWidth < 768) return () => {};
 
   const ctx = gsap.context(() => {
-    // 1. Generic fade-up elements
+    const vh = window.innerHeight;
+
+    // 1. Generic fade-up elements (only animate if below the fold)
     const fadeUpElements = gsap.utils.toArray<HTMLElement>('[data-gsap="fade-up"]');
     fadeUpElements.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < vh * 0.9) return; // Keep above-the-fold immediately visible
+
       gsap.fromTo(
         el,
-        { opacity: 0, y: 40 },
+        { opacity: 0, y: 30 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.85,
-          ease: "power3.out",
+          duration: 0.7,
+          ease: "power2.out",
           scrollTrigger: {
             trigger: el,
             start: "top 88%",
@@ -154,48 +159,20 @@ export function initGlobalScrollTriggers(scope?: HTMLElement): () => void {
       );
     });
 
-    // 2. Staggered card containers
-    const staggerContainers = gsap.utils.toArray<HTMLElement>('[data-gsap="stagger-cards"]');
-    staggerContainers.forEach((container) => {
-      const cards = container.children;
-      if (cards.length > 0) {
-        gsap.fromTo(
-          cards,
-          { opacity: 0, y: 50, scale: 0.96 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.75,
-            stagger: 0.1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: container,
-              start: "top 85%",
-              toggleActions: "play none none none",
-              once: true,
-            },
-          }
-        );
-      }
-    });
-
-    // 3. Cinematic image reveal (smooth scale & unclip)
+    // 2. Cinematic image reveal (smooth subtle scale without heavy clipPath rasterization)
     const revealImages = gsap.utils.toArray<HTMLElement>('[data-gsap="image-reveal"]');
     revealImages.forEach((imgWrap) => {
+      const rect = imgWrap.getBoundingClientRect();
+      if (rect.top < vh * 0.9) return;
+
       gsap.fromTo(
         imgWrap,
-        {
-          opacity: 0,
-          scale: 0.92,
-          clipPath: "inset(12% 12% 12% 12% round 16px)",
-        },
+        { opacity: 0, scale: 0.96 },
         {
           opacity: 1,
           scale: 1,
-          clipPath: "inset(0% 0% 0% 0% round 16px)",
-          duration: 1.1,
-          ease: "power3.out",
+          duration: 0.8,
+          ease: "power2.out",
           scrollTrigger: {
             trigger: imgWrap,
             start: "top 85%",
@@ -206,17 +183,20 @@ export function initGlobalScrollTriggers(scope?: HTMLElement): () => void {
       );
     });
 
-    // 4. Slide-in from Left / Right
+    // 3. Slide-in from Left / Right (below fold only)
     const slideLeft = gsap.utils.toArray<HTMLElement>('[data-gsap="slide-left"]');
     slideLeft.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < vh * 0.9) return;
+
       gsap.fromTo(
         el,
-        { opacity: 0, x: -60 },
+        { opacity: 0, x: -40 },
         {
           opacity: 1,
           x: 0,
-          duration: 0.9,
-          ease: "power3.out",
+          duration: 0.75,
+          ease: "power2.out",
           scrollTrigger: {
             trigger: el,
             start: "top 85%",
@@ -228,14 +208,17 @@ export function initGlobalScrollTriggers(scope?: HTMLElement): () => void {
 
     const slideRight = gsap.utils.toArray<HTMLElement>('[data-gsap="slide-right"]');
     slideRight.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < vh * 0.9) return;
+
       gsap.fromTo(
         el,
-        { opacity: 0, x: 60 },
+        { opacity: 0, x: 40 },
         {
           opacity: 1,
           x: 0,
-          duration: 0.9,
-          ease: "power3.out",
+          duration: 0.75,
+          ease: "power2.out",
           scrollTrigger: {
             trigger: el,
             start: "top 85%",
@@ -245,39 +228,15 @@ export function initGlobalScrollTriggers(scope?: HTMLElement): () => void {
       );
     });
 
-    // 5. Section Heading Wave Underline reveal
-    const headings = gsap.utils.toArray<HTMLElement>(".content-block-heading, .categories-title");
-    headings.forEach((heading) => {
-      gsap.fromTo(
-        heading,
-        { opacity: 0, y: 25 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: heading,
-            start: "top 88%",
-            once: true,
-          },
-        }
-      );
-    });
-
-    // 6. Interactive 3D tilt on all cards with data-gsap="tilt"
-    const tiltCards = gsap.utils.toArray<HTMLElement>('[data-gsap="tilt"], .yoga-highlight-card, .category-card-modern, .content-block-card');
-    const cleanups: (() => void)[] = [];
+    // 4. Interactive 3D tilt & magnetic: only attach to explicitly tagged elements
+    const tiltCards = gsap.utils.toArray<HTMLElement>('[data-gsap="tilt"]');
     tiltCards.forEach((card) => {
-      const cleanup = apply3DTilt(card, 6);
-      cleanups.push(cleanup);
+      apply3DTilt(card, 6);
     });
 
-    // 7. Magnetic buttons with data-gsap="magnetic"
-    const magneticBtns = gsap.utils.toArray<HTMLElement>('[data-gsap="magnetic"], .yoga-btn-primary, .btn-book-service');
+    const magneticBtns = gsap.utils.toArray<HTMLElement>('[data-gsap="magnetic"]');
     magneticBtns.forEach((btn) => {
-      const cleanup = applyMagnetic(btn, 0.25);
-      cleanups.push(cleanup);
+      applyMagnetic(btn, 0.25);
     });
   }, scope);
 

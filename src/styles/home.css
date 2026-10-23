@@ -641,6 +641,8 @@
 /* CONTENT SECTIONS (CLEAN TWO-COLUMN ON WHITE CARD) */
 .content-block-section {
   padding: 24px 0;
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 450px;
 }
 
 .content-block-card {
@@ -649,6 +651,12 @@
   border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
   padding: 36px 32px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+}
+
+.content-block-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
 }
 
 .content-block-grid {
@@ -711,6 +719,8 @@
 /* QUERY FORM & CONTACT SECTION */
 .inquiry-section {
   padding: 30px 0 50px 0;
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 500px;
 }
 
 .inquiry-grid {

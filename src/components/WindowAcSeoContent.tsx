@@ -295,6 +295,149 @@ export default function WindowAcSeoContent() {
           </div>
         </section>
 
+        {/* Section: Frequently Asked Questions */}
+        <section className="seo-content-block">
+          <h2 className="seo-section-heading">Frequently Asked Questions</h2>
+          <div className="seo-block-body">
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">What is the cost of window AC service and repair in Patna?</h3>
+                <p>
+                  Our doorstep window AC visiting and inspection fee starts at just <strong>₹299</strong>. Foam jet cleaning, gas charging, and electrical spare replacement costs are quoted upfront after diagnosis with no hidden fees.
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">Why is my window AC blowing warm air or forming ice on the coils?</h3>
+                <p>
+                  Ice buildup or lack of cooling usually happens due to low refrigerant gas pressure, a dirty cooling coil, choked air filters, or a faulty capillary tube. Our certified technicians carry manifold gauges to test pressure and fix the problem immediately.
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">Which window AC brands do you repair in Patna?</h3>
+                <p>
+                  We service all major window AC brands including <strong>Voltas, LG, Hitachi, Blue Star, Daikin, Lloyd, Carrier, Godrej, Panasonic, and O General</strong> across all tonnages (0.75 Ton, 1 Ton, 1.5 Ton, and 2 Ton).
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">Do you provide window AC installation and uninstallation?</h3>
+                <p>
+                  Yes! We provide safe window AC uninstallation, wall bracket mounting, side panel sealing to prevent hot outdoor air from leaking inside, and electrical connection setup at your doorstep.
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">Do you provide a warranty on repairs and gas charging?</h3>
+                <p>
+                  Yes, all our window AC repairs, component replacements, and refrigerant gas refilling come with an assured service warranty of up to <strong>90 days</strong>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section: Our Work Process (01, 02, 03, 04) */}
+        <section className="seo-content-block" style={{ marginTop: "32px" }}>
+          <h2
+            className="seo-section-heading"
+            style={{ textAlign: "center", marginBottom: "28px" }}
+          >
+            Our Work Process
+          </h2>
+          <div className="process-four-cards-grid">
+            <div className="process-step-card">
+              <div className="process-step-circle">01</div>
+              <h3 className="process-step-title">Book Service</h3>
+              <p className="process-step-desc">
+                Book online or call <strong>+91-9304415657</strong>. Tell us your AC brand, tonnage, and the problem you are experiencing.
+              </p>
+            </div>
+
+            <div className="process-step-card">
+              <div className="process-step-circle">02</div>
+              <h3 className="process-step-title">Doorstep Visit</h3>
+              <p className="process-step-desc">
+                An expert <strong>window AC technician</strong> arrives at your doorstep in Patna with diagnostic gauges and cleaning equipment.
+              </p>
+            </div>
+
+            <div className="process-step-card">
+              <div className="process-step-circle">03</div>
+              <h3 className="process-step-title">Accurate Repair</h3>
+              <p className="process-step-desc">
+                We diagnose cooling cycle pressure, explain the estimate, and repair the unit using <strong>genuine compatible spare parts</strong>.
+              </p>
+            </div>
+
+            <div className="process-step-card">
+              <div className="process-step-circle">04</div>
+              <h3 className="process-step-title">Cooling Test &amp; Warranty</h3>
+              <p className="process-step-desc">
+                We perform an airflow temperature drop test, verify silent operation, and issue an official <strong>service warranty</strong>.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Section: Reviews */}
+        <section className="seo-content-block" style={{ marginTop: "32px" }}>
+          <h2 className="seo-section-heading">Reviews</h2>
+          <p style={{ color: "#64748b", fontSize: "15px", marginTop: "4px" }}>
+            Real reviews from homeowners and commercial clients across Patna.
+          </p>
+          <div className="reviews-three-cards-grid">
+            <div className="customer-review-card">
+              <div>
+                <div className="review-stars">★★★★★</div>
+                <p className="review-quote">
+                  &ldquo;Our Voltas 1.5-ton window AC had not been cleaned for 2 years and was hardly cooling. RepairSaathi did a thorough pressure water-jet service right at our home in Kankarbagh. The room cools down in 10 minutes now. Excellent work!&rdquo;
+                </p>
+              </div>
+              <div className="review-author-wrap">
+                <div className="review-avatar">S</div>
+                <div>
+                  <div className="review-author-name">Suresh Prasad</div>
+                  <div className="review-author-loc">Kankarbagh, Patna</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="customer-review-card">
+              <div>
+                <div className="review-stars">★★★★★</div>
+                <p className="review-quote">
+                  &ldquo;The fan motor of our LG window AC was making an unbearable vibrating noise. The technician arrived within 60 minutes in Boring Road, replaced the rubber mountings, and serviced the motor. Perfectly silent now!&rdquo;
+                </p>
+              </div>
+              <div className="review-author-wrap">
+                <div className="review-avatar">N</div>
+                <div>
+                  <div className="review-author-name">Neha Kumari</div>
+                  <div className="review-author-loc">Boring Road, Patna</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="customer-review-card">
+              <div>
+                <div className="review-stars">★★★★★</div>
+                <p className="review-quote">
+                  &ldquo;Gas refilling and leak fixing was done professionally at our house in Danapur. They tested the pressure properly with a nitrogen gauge before charging the gas. Best and most honest AC service in Patna.&rdquo;
+                </p>
+              </div>
+              <div className="review-author-wrap">
+                <div className="review-avatar">A</div>
+                <div>
+                  <div className="review-author-name">Ashish Ranjan</div>
+                  <div className="review-author-loc">Danapur, Patna</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Bottom Conversion Banner with Magic Buttons */}
         <div className="seo-bottom-cta-banner">
           <div className="seo-bottom-cta-badge">

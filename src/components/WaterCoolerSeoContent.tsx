@@ -273,6 +273,149 @@ export default function WaterCoolerSeoContent() {
           </div>
         </section>
 
+        {/* Section: Frequently Asked Questions */}
+        <section className="seo-content-block">
+          <h2 className="seo-section-heading">Frequently Asked Questions</h2>
+          <div className="seo-block-body">
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">What is the cost of water cooler repair in Patna?</h3>
+                <p>
+                  Our visiting and diagnosis charge starts at just <strong>₹199</strong>. The total repair cost depends on the problem and parts required (such as thermostat, starter relay, compressor, taps, or refrigerant gas refilling). The technician gives you a transparent quote before starting work.
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">Do you repair commercial water coolers for offices, schools, and hospitals?</h3>
+                <p>
+                  Yes! We specialize in heavy-duty commercial water coolers (from 20 Litres up to 500+ Litres capacity) for corporate offices, coaching centers, schools, colleges, and hospitals across Patna.
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">Why is my water cooler running but not cooling the water?</h3>
+                <p>
+                  Common causes include refrigerant gas leakage, faulty thermostat settings, damaged starter capacitor/relay, or clogged condenser coils. Our expert technician tests the cooling pressure and resolves the issue on the spot.
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">Do you provide gas leak detection and refilling for water coolers?</h3>
+                <p>
+                  Yes, we use precision nitrogen pressure testing to locate micro-leaks in the cooling coils, braze the joints properly, and charge authentic high-grade refrigerant gas for maximum cooling efficiency.
+                </p>
+              </div>
+
+              <div className="seo-feature-card">
+                <h3 className="seo-feature-title">Do you offer a warranty on repairs and spare parts?</h3>
+                <p>
+                  Yes! All major repairs and replaced compatible spare parts come with a service warranty of up to <strong>90 days</strong> for complete peace of mind.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section: Our Work Process (01, 02, 03, 04) */}
+        <section className="seo-content-block" style={{ marginTop: "32px" }}>
+          <h2
+            className="seo-section-heading"
+            style={{ textAlign: "center", marginBottom: "28px" }}
+          >
+            Our Work Process
+          </h2>
+          <div className="process-four-cards-grid">
+            <div className="process-step-card">
+              <div className="process-step-circle">01</div>
+              <h3 className="process-step-title">Book Service</h3>
+              <p className="process-step-desc">
+                Submit an online request or call <strong>+91-9304415657</strong>. Share your cooler model, capacity, and the problem.
+              </p>
+            </div>
+
+            <div className="process-step-card">
+              <div className="process-step-circle">02</div>
+              <h3 className="process-step-title">Technician Visit</h3>
+              <p className="process-step-desc">
+                A certified <strong>cooling equipment technician</strong> arrives at your home, office, or commercial premises on time.
+              </p>
+            </div>
+
+            <div className="process-step-card">
+              <div className="process-step-circle">03</div>
+              <h3 className="process-step-title">On-Site Repair</h3>
+              <p className="process-step-desc">
+                We inspect the cooling cycle, explain the issue upfront, and fix it using <strong>genuine compatible spares</strong>.
+              </p>
+            </div>
+
+            <div className="process-step-card">
+              <div className="process-step-circle">04</div>
+              <h3 className="process-step-title">Testing &amp; Warranty</h3>
+              <p className="process-step-desc">
+                We verify water temperature chilling performance, check for leaks, and issue an official <strong>service warranty</strong>.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Section: Reviews */}
+        <section className="seo-content-block" style={{ marginTop: "32px" }}>
+          <h2 className="seo-section-heading">Reviews</h2>
+          <p style={{ color: "#64748b", fontSize: "15px", marginTop: "4px" }}>
+            Real reviews from our institutional and residential customers in Patna.
+          </p>
+          <div className="reviews-three-cards-grid">
+            <div className="customer-review-card">
+              <div>
+                <div className="review-stars">★★★★★</div>
+                <p className="review-quote">
+                  &ldquo;We have a 150-litre commercial water cooler in our coaching institute in Boring Road that stopped cooling right before summer batches started. RepairSaathi fixed the gas leakage and replaced the relay on the same day. Saved our students huge discomfort!&rdquo;
+                </p>
+              </div>
+              <div className="review-author-wrap">
+                <div className="review-avatar">S</div>
+                <div>
+                  <div className="review-author-name">Sanjay Verma</div>
+                  <div className="review-author-loc">Boring Road, Patna</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="customer-review-card">
+              <div>
+                <div className="review-stars">★★★★★</div>
+                <p className="review-quote">
+                  &ldquo;Very professional water cooler repair service in Bailey Road. Our office cooler was tripping the main MCB due to an electrical short in the fan motor. The technician replaced the wiring and motor smoothly at a very fair price.&rdquo;
+                </p>
+              </div>
+              <div className="review-author-wrap">
+                <div className="review-avatar">R</div>
+                <div>
+                  <div className="review-author-name">Rajesh Kumar</div>
+                  <div className="review-author-loc">Bailey Road, Patna</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="customer-review-card">
+              <div>
+                <div className="review-stars">★★★★★</div>
+                <p className="review-quote">
+                  &ldquo;Prompt doorstep service in Kankarbagh. They did thorough chemical cleaning of the storage tank and condenser coil. The water is chilled and perfectly clean now. Highly recommended for commercial and home coolers!&rdquo;
+                </p>
+              </div>
+              <div className="review-author-wrap">
+                <div className="review-avatar">A</div>
+                <div>
+                  <div className="review-author-name">Amitabh Sen</div>
+                  <div className="review-author-loc">Kankarbagh, Patna</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Section: Book Water Cooler Service Today */}
         <div className="seo-bottom-cta-banner">
           <div className="seo-bottom-cta-badge">

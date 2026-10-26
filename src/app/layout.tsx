@@ -83,6 +83,8 @@ export const metadata: Metadata = {
     images: [
       "https://repairsaathi.in/images/og-repair-saathi.png",
     ],
+    creator: "@ripendrakr",
+    site: "@ripendrakr",
   },
   icons: {
     icon: "/images/logo.png",
@@ -188,7 +190,13 @@ export default function RootLayout({
           caption: "Repair Saathi",
         },
         image: { "@id": "https://repairsaathi.in/#/schema/logo/image/" },
-        sameAs: ["https://www.facebook.com/profile.php?id=61583969564683"],
+        sameAs: [
+          "https://www.facebook.com/profile.php?id=61583969564683",
+          "https://www.instagram.com/a2zsmttc/",
+          "https://www.linkedin.com/in/ripendrakr/",
+          "https://x.com/ripendrakr",
+          "https://www.threads.com/@a2zsmttc",
+        ],
       },
       {
         "@type": "HomeAndConstructionBusiness",
@@ -201,6 +209,13 @@ export default function RootLayout({
         url: "https://repairsaathi.in/",
         priceRange: "₹₹",
         parentOrganization: { "@id": "https://repairsaathi.in/#organization" },
+        sameAs: [
+          "https://www.facebook.com/profile.php?id=61583969564683",
+          "https://www.instagram.com/a2zsmttc/",
+          "https://www.linkedin.com/in/ripendrakr/",
+          "https://x.com/ripendrakr",
+          "https://www.threads.com/@a2zsmttc",
+        ],
         address: {
           "@type": "PostalAddress",
           streetAddress:

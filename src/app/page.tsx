@@ -46,6 +46,8 @@ export const metadata: Metadata = {
     description:
       "Trusted home appliance repair service in Patna for AC, refrigerator, washing machine, RO and more.",
     images: ["https://repairsaathi.in/images/og-repair-saathi.png"],
+    creator: "@ripendrakr",
+    site: "@ripendrakr",
   },
   other: {
     "article:publisher": "https://www.facebook.com/profile.php?id=61583969564683",

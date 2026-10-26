@@ -2,7 +2,14 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { popularCategories } from "@/data/servicesData";
+import { Phone, Mail, MapPin } from "lucide-react";
 import WhatsAppIcon from "./WhatsAppIcon";
+import {
+  InstagramIcon,
+  LinkedInIcon,
+  XTwitterIcon,
+  ThreadsIcon,
+} from "./SocialIcons";
 
 export default function Footer() {
   const userLinks = [
@@ -74,40 +81,60 @@ export default function Footer() {
             <h4 className="footer-col-title">Contact & Help</h4>
             
             <div className="footer-contact-item">
-              <span>📞</span>
-              <a href="tel:+919304415657" style={{ fontWeight: "700", color: "#ffffff" }}>
-                +91-9304415657
-              </a>
-            </div>
-
-            <div className="footer-contact-item">
-              <WhatsAppIcon size={16} color="#25d366" />
-              <a
-                href="https://wa.me/919304415657?text=Hi%20Repair%20Saathi"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ fontWeight: "700", color: "#25d366" }}
-              >
-                +91-9304415657 (WhatsApp)
-              </a>
-            </div>
-
-            <div className="footer-contact-item">
-              <span>✉️</span>
-              <a href="mailto:infohrepairsaathi@gmail.com">
-                infohrepairsaathi@gmail.com
-              </a>
-            </div>
-
-            <div className="footer-contact-item">
-              <span>📍</span>
-              <span>
-                RR Guest House, Ground floor, Near Hi Tech Hospital, Saguna More Balaji Nagar. Patna (Bihar)
+              <span className="footer-contact-icon-badge">
+                <Phone size={15} color="#fbbc34" />
               </span>
+              <div className="footer-contact-content">
+                <span className="footer-contact-label">Call Helpline</span>
+                <a href="tel:+919304415657" style={{ fontWeight: "700", color: "#ffffff" }}>
+                  +91-9304415657
+                </a>
+              </div>
             </div>
 
-            <div style={{ marginTop: "16px" }}>
-              <span style={{ fontSize: "12px", color: "#94a3b8", textTransform: "uppercase", fontWeight: "700" }}>
+            <div className="footer-contact-item">
+              <span className="footer-contact-icon-badge whatsapp-badge">
+                <WhatsAppIcon size={16} color="#25d366" />
+              </span>
+              <div className="footer-contact-content">
+                <span className="footer-contact-label">WhatsApp Support</span>
+                <a
+                  href="https://wa.me/919304415657?text=Hi%20Repair%20Saathi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ fontWeight: "700", color: "#25d366" }}
+                >
+                  +91-9304415657
+                </a>
+              </div>
+            </div>
+
+            <div className="footer-contact-item">
+              <span className="footer-contact-icon-badge">
+                <Mail size={15} color="#38bdf8" />
+              </span>
+              <div className="footer-contact-content">
+                <span className="footer-contact-label">Email Us</span>
+                <a href="mailto:infohrepairsaathi@gmail.com">
+                  infohrepairsaathi@gmail.com
+                </a>
+              </div>
+            </div>
+
+            <div className="footer-contact-item">
+              <span className="footer-contact-icon-badge">
+                <MapPin size={15} color="#f87171" />
+              </span>
+              <div className="footer-contact-content">
+                <span className="footer-contact-label">Service Hub / Office</span>
+                <span style={{ color: "#cbd5e1", fontSize: "12.5px" }}>
+                  RR Guest House, Ground floor, Near Hi Tech Hospital, Saguna More Balaji Nagar, Patna (Bihar)
+                </span>
+              </div>
+            </div>
+
+            <div className="footer-social-wrapper">
+              <span className="footer-social-heading">
                 Follow Us
               </span>
               <div className="footer-social-links">
@@ -115,37 +142,41 @@ export default function Footer() {
                   href="https://www.instagram.com/a2zsmttc/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="social-icon-btn"
-                  title="Instagram"
+                  className="social-icon-btn instagram"
+                  title="Follow us on Instagram"
+                  aria-label="Instagram"
                 >
-                  IG
+                  <InstagramIcon size={18} />
                 </a>
                 <a
                   href="https://www.linkedin.com/in/ripendrakr/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="social-icon-btn"
-                  title="LinkedIn"
+                  className="social-icon-btn linkedin"
+                  title="Connect on LinkedIn"
+                  aria-label="LinkedIn"
                 >
-                  IN
+                  <LinkedInIcon size={17} />
                 </a>
                 <a
                   href="https://x.com/ripendrakr"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="social-icon-btn"
-                  title="X (Twitter)"
+                  className="social-icon-btn x-twitter"
+                  title="Follow us on X (Twitter)"
+                  aria-label="X (Twitter)"
                 >
-                  𝕏
+                  <XTwitterIcon size={16} />
                 </a>
                 <a
                   href="https://www.threads.com/@a2zsmttc"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="social-icon-btn"
-                  title="Threads"
+                  className="social-icon-btn threads"
+                  title="Follow us on Threads"
+                  aria-label="Threads"
                 >
-                  @
+                  <ThreadsIcon size={18} />
                 </a>
               </div>
             </div>

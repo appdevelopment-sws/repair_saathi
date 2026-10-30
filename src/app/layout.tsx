@@ -87,8 +87,26 @@ export const metadata: Metadata = {
     site: "@ripendrakr",
   },
   icons: {
-    icon: "/images/logo.png",
-    apple: "/images/logo.png",
+    icon: [
+      {
+        url: "/wp-content/uploads/2026/01/cropped-fQ-scaled-1-32x32.png",
+        sizes: "32x32",
+        type: "image/png",
+      },
+      {
+        url: "/wp-content/uploads/2026/01/cropped-fQ-scaled-1-192x192.png",
+        sizes: "192x192",
+        type: "image/png",
+      },
+    ],
+    apple: [
+      {
+        url: "/wp-content/uploads/2026/01/cropped-fQ-scaled-1-180x180.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ],
+    shortcut: "/wp-content/uploads/2026/01/cropped-fQ-scaled-1-32x32.png",
   },
   other: {
     "article:publisher": "https://www.facebook.com/profile.php?id=61583969564683",

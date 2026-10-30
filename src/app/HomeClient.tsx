@@ -533,6 +533,45 @@ export default function HomeClient() {
               </div>
             </div>
           </div>
+
+          {/* Workshop & Service Center Location Map */}
+          <div className="inquiry-map-card" data-gsap="fade-up">
+            <div className="inquiry-map-header">
+              <div className="inquiry-map-title-group">
+                <div className="inquiry-map-icon-badge">📍</div>
+                <div>
+                  <h3 className="inquiry-map-heading">
+                    Locate Repair Saathi Workshop on Google Maps
+                  </h3>
+                  <p className="inquiry-map-sub">
+                    RR guest house ground floor near hi tech hospital saguna more balaji nagar, Patna (India)
+                  </p>
+                </div>
+              </div>
+              <a
+                href="https://www.google.com/maps/place/repair+sathi+A+To+Z+Ac+repair+Center+Patna/@25.6224743,85.0402694,17z/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inquiry-map-btn"
+              >
+                <span>Open in Google Maps</span>
+                <span>↗</span>
+              </a>
+            </div>
+
+            <div className="inquiry-map-frame-wrap">
+              <iframe
+                title="repair sathi A To Z Ac repair Center Patna - Google Maps"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3597.4714411347236!2d85.0402694!3d25.6224743!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed57f9634b027d%3A0x3bad73abcefabe4c!2srepair%20sathi%20A%20To%20Z%20Ac%20repair%20Center%20Patna!5e0!3m2!1sen!2sin!4v1793355734466!5m2!1sen!2sin"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            </div>
+          </div>
         </div>
       </section>
 

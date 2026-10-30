@@ -215,7 +215,7 @@ export default function ContactClient() {
               <h3 className="channel-title">Saguna More, Patna</h3>
               <p className="channel-desc">Near Hi-Tech Hospital, Balaji Nagar, Danapur</p>
               <a
-                href="https://maps.google.com/?q=Saguna+More+Danapur+Patna+Bihar"
+                href="https://www.google.com/maps/place/repair+sathi+A+To+Z+Ac+repair+Center+Patna/@25.6224743,85.0402694,17z/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="channel-action-btn indigo"
@@ -441,19 +441,19 @@ export default function ContactClient() {
             {/* Google Map Box */}
             <div className="map-embed-wrapper">
               <iframe
-                title="Repair Saathi Location Map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m13!1m3!1d14390.871060938466!2d85.0443!3d25.6186!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed57cf5b6e0001%3A0x6b19a0a0e9876543!2sSaguna%20More%2C%20Danapur%2C%20Patna!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                title="repair sathi A To Z Ac repair Center Patna"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3597.4714411347236!2d85.0402694!3d25.6224743!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed57f9634b027d%3A0x3bad73abcefabe4c!2srepair%20sathi%20A%20To%20Z%20Ac%20repair%20Center%20Patna!5e0!3m2!1sen!2sin!4v1793355734466!5m2!1sen!2sin"
                 width="100%"
                 height="190"
                 style={{ border: 0, borderRadius: "14px" }}
-                allowFullScreen={false}
+                allowFullScreen={true}
                 loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
+                referrerPolicy="strict-origin-when-cross-origin"
               />
               <div className="map-bottom-bar">
                 <span>Saguna More Service Hub</span>
                 <a
-                  href="https://maps.google.com/?q=Saguna+More+Danapur+Patna+Bihar"
+                  href="https://www.google.com/maps/place/repair+sathi+A+To+Z+Ac+repair+Center+Patna/@25.6224743,85.0402694,17z/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="map-nav-link"

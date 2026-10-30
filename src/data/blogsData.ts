@@ -142,3 +142,39 @@ export const blogsData: BlogPost[] = [
     ]
   }
 ];
+
+export function getBlogBySlug(slug: string): BlogPost | undefined {
+  return blogsData.find((b) => b.slug === slug);
+}
+
+export function getAllBlogSlugs(): string[] {
+  return blogsData.map((b) => b.slug);
+}
+
+export function getRelatedBlogs(currentSlug: string, category: string, limit = 3): BlogPost[] {
+  const others = blogsData.filter((b) => b.slug !== currentSlug);
+  const sameCategory = others.filter((b) => b.category === category);
+  if (sameCategory.length >= limit) {
+    return sameCategory.slice(0, limit);
+  }
+  const remaining = others.filter((b) => b.category !== category);
+  return [...sameCategory, ...remaining].slice(0, limit);
+}
+
+export function getCategoryTheme(category: string) {
+  switch (category) {
+    case "AC Service":
+      return { bg: "#fef3c7", color: "#b45309", border: "#fde68a" };
+    case "Washing Machine":
+      return { bg: "#e0f2fe", color: "#0369a1", border: "#bae6fd" };
+    case "Refrigerator":
+      return { bg: "#ede9fe", color: "#6d28d9", border: "#ddd6fe" };
+    case "Geyser Service":
+      return { bg: "#fee2e2", color: "#b91c1c", border: "#fecaca" };
+    case "Kitchen Chimney":
+      return { bg: "#fef9c3", color: "#a16207", border: "#fef08a" };
+    default:
+      return { bg: "#f1f5f9", color: "#475569", border: "#e2e8f0" };
+  }
+}
+

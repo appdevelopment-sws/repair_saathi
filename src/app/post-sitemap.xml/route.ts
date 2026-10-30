@@ -47,7 +47,7 @@ export async function GET() {
       images: [`${baseUrl}/images/chimney-repair.webp`],
     },
     ...blogsData.map((b) => ({
-      loc: `${baseUrl}/home-appliance-repair-blog/?slug=${b.slug}`,
+      loc: `${baseUrl}/home-appliance-repair-blog/${b.slug}/`,
       lastmod: "2026-10-22T10:00:00+00:00",
       images: [b.image.startsWith("http") ? b.image : `${baseUrl}${b.image}`],
     })),

@@ -137,9 +137,9 @@ export default function HomeClient() {
           <div className="content-block-card">
             <div className="content-block-grid">
               <div>
-                <h1 className="content-block-heading">
+                <h2 className="content-block-heading">
                   Affordable AC Repair in Patna – Same Day Service
-                </h1>
+                </h2>
                 <p className="content-block-p">
                   When people look for <strong>AC Service in Patna</strong> they usually want their comfort back quickly without confusion. At <strong>Repair Sathi</strong> this service is planned exactly around that expectation and real daily usage conditions.
                 </p>

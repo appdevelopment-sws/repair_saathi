@@ -572,7 +572,7 @@ export default function BlogClient() {
 
               {/* Modal Scrollable Content */}
               <div className="modal-article-body">
-                <h1 className="modal-article-title">{selectedPost.title}</h1>
+                <h2 className="modal-article-title">{selectedPost.title}</h2>
 
                 <div className="modal-author-strip">
                   <div className="author-avatar-lg">

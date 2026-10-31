@@ -404,3 +404,14 @@ button:hover::before,
   animation: magicRippleExpand 0.55s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
   z-index: 10;
 }
+
+@media (max-width: 768px), (prefers-reduced-motion: reduce) {
+  .btn-confirm-add-cat,
+  .yoga-btn-whatsapp,
+  .btn-wa-header,
+  .help-wa-btn,
+  .wa-track-btn,
+  .whatsapp-float-btn {
+    animation: none !important;
+  }
+}

@@ -119,10 +119,11 @@ html, body {
   100% { transform: translate3d(-35px, 25px, 0) scale(0.95); }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px), (prefers-reduced-motion: reduce) {
   .ambient-orb {
     filter: blur(35px);
     opacity: 0.12;
+    animation: none !important;
   }
   .ambient-orb-1 { width: 220px; height: 220px; }
   .ambient-orb-2 { width: 240px; height: 240px; }

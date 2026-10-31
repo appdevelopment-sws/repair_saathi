@@ -118,6 +118,8 @@ export default function HeroCarousel() {
               href={item.link}
               className="hero-slider-card"
               title={item.title}
+              aria-label={item.title}
+              prefetch={false}
             >
               <div className="slider-card-media">
                 <Image

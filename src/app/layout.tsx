@@ -283,19 +283,6 @@ export default function RootLayout({
           property="article:modified_time"
           content="2026-01-22T13:02:21+00:00"
         />
-        <link
-          rel="preload"
-          as="image"
-          href="/images/freeze-repair-dark.webp"
-          type="image/webp"
-          fetchPriority="high"
-        />
-        <link
-          rel="preload"
-          as="image"
-          href="/images/logo.webp"
-          type="image/webp"
-        />
         <script
           type="application/ld+json"
           className="yoast-schema-graph"

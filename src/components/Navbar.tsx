@@ -210,6 +210,7 @@ export default function Navbar() {
                           href="/home-appliance-repair-services-patna/"
                           className="view-all-link"
                           onClick={() => setServicesDropdownOpen(false)}
+                          prefetch={false}
                         >
                           View All 8+ <ArrowRight size={12} />
                         </Link>
@@ -224,6 +225,7 @@ export default function Navbar() {
                               href={item.href}
                               className="service-dropdown-item group"
                               onClick={() => setServicesDropdownOpen(false)}
+                              prefetch={false}
                             >
                               <div
                                 className="item-icon-box"
@@ -257,6 +259,7 @@ export default function Navbar() {
             <Link
               href="/about-repair-saathi/"
               className={`pill-nav-link ${isActive("/about-repair-saathi/") ? "active" : ""}`}
+              prefetch={false}
             >
               About Us
             </Link>
@@ -264,6 +267,7 @@ export default function Navbar() {
             <Link
               href="/home-appliance-repair-blog/"
               className={`pill-nav-link ${isActive("/home-appliance-repair-blog/") ? "active" : ""}`}
+              prefetch={false}
             >
               Blogs
             </Link>
@@ -271,6 +275,7 @@ export default function Navbar() {
             <Link
               href="/my-bookings/"
               className={`pill-nav-link ${isActive("/my-bookings/") ? "active" : ""}`}
+              prefetch={false}
             >
               My Bookings
             </Link>
@@ -278,6 +283,7 @@ export default function Navbar() {
             <Link
               href="/contact-repair-saathi/"
               className={`pill-nav-link ${isActive("/contact-repair-saathi/") ? "active" : ""}`}
+              prefetch={false}
             >
               Contact
             </Link>

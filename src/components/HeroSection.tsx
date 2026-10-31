@@ -318,7 +318,7 @@ export default function HeroSection() {
                     </div>
                     <div className="highlight-content">
                       <span className="highlight-tag">{card.label}</span>
-                      <h3 className="highlight-title">{card.title}</h3>
+                      <div className="highlight-title">{card.title}</div>
                       <p className="highlight-desc">{card.desc}</p>
                     </div>
                   </div>

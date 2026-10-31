@@ -411,6 +411,7 @@ export default function FeaturedCategories({
             href="/home-appliance-repair-services-patna/"
             className="category-item-card all-services-card"
             title="All Services"
+            prefetch={false}
           >
             <div className="category-icon-wrapper all-services-wrapper">
               <AllServicesIcon />

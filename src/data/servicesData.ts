@@ -13,7 +13,6 @@ export interface ServiceItem {
   description: string;
   features: string[];
   inclusions: string[];
-  exclusions: string[];
 }
 
 export const servicesData: ServiceItem[] = [
@@ -41,10 +40,6 @@ export const servicesData: ServiceItem[] = [
       "Coil and thermostat testing",
       "Leakage inspection and tank check",
       "Post-repair functional testing"
-    ],
-    exclusions: [
-      "Cost of spare parts (quoted upfront before fixing)",
-      "Major tank replacement/welding charges"
     ]
   },
   {
@@ -71,10 +66,6 @@ export const servicesData: ServiceItem[] = [
       "Microwave power circuit diagnostics",
       "Cleaning of interior magnetron chamber area",
       "Heating test and safety leakage test"
-    ],
-    exclusions: [
-      "Replacement parts cost (magnetron, capacitor, transformer)",
-      "Glass turntable breakage replacement"
     ]
   },
   {
@@ -101,10 +92,6 @@ export const servicesData: ServiceItem[] = [
       "Duct pipe inspection for blockages",
       "Control panel & auto-clean mechanism check",
       "Complete operational trial"
-    ],
-    exclusions: [
-      "Cost of new motor, PCB, or carbon filters if required",
-      "Duct hole drilling or exterior civil work"
     ]
   },
   {
@@ -131,10 +118,6 @@ export const servicesData: ServiceItem[] = [
       "Air filter wash and antimicrobial sanitization",
       "Drain pipe unclogging and blower speed check",
       "Current amp load testing"
-    ],
-    exclusions: [
-      "Gas refill charges if empty (charged per refrigerant type)",
-      "Compressor replacement"
     ]
   },
   {
@@ -161,10 +144,6 @@ export const servicesData: ServiceItem[] = [
       "Compressor electrical continuity & start test",
       "Defrost sensor and heater coil verification",
       "Temperature calibration"
-    ],
-    exclusions: [
-      "Refrigerant gas refill cost",
-      "Compressor or body replacement"
     ]
   },
   {
@@ -191,10 +170,6 @@ export const servicesData: ServiceItem[] = [
       "Blower wheel and drain tray cleaning",
       "Temperature delta check (air intake vs output)",
       "Full electrical terminals inspection"
-    ],
-    exclusions: [
-      "Freon gas charge (if leakage detected)",
-      "Copper pipe or brackets cost"
     ]
   },
   {
@@ -221,10 +196,6 @@ export const servicesData: ServiceItem[] = [
       "Drain pipe and filter cleaning",
       "Drive belt tension check",
       "Full spin cycle demo and trial"
-    ],
-    exclusions: [
-      "Drum replacement or major mechanical tub rebuilds",
-      "Cost of replacement parts"
     ]
   },
   {
@@ -251,10 +222,6 @@ export const servicesData: ServiceItem[] = [
       "Electrical condenser fan inspection",
       "Filter cleaning and TDS test",
       "Leak-free operation test"
-    ],
-    exclusions: [
-      "RO Membrane & sediment/carbon filter set replacement cost",
-      "Water storage tank fabrication"
     ]
   }
 ];

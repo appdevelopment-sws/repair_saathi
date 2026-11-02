@@ -243,7 +243,7 @@ export default async function ProductDetailPage({
           </div>
         </div>
 
-        {/* What is Included & What is Excluded */}
+        {/* What is Included & Service Assurance */}
         <div className="product-detail-inc-exc">
           {/* Inclusions */}
           <div
@@ -267,26 +267,20 @@ export default async function ProductDetailPage({
             </ul>
           </div>
 
-          {/* Exclusions */}
+          {/* Service Assurance */}
           <div
             style={{
               background: "#ffffff",
               padding: "28px",
               borderRadius: "16px",
               border: "1px solid var(--border-color)",
+              display: "flex",
+              alignItems: "center",
             }}
           >
-            <h3 style={{ fontSize: "18px", fontWeight: "800", color: "#b91c1c", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
-              <span>✕</span> What&apos;s Excluded / Extra
-            </h3>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "10px" }}>
-              {service.exclusions.map((exc, i) => (
-                <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "10px", fontSize: "14px", color: "#475569", lineHeight: "1.5" }}>
-                  <span style={{ color: "#ef4444", fontWeight: "900" }}>•</span>
-                  <span>{exc}</span>
-                </li>
-              ))}
-            </ul>
+            <p style={{ fontSize: "15px", color: "#334155", lineHeight: "1.8", margin: 0, fontWeight: "500" }}>
+              Expert doorstep service for AC, Refrigerator, Washing Machine, RO &amp; Microwave. Certified technicians arrive within 30 minutes with genuine spare parts, clear upfront pricing &amp; a 90-day warranty.
+            </p>
           </div>
         </div>
 

@@ -553,7 +553,7 @@ export default function BookingModal({
                 className={`modal-tab-btn ${activeTab === "book" ? "active" : ""}`}
                 onClick={() => setActiveTab("book")}
               >
-                Book Free Visit
+                Book For Visit
               </button>
               <button
                 type="button"

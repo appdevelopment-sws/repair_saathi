@@ -303,7 +303,7 @@ export default function WindowAcSeoContent() {
               <div className="seo-feature-card">
                 <h3 className="seo-feature-title">What is the cost of window AC service and repair in Patna?</h3>
                 <p>
-                  Our doorstep window AC visiting and inspection fee starts at just <strong>₹299</strong>. Foam jet cleaning, gas charging, and electrical spare replacement costs are quoted upfront after diagnosis with no hidden fees.
+                  Our doorstep window AC visiting and inspection fee starts at just <strong>₹199</strong>. Foam jet cleaning, gas charging, and electrical spare replacement costs are quoted upfront after diagnosis with no hidden fees.
                 </p>
               </div>
 

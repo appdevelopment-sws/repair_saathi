@@ -122,7 +122,7 @@ export default function Navbar() {
     { text: "Home", href: "/" },
     { text: "About Us", href: "/about-repair-saathi/" },
     { text: "Blogs", href: "/home-appliance-repair-blog/" },
-    { text: "My Bookings", href: "/my-bookings/" },
+    // { text: "My Bookings", href: "/my-bookings/" },
     { text: "Contact", href: "/contact-repair-saathi/" },
   ];
 

@@ -29,7 +29,7 @@ export const DEFAULT_CATEGORIES: CategoryDto[] = [
     icon: "Wind",
     description: "Complete AC repair, power jet chemical wash, gas filling and installation service in Patna.",
     services: [
-      { id: "ac-1", title: "AC Repair/Service", price: "₹299" },
+      { id: "ac-1", title: "AC Repair/Service", price: "₹199" },
       { id: "ac-2", title: "AC Installation/ Removal", price: "₹499" },
       { id: "ac-3", title: "AC Gas Charging & Jet Service", price: "₹1,499" },
       { id: "ac-4", title: "Any Other AC related Service", price: "Inspection" },
@@ -71,7 +71,7 @@ export const DEFAULT_CATEGORIES: CategoryDto[] = [
     icon: "Droplets",
     description: "RO water purifier service, membrane change, filter replacement and repair.",
     services: [
-      { id: "ro-1", title: "RO Service & Filter Replacement", price: "₹299" },
+      { id: "ro-1", title: "RO Service & Filter Replacement", price: "₹199" },
       { id: "ro-2", title: "Membrane Change & TDS Tuning", price: "₹799" },
       { id: "ro-3", title: "Booster Pump & Leakage Fix", price: "₹499" },
       { id: "ro-4", title: "Any Other Water Purifier related Service", price: "Inspection" },
@@ -87,7 +87,7 @@ export const DEFAULT_CATEGORIES: CategoryDto[] = [
     services: [
       { id: "gey-1", title: "Geyser Repair/Service", price: "₹199" },
       { id: "gey-2", title: "Heating Element / Coil Replacement", price: "₹399" },
-      { id: "gey-3", title: "Thermostat & Water Leakage Fix", price: "₹299" },
+      { id: "gey-3", title: "Thermostat & Water Leakage Fix", price: "₹199" },
       { id: "gey-4", title: "Any Other Geyser related Service", price: "Inspection" },
     ],
   },
@@ -115,7 +115,7 @@ export const DEFAULT_CATEGORIES: CategoryDto[] = [
     services: [
       { id: "ch-1", title: "Kitchen Chimney Deep Cleaning", price: "₹399" },
       { id: "ch-2", title: "Motor & Suction Repair", price: "₹499" },
-      { id: "ch-3", title: "Baffle Filter Chemical Wash", price: "₹299" },
+      { id: "ch-3", title: "Baffle Filter Chemical Wash", price: "₹199" },
       { id: "ch-4", title: "Any Other Chimney related Service", price: "Inspection" },
     ],
   },
@@ -127,8 +127,8 @@ export const DEFAULT_CATEGORIES: CategoryDto[] = [
     icon: "Wind",
     description: "Window AC cleaning, gas charging and cooling repair in Patna.",
     services: [
-      { id: "wac-1", title: "Window AC Servicing & Cleaning", price: "₹299" },
-      { id: "wac-2", title: "Window AC Gas Refilling", price: "₹1,299" },
+      { id: "wac-1", title: "Window AC Servicing & Cleaning", price: "₹199" },
+      { id: "wac-2", title: "Window AC Gas Refilling", price: "₹1,199" },
       { id: "wac-3", title: "Installation & Uninstallation", price: "₹499" },
       { id: "wac-4", title: "Any Other Window AC related Service", price: "Inspection" },
     ],
@@ -157,7 +157,7 @@ export const DEFAULT_CATEGORIES: CategoryDto[] = [
     services: [
       { id: "lap-1", title: "Laptop Screen / Display Replacement", price: "₹499" },
       { id: "lap-2", title: "Motherboard & Chip-Level Servicing", price: "₹799" },
-      { id: "lap-3", title: "Keyboard & Battery Replacement", price: "₹299" },
+      { id: "lap-3", title: "Keyboard & Battery Replacement", price: "₹199" },
       { id: "lap-4", title: "Any Other Laptop related Service", price: "Inspection" },
     ],
   },
@@ -339,7 +339,7 @@ export async function GET() {
                   (cat.name && d.name.toLowerCase().includes(cat.name.toLowerCase().split(" ")[0]))
               );
               categoryServices = defaultMatch?.services || [
-                { id: `${cat.id}-1`, title: `${cat.name} Repair/Service`, price: "₹299", shortDescription: "Includes complete diagnosis & 15 days service warranty" },
+                { id: `${cat.id}-1`, title: `${cat.name} Repair/Service`, price: "₹199", shortDescription: "Includes complete diagnosis & 15 days service warranty" },
                 { id: `${cat.id}-2`, title: `${cat.name} Installation & Diagnosis`, price: "₹499", shortDescription: "Includes complete diagnosis & 15 days service warranty" },
                 { id: `${cat.id}-3`, title: `Any Other ${cat.name} related Service`, price: "Inspection", shortDescription: "Includes complete diagnosis & 15 days service warranty" },
               ];

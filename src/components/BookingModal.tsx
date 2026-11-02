@@ -26,7 +26,7 @@ const DEFAULT_AC_CATEGORY: CategoryDto = {
   slug: "ac-repair-in-patna",
   serviceId: "ac-repair",
   services: [
-    { id: "ac-1", title: "AC Repair/Service", price: "₹299" },
+    { id: "ac-1", title: "AC Repair/Service", price: "₹199" },
     { id: "ac-2", title: "AC Installation/ Removal", price: "₹499" },
     { id: "ac-3", title: "Any Other AC related Service", price: "Inspection" },
   ],
@@ -238,7 +238,7 @@ export default function BookingModal({
     currentCategory.services && currentCategory.services.length > 0
       ? currentCategory.services
       : [
-          { id: "1", title: `${currentCategory.name} Repair/Service`, price: "₹299" },
+          { id: "1", title: `${currentCategory.name} Repair/Service`, price: "₹199" },
           { id: "2", title: `${currentCategory.name} Installation & Diagnosis`, price: "₹499" },
           { id: "3", title: `Any Other ${currentCategory.name} related Service`, price: "Inspection" },
         ];

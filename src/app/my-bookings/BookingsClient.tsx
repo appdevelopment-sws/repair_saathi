@@ -69,7 +69,7 @@ export default function BookingsClient() {
           {
             id: "RS-982410",
             serviceName: "AC Repair & Deep Jet Wash Service in Patna",
-            price: "₹299.00",
+            price: "₹199.00",
             customerName: "Harsh Raj",
             phone: "+91-9304415657",
             address: "Flat 302, Balaji Nagar, Near Hi-Tech Hospital, Saguna More, Danapur, Patna",

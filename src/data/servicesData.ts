@@ -101,7 +101,7 @@ export const servicesData: ServiceItem[] = [
     shortTitle: "Window AC Services",
     category: "AC Services",
     image: "/images/window-ac-service.webp",
-    price: "₹299.00",
+    price: "₹199.00",
     originalPrice: "₹499.00",
     discountBadge: "40% OFF",
     rating: 4.9,
@@ -153,23 +153,23 @@ export const servicesData: ServiceItem[] = [
     shortTitle: "AC Repair & Servicing",
     category: "AC Services",
     image: "/images/ac-repair-sec.webp",
-    price: "₹299.00",
+    price: "₹199.00",
     originalPrice: "₹599.00",
     discountBadge: "50% OFF",
     rating: 5.0,
     reviewsCount: 780,
-    description: "Fast and affordable Split AC repair and deep servicing in Patna. High-pressure jet wash, indoor jacket cleaning to prevent mess, PCB repair, capacitor replacement, and refrigerant gas refilling.",
+    description: "Affordable Split AC checkup and basic servicing in Patna. This service includes air filter cleaning and complete operational testing only.",
     features: [
-      "Mess-free indoor jet wash with protective jacket",
-      "Outdoor unit condenser chemical cleaning",
-      "Gas leak fixing and vacuum nitrogen testing",
-      "Installation and uninstallation services available"
+      "Doorstep technician arrival within 30-60 minutes",
+      "Air filter cleaning and dust removal",
+      "Cooling performance & airflow test",
+      "Transparent upfront pricing with zero hidden charges"
     ],
     inclusions: [
-      "Complete cooling coil wash",
-      "Blower wheel and drain tray cleaning",
-      "Temperature delta check (air intake vs output)",
-      "Full electrical terminals inspection"
+      "Air filter removal and thorough cleaning",
+      "Basic electrical wiring and continuity check",
+      "Cooling performance and airflow test",
+      "Complete post-service operational testing"
     ]
   },
   {

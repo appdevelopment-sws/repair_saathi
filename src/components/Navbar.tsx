@@ -272,13 +272,13 @@ export default function Navbar() {
               Blogs
             </Link>
 
-            <Link
+            {/* <Link
               href="/my-bookings/"
               className={`pill-nav-link ${isActive("/my-bookings/") ? "active" : ""}`}
               prefetch={false}
             >
               My Bookings
-            </Link>
+            </Link> */}
 
             <Link
               href="/contact-repair-saathi/"

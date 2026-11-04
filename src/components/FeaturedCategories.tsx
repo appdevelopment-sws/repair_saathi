@@ -338,23 +338,18 @@ export default function FeaturedCategories({
     const ctx = gsap.context(() => {
       const cards = gridRef.current?.querySelectorAll(".category-item-card");
       if (cards && cards.length > 0) {
-        gsap.fromTo(
-          cards,
-          { opacity: 0, y: 35, scale: 0.9 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            stagger: 0.08,
-            duration: 0.7,
-            ease: "back.out(1.5)",
-            scrollTrigger: {
-              trigger: gridRef.current,
-              start: "top 85%",
-              once: true,
-            },
-          }
-        );
+        gsap.from(cards, {
+          y: 20,
+          duration: 0.5,
+          stagger: 0.05,
+          ease: "power2.out",
+          immediateRender: false,
+          scrollTrigger: {
+            trigger: gridRef.current,
+            start: "top 90%",
+            once: true,
+          },
+        });
 
         // Apply 3D tilt & magnetic effect on desktop
         cards.forEach((card) => {

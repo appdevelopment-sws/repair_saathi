@@ -243,7 +243,7 @@ button:hover::before,
   font-weight: 800;
   border: 1px solid rgba(255, 255, 255, 0.35) !important;
   box-shadow: 0 4px 18px rgba(245, 158, 11, 0.38), 0 0 0 1px rgba(251, 188, 52, 0.25);
-  animation: magicGoldenPulse 3.5s infinite ease-in-out;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, filter 0.25s ease;
 }
 
 .yoga-btn-primary:hover,
@@ -333,7 +333,7 @@ button:hover::before,
   font-weight: 800;
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
   box-shadow: 0 4px 16px rgba(37, 211, 102, 0.38);
-  animation: magicEmeraldPulse 3.5s infinite ease-in-out;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, filter 0.25s ease;
 }
 
 .yoga-btn-whatsapp:hover,

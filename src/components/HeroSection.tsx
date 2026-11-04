@@ -84,116 +84,50 @@ export default function HeroSection() {
     },
   ];
 
-  // GSAP Cinematic Entrance Timeline & Mouse Parallax (desktop only to prevent mobile main-thread blocking)
+  // Performance-optimized GSAP enhancements (desktop only)
+  // Keeps above-the-fold content immediately visible to guarantee fast Largest Contentful Paint (LCP)
   useEffect(() => {
     if (typeof window === "undefined" || window.innerWidth < 768) return;
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
       // 1. Ambient Glow soft breathing pulsation
       if (ambientGlowRef.current) {
         gsap.to(ambientGlowRef.current, {
-          scale: 1.18,
-          opacity: 0.95,
-          duration: 4.5,
+          scale: 1.15,
+          opacity: 0.85,
+          duration: 5,
           repeat: -1,
           yoyo: true,
           ease: "sine.inOut",
         });
       }
 
-      // 4. Badge entrance with elastic bounce
-      if (badgeRef.current) {
-        tl.fromTo(
-          badgeRef.current,
-          { opacity: 0, y: -35, scale: 0.8 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.75, ease: "back.out(2)" }
-        );
-      }
-
-      // 5. 3D Headline entrance with perspective
-      if (headingRef.current) {
-        tl.fromTo(
-          headingRef.current,
-          {
-            opacity: 0,
-            y: 50,
-            transformPerspective: 800,
-            rotationX: 18,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            rotationX: 0,
-            duration: 0.9,
-            ease: "power4.out",
-          },
-          "-=0.4"
-        );
-      }
-
-      // 6. SVG curved highlight underline animation
+      // 2. SVG curved highlight underline draw-in (static length to avoid forced reflow)
       if (curvePathRef.current) {
-        const length = curvePathRef.current.getTotalLength() || 220;
+        const length = 200;
         gsap.set(curvePathRef.current, {
           strokeDasharray: length,
           strokeDashoffset: length,
         });
 
-        tl.to(
-          curvePathRef.current,
-          {
-            strokeDashoffset: 0,
-            duration: 0.85,
-            ease: "power2.inOut",
-          },
-          "-=0.3"
-        );
+        gsap.to(curvePathRef.current, {
+          strokeDashoffset: 0,
+          duration: 0.85,
+          delay: 0.2,
+          ease: "power2.inOut",
+        });
       }
 
-      // 7. Subtitle fade up
-      if (subtitleRef.current) {
-        tl.fromTo(
-          subtitleRef.current,
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.6 },
-          "-=0.4"
-        );
-      }
-
-      // 8. Feature highlight cards staggered spring pop
+      // 3. 3D tilt interaction on feature cards
       if (highlightsRef.current) {
         const cards = highlightsRef.current.querySelectorAll(".yoga-highlight-card");
-        tl.fromTo(
-          cards,
-          { opacity: 0, y: 35, scale: 0.92 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            stagger: 0.1,
-            duration: 0.7,
-            ease: "back.out(1.5)",
-          },
-          "-=0.3"
-        );
-
-        // Add 3D tilt to each card
         cards.forEach((card) => {
           apply3DTilt(card as HTMLElement, 8);
         });
       }
 
-      // 9. CTAs pop in with magnetic hover
+      // 4. Magnetic hover on CTA buttons
       if (ctasRef.current) {
-        tl.fromTo(
-          ctasRef.current,
-          { opacity: 0, y: 25 },
-          { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
-          "-=0.3"
-        );
-
         const primaryBtn = ctasRef.current.querySelector(".yoga-btn-primary") as HTMLElement;
         const secondaryBtn = ctasRef.current.querySelector(".yoga-btn-secondary") as HTMLElement;
         const waBtn = ctasRef.current.querySelector(".yoga-btn-whatsapp") as HTMLElement;
@@ -201,27 +135,6 @@ export default function HeroSection() {
         if (primaryBtn) applyMagnetic(primaryBtn, 0.28);
         if (secondaryBtn) applyMagnetic(secondaryBtn, 0.28);
         if (waBtn) applyMagnetic(waBtn, 0.28);
-      }
-
-      // 10. Micro Trust points pop in
-      if (trustBarRef.current) {
-        const items = trustBarRef.current.querySelectorAll(".trust-item, .trust-divider");
-        tl.fromTo(
-          items,
-          { opacity: 0, scale: 0.7 },
-          { opacity: 1, scale: 1, stagger: 0.08, duration: 0.5, ease: "back.out(2)" },
-          "-=0.2"
-        );
-      }
-
-      // 11. Hero Carousel slide in from right
-      if (carouselWrapRef.current) {
-        tl.fromTo(
-          carouselWrapRef.current,
-          { opacity: 0, x: 80, scale: 0.95 },
-          { opacity: 1, x: 0, scale: 1, duration: 1.1, ease: "power3.out" },
-          "-=0.7"
-        );
       }
     }, heroRef);
 

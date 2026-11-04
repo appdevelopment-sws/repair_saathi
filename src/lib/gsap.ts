@@ -133,99 +133,67 @@ export function initGlobalScrollTriggers(scope?: HTMLElement): () => void {
   if (typeof window === "undefined" || window.innerWidth < 768) return () => {};
 
   const ctx = gsap.context(() => {
-    const vh = window.innerHeight;
-
-    // 1. Generic fade-up elements (only animate if below the fold)
+    // 1. Generic subtle fade-up (without opacity hiding or forced reflow)
     const fadeUpElements = gsap.utils.toArray<HTMLElement>('[data-gsap="fade-up"]');
     fadeUpElements.forEach((el) => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < vh * 0.9) return; // Keep above-the-fold immediately visible
-
-      gsap.fromTo(
-        el,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 88%",
-            toggleActions: "play none none none",
-            once: true,
-          },
-        }
-      );
+      gsap.from(el, {
+        y: 28,
+        duration: 0.65,
+        ease: "power2.out",
+        immediateRender: false,
+        scrollTrigger: {
+          trigger: el,
+          start: "top 88%",
+          once: true,
+        },
+      });
     });
 
-    // 2. Cinematic image reveal (smooth subtle scale without heavy clipPath rasterization)
+    // 2. Cinematic image reveal (smooth subtle scale without forced reflow)
     const revealImages = gsap.utils.toArray<HTMLElement>('[data-gsap="image-reveal"]');
     revealImages.forEach((imgWrap) => {
-      const rect = imgWrap.getBoundingClientRect();
-      if (rect.top < vh * 0.9) return;
-
-      gsap.fromTo(
-        imgWrap,
-        { opacity: 0, scale: 0.96 },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 0.8,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: imgWrap,
-            start: "top 85%",
-            toggleActions: "play none none none",
-            once: true,
-          },
-        }
-      );
+      gsap.from(imgWrap, {
+        scale: 0.96,
+        duration: 0.75,
+        ease: "power2.out",
+        immediateRender: false,
+        scrollTrigger: {
+          trigger: imgWrap,
+          start: "top 85%",
+          once: true,
+        },
+      });
     });
 
-    // 3. Slide-in from Left / Right (below fold only)
+    // 3. Slide-in from Left / Right (without forced reflow)
     const slideLeft = gsap.utils.toArray<HTMLElement>('[data-gsap="slide-left"]');
     slideLeft.forEach((el) => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < vh * 0.9) return;
-
-      gsap.fromTo(
-        el,
-        { opacity: 0, x: -40 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.75,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 85%",
-            once: true,
-          },
-        }
-      );
+      gsap.from(el, {
+        x: -35,
+        duration: 0.7,
+        ease: "power2.out",
+        immediateRender: false,
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+          once: true,
+        },
+      });
     });
 
     const slideRight = gsap.utils.toArray<HTMLElement>('[data-gsap="slide-right"]');
     slideRight.forEach((el) => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < vh * 0.9) return;
-
-      gsap.fromTo(
-        el,
-        { opacity: 0, x: 40 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.75,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 85%",
-            once: true,
-          },
-        }
-      );
+      gsap.from(el, {
+        x: 35,
+        duration: 0.7,
+        ease: "power2.out",
+        immediateRender: false,
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+          once: true,
+        },
+      });
     });
 
     // 4. Interactive 3D tilt & magnetic: only attach to explicitly tagged elements

@@ -36,9 +36,7 @@ export default function BlogClient() {
   useEffect(() => {
     const fetchLiveBlogs = async () => {
       try {
-        const backendBase =
-          process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8008";
-        const res = await fetch(`${backendBase}/api/blogs?status=published`, {
+        const res = await fetch(`/api/blogs?status=published`, {
           cache: "no-store",
         });
         if (res.ok) {

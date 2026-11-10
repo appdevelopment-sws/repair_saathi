@@ -3,15 +3,106 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   blogsData,
+  BlogPost,
   getBlogBySlug,
   getRelatedBlogs,
 } from "@/data/blogsData";
 import BlogPostClient from "./BlogPostClient";
 
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
+export const revalidate = 0;
+
 export async function generateStaticParams() {
   return blogsData.map((post) => ({
     slug: post.slug,
   }));
+}
+
+// Fetch single blog: Check backend candidate URLs first, then fallback to static blogsData
+async function fetchBlogPost(rawSlug: string): Promise<BlogPost | null> {
+  const slug = decodeURIComponent(rawSlug).trim();
+  if (!slug) return null;
+
+  const candidateUrls = [
+    process.env.BACKEND_INTERNAL_URL,
+    process.env.NEXT_PUBLIC_BACKEND_URL,
+    "http://host.docker.internal:8008",
+    "http://127.0.0.1:8008",
+    "http://localhost:8008",
+  ].filter(Boolean) as string[];
+
+  for (const backendUrl of candidateUrls) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3500);
+
+      const res = await fetch(`${backendUrl}/api/blogs/${encodeURIComponent(slug)}`, {
+        signal: controller.signal,
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+      });
+
+      clearTimeout(timeoutId);
+
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && json.data) {
+          const item = json.data;
+
+          let formattedDate = "Recently Published";
+          if (item.createdAt) {
+            try {
+              formattedDate = new Date(item.createdAt).toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              });
+            } catch {
+              formattedDate = "Recently Published";
+            }
+          }
+
+          let tags: string[] = [];
+          if (Array.isArray(item.tags)) {
+            tags = item.tags;
+          } else if (typeof item.tags === "string") {
+            try {
+              const parsed = JSON.parse(item.tags);
+              if (Array.isArray(parsed)) tags = parsed;
+              else tags = item.tags.split(",").map((s: string) => s.trim());
+            } catch {
+              tags = item.tags.split(",").map((s: string) => s.trim());
+            }
+          }
+
+          const blogPost: BlogPost = {
+            id: String(item.id),
+            slug: item.slug,
+            title: item.title,
+            author: item.author || "Repair Saathi Technical Team",
+            date: formattedDate,
+            readTime: item.readTime || "5 min read",
+            category: item.category || "Appliance Care",
+            image: item.image || "/images/og-repair-saathi.png",
+            excerpt: item.excerpt || "",
+            content: item.content || "",
+            tags,
+            metaTitle: item.metaTitle || `${item.title} | Repair Saathi Patna`,
+            metaDescription: item.metaDescription || item.excerpt,
+            isFeatured: !!item.isFeatured,
+          };
+          return blogPost;
+        }
+      }
+    } catch {
+      continue;
+    }
+  }
+
+  // Fallback to static blogsData if not found in database
+  const staticPost = getBlogBySlug(slug);
+  return staticPost || null;
 }
 
 export async function generateMetadata({
@@ -20,7 +111,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getBlogBySlug(slug);
+  const post = await fetchBlogPost(slug);
 
   if (!post) {
     return {
@@ -86,7 +177,7 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = getBlogBySlug(slug);
+  const post = await fetchBlogPost(slug);
 
   if (!post) {
     notFound();
@@ -109,8 +200,8 @@ export default async function BlogPostPage({
     headline: post.title,
     description: post.excerpt,
     image: [imageUrl],
-    datePublished: "2026-09-01T00:00:00+05:30",
-    dateModified: "2026-10-22T10:00:00+05:30",
+    datePublished: post.date || new Date().toISOString(),
+    dateModified: new Date().toISOString(),
     author: {
       "@type": "Person",
       name: post.author,
@@ -173,4 +264,3 @@ export default async function BlogPostPage({
     </>
   );
 }
-

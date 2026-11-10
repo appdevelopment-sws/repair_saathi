@@ -150,6 +150,11 @@ export default function BookingModal({
   const [submitted, setSubmitted] = useState(false);
   const [bookingId, setBookingId] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedRatePackage, setSelectedRatePackage] = useState<{
+    serviceId?: string | number;
+    title: string;
+    price: string;
+  } | null>(null);
 
   // FAQ open/close accordion state
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
@@ -327,17 +332,76 @@ export default function BookingModal({
     const generatedId = "RS-" + Math.floor(100000 + Math.random() * 900000);
     const scheduledDate = needWhen === "Custom Date" && customDate ? customDate : needWhen;
 
-    const allAppliancesBooked: Array<{ name: string; brand?: string; requirements: string[] }> = [
+    const formatReqWithPrice = (
+      reqTitle: string,
+      availableServices: CategoryServiceItem[] = []
+    ): string => {
+      const matched = availableServices.find(
+        (s) => s.title === reqTitle || String(s.id) === reqTitle
+      );
+      const price =
+        matched?.price ||
+        (selectedRatePackage?.title === reqTitle ? selectedRatePackage.price : null);
+
+      if (price && price !== "Inspection" && price !== "Free") {
+        const str = String(price).trim();
+        const formatted = str.startsWith("₹") ? str : `₹${str}`;
+        return `${reqTitle} (${formatted})`;
+      }
+      return reqTitle;
+    };
+
+    const getServicesArray = (
+      reqTitles: string[],
+      availableServices: CategoryServiceItem[] = []
+    ) => {
+      return reqTitles.map((reqTitle) => {
+        const matched = availableServices.find(
+          (s) => s.title === reqTitle || String(s.id) === reqTitle
+        );
+        const price =
+          matched?.price ||
+          (selectedRatePackage?.title === reqTitle ? selectedRatePackage.price : null);
+        let formattedPrice: string | null = null;
+        if (price) {
+          const str = String(price).trim();
+          formattedPrice = str.startsWith("₹")
+            ? str
+            : str === "Inspection" || str === "Free"
+            ? str
+            : `₹${str}`;
+        }
+        return {
+          title: reqTitle,
+          price: formattedPrice,
+        };
+      });
+    };
+
+    const allAppliancesBooked: Array<{
+      name: string;
+      brand?: string;
+      requirements: string[];
+      services: Array<{ title: string; price: string | null }>;
+    }> = [
       {
         name: currentCategory.name,
         brand: brand.trim() || undefined,
-        requirements: selectedRequirements,
+        requirements: selectedRequirements.map((r) => formatReqWithPrice(r, servicesList)),
+        services: getServicesArray(selectedRequirements, servicesList),
       },
-      ...additionalAppliances.map((a) => ({
-        name: a.category.name,
-        brand: undefined,
-        requirements: a.selectedRequirements,
-      })),
+      ...additionalAppliances.map((a) => {
+        const srvList: CategoryServiceItem[] =
+          a.category.services && a.category.services.length > 0
+            ? a.category.services
+            : [];
+        return {
+          name: a.category.name,
+          brand: undefined,
+          requirements: a.selectedRequirements.map((r) => formatReqWithPrice(r, srvList)),
+          services: getServicesArray(a.selectedRequirements, srvList),
+        };
+      }),
     ];
 
     const combinedServiceName = allAppliancesBooked
@@ -476,6 +540,7 @@ export default function BookingModal({
     setAdditionalAppliances([]);
     setIsAddingCategory(false);
     setSelectedCatIdToAdd("");
+    setSelectedRatePackage(null);
     setActiveTab("book");
     onClose();
   };
@@ -650,6 +715,42 @@ export default function BookingModal({
 
                   {/* Field 3: Requirment(s) - DYNAMIC CHECKBOXES (Screenshot 1) */}
                   <div className="requirement-section">
+                    {/* Selected Rate Package banner if chosen from Rate(s) tab */}
+                    {selectedRatePackage && selectedRequirements.includes(selectedRatePackage.title) && (
+                      <div
+                        style={{
+                          background: "#f0fdf4",
+                          border: "1.5px solid #86efac",
+                          borderRadius: "10px",
+                          padding: "8px 12px",
+                          marginBottom: "12px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          fontSize: "12.5px",
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                          <span style={{ color: "#16a34a", fontWeight: 700 }}>✓ Selected Package:</span>
+                          <span style={{ color: "#0f172a", fontWeight: 600 }}>{selectedRatePackage.title}</span>
+                        </div>
+                        {selectedRatePackage.price && (
+                          <span
+                            style={{
+                              background: "#16a34a",
+                              color: "#ffffff",
+                              padding: "2px 8px",
+                              borderRadius: "6px",
+                              fontWeight: 800,
+                              fontSize: "11px",
+                            }}
+                          >
+                            {selectedRatePackage.price}
+                          </span>
+                        )}
+                      </div>
+                    )}
+
                     <label className="requirement-label">Requirment(s)</label>
                     <div className="requirement-checkbox-row">
                       {servicesList.map((srv) => {
@@ -662,7 +763,14 @@ export default function BookingModal({
                               checked={isChecked}
                               onChange={() => toggleRequirement(srv.title)}
                             />
-                            <span className="requirement-item-text">{srv.title}</span>
+                            <span className="requirement-item-text">
+                              {srv.title}
+                              {srv.price && (
+                                <span style={{ marginLeft: "6px", color: "#16a34a", fontWeight: 700, fontSize: "11.5px" }}>
+                                  ({srv.price})
+                                </span>
+                              )}
+                            </span>
                           </label>
                         );
                       })}
@@ -711,7 +819,14 @@ export default function BookingModal({
                                         checked={isChecked}
                                         onChange={() => toggleAdditionalRequirement(item.category.id, srv.title)}
                                       />
-                                      <span className="requirement-item-text">{srv.title}</span>
+                                      <span className="requirement-item-text">
+                                        {srv.title}
+                                        {srv.price && (
+                                          <span style={{ marginLeft: "6px", color: "#16a34a", fontWeight: 700, fontSize: "11.5px" }}>
+                                            ({srv.price})
+                                          </span>
+                                        )}
+                                      </span>
                                     </label>
                                   );
                                 })}
@@ -895,6 +1010,12 @@ export default function BookingModal({
                           type="button"
                           className="rate-card-btn"
                           onClick={() => {
+                            const p = srv.price ? String(srv.price) : "";
+                            setSelectedRatePackage({
+                              serviceId: srv.id,
+                              title: srv.title,
+                              price: p,
+                            });
                             setSelectedRequirements([srv.title]);
                             setActiveTab("book");
                           }}
@@ -983,11 +1104,30 @@ export default function BookingModal({
                 <strong>Booked Appliance(s):</strong>
                 <ul style={{ margin: "6px 0 0 16px", padding: 0 }}>
                   <li>
-                    <strong>{currentCategory.name}:</strong> {selectedRequirements.join(", ")}
+                    <strong>{currentCategory.name}:</strong>{" "}
+                    {selectedRequirements
+                      .map((reqTitle) => {
+                        const matched = servicesList.find((s) => s.title === reqTitle);
+                        const price =
+                          matched?.price ||
+                          (selectedRatePackage?.title === reqTitle ? selectedRatePackage.price : null);
+                        return price && price !== "Inspection" && price !== "Free"
+                          ? `${reqTitle} (${String(price).startsWith("₹") ? price : `₹${price}`})`
+                          : reqTitle;
+                      })
+                      .join(", ")}
                   </li>
                   {additionalAppliances.map((a) => (
                     <li key={a.category.id} style={{ marginTop: "4px" }}>
-                      <strong>{a.category.name}:</strong> {a.selectedRequirements.join(", ")}
+                      <strong>{a.category.name}:</strong>{" "}
+                      {a.selectedRequirements
+                        .map((reqTitle) => {
+                          const matched = a.category.services?.find((s) => s.title === reqTitle);
+                          return matched?.price && matched.price !== "Inspection" && matched.price !== "Free"
+                            ? `${reqTitle} (${String(matched.price).startsWith("₹") ? matched.price : `₹${matched.price}`})`
+                            : reqTitle;
+                        })
+                        .join(", ")}
                     </li>
                   ))}
                 </ul>
@@ -1005,8 +1145,28 @@ export default function BookingModal({
               <a
                 href={`https://wa.me/919304415657?text=${encodeURIComponent(
                   `Hi Repair Saathi, I booked service for ${[
-                    `${currentCategory.name} (${selectedRequirements.join(", ")})`,
-                    ...additionalAppliances.map((a) => `${a.category.name} (${a.selectedRequirements.join(", ")})`),
+                    `${currentCategory.name} (${selectedRequirements
+                      .map((reqTitle) => {
+                        const matched = servicesList.find((s) => s.title === reqTitle);
+                        const price =
+                          matched?.price ||
+                          (selectedRatePackage?.title === reqTitle ? selectedRatePackage.price : null);
+                        return price && price !== "Inspection" && price !== "Free"
+                          ? `${reqTitle} (${String(price).startsWith("₹") ? price : `₹${price}`})`
+                          : reqTitle;
+                      })
+                      .join(", ")})`,
+                    ...additionalAppliances.map(
+                      (a) =>
+                        `${a.category.name} (${a.selectedRequirements
+                          .map((reqTitle) => {
+                            const matched = a.category.services?.find((s) => s.title === reqTitle);
+                            return matched?.price && matched.price !== "Inspection" && matched.price !== "Free"
+                              ? `${reqTitle} (${String(matched.price).startsWith("₹") ? matched.price : `₹${matched.price}`})`
+                              : reqTitle;
+                          })
+                          .join(", ")})`
+                    ),
                   ].join(" + ")} (Ref: ${bookingId}) for ${name}.`
                 )}`}
                 target="_blank"

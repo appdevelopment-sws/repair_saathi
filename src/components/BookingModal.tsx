@@ -156,12 +156,41 @@ export default function BookingModal({
     price: string;
   } | null>(null);
 
+  // OTP Verification State
+  const [bookingStep, setBookingStep] = useState<"form" | "otp">("form");
+  const [otpCode, setOtpCode] = useState("");
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
+  const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+  const [otpError, setOtpError] = useState<string | null>(null);
+  const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [resendTimer, setResendTimer] = useState(30);
+  const [canResend, setCanResend] = useState(false);
+
   // FAQ open/close accordion state
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // OTP Resend Countdown Timer
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+    if (bookingStep === "otp" && resendTimer > 0) {
+      interval = setInterval(() => {
+        setResendTimer((prev) => {
+          if (prev <= 1) {
+            setCanResend(true);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [bookingStep, resendTimer]);
 
   useEffect(() => {
     if (isOpen) {
@@ -322,11 +351,163 @@ export default function BookingModal({
     });
   };
 
-  // Submit Handler
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Step 1: Initiate Booking & Send OTP to customer's mobile
+  const handleInitiateBooking = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !phone.trim() || !address.trim() || isSubmitting) return;
+    if (!name.trim() || !phone.trim() || !address.trim() || isSendingOtp || isSubmitting) return;
 
+    const digitsOnly = phone.replace(/\D/g, "");
+    const tenDigit = digitsOnly.length >= 10 ? digitsOnly.slice(-10) : digitsOnly;
+    if (tenDigit.length !== 10) {
+      setPhoneError("Please enter a valid 10-digit mobile number");
+      return;
+    }
+
+    setPhoneError(null);
+    setOtpError(null);
+    setIsSendingOtp(true);
+
+    try {
+      let otpSent = false;
+      const res = await fetch("/api/auth/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: tenDigit }),
+      });
+
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success !== false) otpSent = true;
+      }
+
+      if (!otpSent) {
+        const directRes = await fetch("http://localhost:8008/api/auth/send-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ phone: tenDigit }),
+        });
+        if (directRes.ok) {
+          const directJson = await directRes.json();
+          if (directJson.success !== false) otpSent = true;
+        }
+      }
+
+      if (otpSent) {
+        setBookingStep("otp");
+        setResendTimer(30);
+        setCanResend(false);
+        setOtpCode("");
+      } else {
+        setOtpError("Unable to send OTP. Please check your mobile number and try again.");
+      }
+    } catch {
+      setOtpError("Network error while sending OTP. Please check connection and try again.");
+    } finally {
+      setIsSendingOtp(false);
+    }
+  };
+
+  // Step 2: Resend OTP
+  const handleResendOtp = async () => {
+    if (!canResend || isSendingOtp) return;
+    setIsSendingOtp(true);
+    setOtpError(null);
+    const digitsOnly = phone.replace(/\D/g, "");
+    const tenDigit = digitsOnly.length >= 10 ? digitsOnly.slice(-10) : digitsOnly;
+
+    try {
+      let otpSent = false;
+      const res = await fetch("/api/auth/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: tenDigit }),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success !== false) otpSent = true;
+      }
+      if (!otpSent) {
+        const directRes = await fetch("http://localhost:8008/api/auth/send-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ phone: tenDigit }),
+        });
+        if (directRes.ok) {
+          const directJson = await directRes.json();
+          if (directJson.success !== false) otpSent = true;
+        }
+      }
+
+      if (otpSent) {
+        setResendTimer(30);
+        setCanResend(false);
+      } else {
+        setOtpError("Failed to resend OTP. Please try again after some time.");
+      }
+    } catch {
+      setOtpError("Network error while resending OTP.");
+    } finally {
+      setIsSendingOtp(false);
+    }
+  };
+
+  // Step 3: Verify OTP and proceed to confirm booking
+  const handleVerifyOtpAndConfirm = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const cleanOtp = otpCode.trim();
+    if (!cleanOtp || cleanOtp.length < 4 || isVerifyingOtp) return;
+
+    setIsVerifyingOtp(true);
+    setOtpError(null);
+    const digitsOnly = phone.replace(/\D/g, "");
+    const tenDigit = digitsOnly.length >= 10 ? digitsOnly.slice(-10) : digitsOnly;
+
+    try {
+      let verified = false;
+      const res = await fetch("/api/auth/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: tenDigit, otp: cleanOtp }),
+      });
+
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success) {
+          verified = true;
+        } else {
+          setOtpError(json.message || "Invalid OTP code. Please check and try again.");
+        }
+      } else {
+        const directRes = await fetch("http://localhost:8008/api/auth/verify-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ phone: tenDigit, otp: cleanOtp }),
+        });
+        if (directRes.ok) {
+          const directJson = await directRes.json();
+          if (directJson.success) {
+            verified = true;
+          } else {
+            setOtpError(directJson.message || "Invalid OTP code. Please check and try again.");
+          }
+        } else {
+          const errJson = await directRes.json().catch(() => null);
+          setOtpError(errJson?.message || "Invalid OTP. Please check the code entered.");
+        }
+      }
+
+      if (verified) {
+        await executeBookingSubmission();
+      }
+    } catch (err: any) {
+      setOtpError(err.message || "Network error during verification.");
+    } finally {
+      setIsVerifyingOtp(false);
+    }
+  };
+
+  // Step 4: Execute Booking Creation in Web Requests and All Bookings
+  const executeBookingSubmission = async () => {
     setIsSubmitting(true);
 
     const generatedId = "RS-" + Math.floor(100000 + Math.random() * 900000);
@@ -528,6 +709,12 @@ export default function BookingModal({
 
   const handleReset = () => {
     setSubmitted(false);
+    setBookingStep("form");
+    setOtpCode("");
+    setOtpError(null);
+    setPhoneError(null);
+    setResendTimer(30);
+    setCanResend(false);
     setName("");
     setPhone("");
     setAddress("");
@@ -640,8 +827,10 @@ export default function BookingModal({
             <div className="modal-scroll-body">
               {/* TAB 1: BOOK FREE VISIT */}
               {activeTab === "book" && (
-                <form onSubmit={handleSubmit}>
-                  {/* Field 1: Service Date & Time Slot Grid */}
+                <>
+                  {bookingStep === "form" ? (
+                    <form onSubmit={handleInitiateBooking}>
+                      {/* Field 1: Service Date & Time Slot Grid */}
                   <div className="form-grid-2">
                     <div className="form-group">
                       <label className="form-label">When do you Need Service?</label>
@@ -921,11 +1110,19 @@ export default function BookingModal({
                         className="form-input"
                         placeholder="10-digit number (e.g. 9304415657)"
                         value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        onChange={(e) => {
+                          setPhone(e.target.value);
+                          if (phoneError) setPhoneError(null);
+                        }}
                         pattern="[0-9]{10}"
                         title="Please enter a valid 10-digit mobile number"
                         required
                       />
+                      {phoneError && (
+                        <span style={{ color: "#ef4444", fontSize: "12px", marginTop: "4px", display: "block", fontWeight: 600 }}>
+                          {phoneError}
+                        </span>
+                      )}
                     </div>
                   </div>
 
@@ -985,51 +1182,153 @@ export default function BookingModal({
                     />
                   </div>
 
-                  <button type="submit" className="btn-book-submit" disabled={isSubmitting}>
-                    {isSubmitting ? "⏳ Processing Your Booking..." : "⚡ Confirm Free Visit Booking"}
+                  {otpError && (
+                    <div className="otp-error-alert" style={{ marginBottom: "12px" }}>
+                      ⚠️ {otpError}
+                    </div>
+                  )}
+
+                  <button type="submit" className="btn-book-submit" disabled={isSendingOtp || isSubmitting}>
+                    {isSendingOtp ? "⏳ Sending Verification OTP..." : "⚡ Confirm Free Visit Booking"}
                   </button>
 
                   <p className="booking-form-assurance">
                     🔒 Zero cancellation charge • Pay only after 100% service satisfaction
                   </p>
                 </form>
-              )}
+              ) : (
+                /* OTP VERIFICATION VIEW */
+                <div className="otp-container">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setBookingStep("form");
+                      setOtpError(null);
+                    }}
+                    className="otp-edit-phone-btn"
+                    style={{ alignSelf: "flex-start", marginBottom: "12px", display: "inline-flex", alignItems: "center", gap: "4px" }}
+                  >
+                    ← Edit Booking Details
+                  </button>
 
-              {/* TAB 2: RATE(S) */}
-              {activeTab === "rates" && (
-                <div className="rates-list-container">
-                  {servicesList.map((srv) => (
-                    <div key={srv.id} className="rate-card-item">
-                      <div className="rate-card-info">
-                        <h4>{srv.title}</h4>
-                        <p>{srv.shortDescription || "Includes complete diagnosis & 15 days service warranty"}</p>
-                      </div>
-                      <div className="rate-card-action">
-                        <span className="rate-card-price">{srv.price || "Free Inspection"}</span>
-                        <button
-                          type="button"
-                          className="rate-card-btn"
-                          onClick={() => {
-                            const p = srv.price ? String(srv.price) : "";
-                            setSelectedRatePackage({
-                              serviceId: srv.id,
-                              title: srv.title,
-                              price: p,
-                            });
-                            setSelectedRequirements([srv.title]);
-                            setActiveTab("book");
-                          }}
-                        >
-                          Book Now
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                  <div style={{ marginTop: "12px", fontSize: "12px", color: "#64748b", textAlign: "center" }}>
-                    *Final pricing depends on spare parts if needed. Technician will provide a clear upfront quote before starting.
+                  <div className="otp-shield-icon">📱</div>
+                  <h4 className="otp-title">Verify Your Mobile Number</h4>
+                  <p className="otp-desc">
+                    Enter the verification code sent via SMS to confirm your free visit booking.
+                  </p>
+
+                  <div className="otp-phone-pill">
+                    <span>+91 {phone.replace(/\D/g, "").slice(-10)}</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setBookingStep("form");
+                        setOtpError(null);
+                      }}
+                      className="otp-edit-phone-btn"
+                    >
+                      (Change)
+                    </button>
                   </div>
+
+                  <form
+                    onSubmit={handleVerifyOtpAndConfirm}
+                    style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}
+                  >
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      maxLength={6}
+                      autoFocus
+                      placeholder="••••"
+                      className="otp-input-field"
+                      value={otpCode}
+                      onChange={(e) => {
+                        setOtpCode(e.target.value.replace(/\D/g, ""));
+                        if (otpError) setOtpError(null);
+                      }}
+                      required
+                    />
+
+                    {otpError && (
+                      <div className="otp-error-alert">
+                        ⚠️ {otpError}
+                      </div>
+                    )}
+
+                    <button
+                      type="submit"
+                      className="btn-book-submit"
+                      style={{ marginTop: "16px", width: "100%", maxWidth: "380px" }}
+                      disabled={isVerifyingOtp || otpCode.trim().length < 4}
+                    >
+                      {isVerifyingOtp ? "⏳ Verifying & Confirming..." : "✓ Verify OTP & Confirm Booking"}
+                    </button>
+                  </form>
+
+                  <div className="otp-resend-row">
+                    <span>Didn't receive the OTP?</span>
+                    {resendTimer > 0 ? (
+                      <span style={{ fontWeight: 700, color: "#2563eb" }}>
+                        Resend in {resendTimer}s
+                      </span>
+                    ) : (
+                      <button
+                        type="button"
+                        className="otp-resend-btn"
+                        disabled={isSendingOtp}
+                        onClick={handleResendOtp}
+                      >
+                        {isSendingOtp ? "Sending..." : "Resend OTP"}
+                      </button>
+                    )}
+                  </div>
+
+                  <p className="booking-form-assurance" style={{ marginTop: "16px" }}>
+                    🔒 Direct SMS verification • Instant technician dispatch in Patna
+                  </p>
                 </div>
               )}
+            </>
+          )}
+
+          {/* TAB 2: RATE(S) */}
+          {activeTab === "rates" && (
+            <div className="rates-list-container">
+              {servicesList.map((srv) => (
+                <div key={srv.id} className="rate-card-item">
+                  <div className="rate-card-info">
+                    <h4>{srv.title}</h4>
+                    <p>{srv.shortDescription || "Includes complete diagnosis & 15 days service warranty"}</p>
+                  </div>
+                  <div className="rate-card-action">
+                    <span className="rate-card-price">{srv.price || "Free Inspection"}</span>
+                    <button
+                      type="button"
+                      className="rate-card-btn"
+                      onClick={() => {
+                        const p = srv.price ? String(srv.price) : "";
+                        setSelectedRatePackage({
+                          serviceId: srv.id,
+                          title: srv.title,
+                          price: p,
+                        });
+                        setSelectedRequirements([srv.title]);
+                        setBookingStep("form");
+                        setActiveTab("book");
+                      }}
+                    >
+                      Book Now
+                    </button>
+                  </div>
+                </div>
+              ))}
+              <div style={{ marginTop: "12px", fontSize: "12px", color: "#64748b", textAlign: "center" }}>
+                *Final pricing depends on spare parts if needed. Technician will provide a clear upfront quote before starting.
+              </div>
+            </div>
+          )}
 
               {/* TAB 3: FAQS */}
               {activeTab === "faqs" && (

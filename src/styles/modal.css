@@ -830,3 +830,134 @@
     justify-content: space-between;
   }
 }
+
+/* OTP VERIFICATION VIEW STYLING */
+.otp-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 4px 6px 4px;
+}
+
+.otp-shield-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #eff6ff;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  margin-bottom: 12px;
+  border: 2px solid #bfdbfe;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+}
+
+.otp-title {
+  font-size: 19px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 6px 0;
+  text-align: center;
+}
+
+.otp-desc {
+  font-size: 13.5px;
+  color: #475569;
+  text-align: center;
+  line-height: 1.5;
+  margin: 0 0 14px 0;
+  max-width: 380px;
+}
+
+.otp-phone-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+  color: #0f172a;
+  font-size: 13.5px;
+  margin-bottom: 18px;
+  border: 1.5px solid #e2e8f0;
+}
+
+.otp-edit-phone-btn {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  margin-left: 4px;
+}
+
+.otp-input-field {
+  width: 220px;
+  height: 52px;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 8px;
+  text-align: center;
+  border: 2px solid #cbd5e1;
+  border-radius: 12px;
+  outline: none;
+  transition: all 0.2s ease;
+  color: #0f172a;
+  background: #ffffff;
+}
+
+.otp-input-field:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}
+
+.otp-error-alert {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  margin: 12px 0 6px 0;
+  text-align: center;
+  width: 100%;
+  max-width: 380px;
+}
+
+.otp-resend-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.otp-resend-btn {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.otp-resend-btn:hover {
+  text-decoration: underline;
+}
+
+.otp-resend-btn:disabled {
+  color: #94a3b8;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+

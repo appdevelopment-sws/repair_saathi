@@ -70,6 +70,10 @@ export default function BlogPostClient({ post, relatedPosts }: BlogPostClientPro
 
   const theme = getCategoryTheme(post.category);
 
+  const featuredImage = post.image
+    ? post.image.replace(/https?:\/\/[^\/]+(?:\/api)?\/uploads\/([^"'\s>]+)/i, "/api/uploads/$1")
+    : post.image;
+
   const encodedUrl = encodeURIComponent(currentUrl);
   const encodedTitle = encodeURIComponent(`${post.title} - Repair Saathi Patna`);
   const whatsappShareUrl = `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`;
@@ -197,7 +201,7 @@ export default function BlogPostClient({ post, relatedPosts }: BlogPostClientPro
           {/* FEATURED HERO IMAGE */}
           <div className="blog-detail-featured-media">
             <Image
-              src={post.image}
+              src={featuredImage}
               alt={post.title}
               fill
               priority
@@ -222,7 +226,7 @@ export default function BlogPostClient({ post, relatedPosts }: BlogPostClientPro
                 className="modal-rich-html-content"
                 dangerouslySetInnerHTML={{
                   __html: post.content.replace(
-                    /src=["'](?:https?:\/\/(?:localhost|127\.0\.0\.1):8008)?(?:\/api)?\/uploads\/([^"'\s]+)["']/gi,
+                    /src=["'](?:https?:\/\/[^\/]+)?(?:\/api)?\/uploads\/([^"'\s>]+)["']/gi,
                     'src="/api/uploads/$1"'
                   ),
                 }}

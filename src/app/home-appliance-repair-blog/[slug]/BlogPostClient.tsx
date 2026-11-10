@@ -220,7 +220,12 @@ export default function BlogPostClient({ post, relatedPosts }: BlogPostClientPro
             {typeof post.content === "string" ? (
               <div
                 className="modal-rich-html-content"
-                dangerouslySetInnerHTML={{ __html: post.content }}
+                dangerouslySetInnerHTML={{
+                  __html: post.content.replace(
+                    /src=["'](?:https?:\/\/(?:localhost|127\.0\.0\.1):8008)?(?:\/api)?\/uploads\/([^"'\s]+)["']/gi,
+                    'src="/api/uploads/$1"'
+                  ),
+                }}
               />
             ) : (
               <div className="modal-paragraphs-wrap">

@@ -85,6 +85,7 @@ async function fetchBlogPost(rawSlug: string): Promise<BlogPost | null> {
             readTime: item.readTime || "5 min read",
             category: item.category || "Appliance Care",
             image: item.image || "/images/og-repair-saathi.png",
+            imageLink: item.imageLink || undefined,
             excerpt: item.excerpt || "",
             content: item.content || "",
             tags,

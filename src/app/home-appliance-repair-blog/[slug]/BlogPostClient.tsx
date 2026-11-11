@@ -200,14 +200,33 @@ export default function BlogPostClient({ post, relatedPosts }: BlogPostClientPro
 
           {/* FEATURED HERO IMAGE */}
           <div className="blog-detail-featured-media">
-            <Image
-              src={featuredImage}
-              alt={post.title}
-              fill
-              priority
-              sizes="(max-width: 1200px) 100vw, 1200px"
-              className="blog-detail-featured-img"
-            />
+            {post.imageLink ? (
+              <a
+                href={post.imageLink}
+                target={post.imageLink.startsWith("http") ? "_blank" : "_self"}
+                rel="noopener noreferrer"
+                className="blog-detail-featured-link group"
+                title={`Open: ${post.imageLink}`}
+              >
+                <Image
+                  src={featuredImage}
+                  alt={post.title}
+                  fill
+                  priority
+                  sizes="(max-width: 1200px) 100vw, 1200px"
+                  className="blog-detail-featured-img transition-transform duration-300 group-hover:scale-[1.01]"
+                />
+              </a>
+            ) : (
+              <Image
+                src={featuredImage}
+                alt={post.title}
+                fill
+                priority
+                sizes="(max-width: 1200px) 100vw, 1200px"
+                className="blog-detail-featured-img"
+              />
+            )}
           </div>
         </header>
 

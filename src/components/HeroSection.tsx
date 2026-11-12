@@ -211,7 +211,7 @@ export default function HeroSection() {
             {/* Subtitle */}
             <p ref={subtitleRef} className="yoga-hero-subtitle">
               Expert doorstep service for <strong>AC, Refrigerator, Washing Machine, RO & Microwave</strong>.
-              Certified technicians arrive within 30 minutes with genuine spare parts, clear upfront pricing & a 90-day warranty.
+              Certified technicians arrive within 30 minutes with genuine spare parts, clear upfront pricing & upto 90-day warranty.
             </p>
 
             {/* 4 Feature Highlights Grid with 3D Tilt & Animated Counters */}

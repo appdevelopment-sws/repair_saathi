@@ -1189,7 +1189,7 @@ export default function BookingModal({
                   )}
 
                   <button type="submit" className="btn-book-submit" disabled={isSendingOtp || isSubmitting}>
-                    {isSendingOtp ? "⏳ Sending Verification OTP..." : "⚡ Confirm Free Visit Booking"}
+                    {isSendingOtp ? "⏳ Sending Verification OTP..." : "⚡ Confirm Visit Booking"}
                   </button>
 
                   <p className="booking-form-assurance">

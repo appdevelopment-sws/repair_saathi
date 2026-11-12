@@ -279,7 +279,7 @@ export default async function ProductDetailPage({
             }}
           >
             <p style={{ fontSize: "15px", color: "#334155", lineHeight: "1.8", margin: 0, fontWeight: "500" }}>
-              Expert doorstep service for AC, Refrigerator, Washing Machine, RO &amp; Microwave. Certified technicians arrive within 30 minutes with genuine spare parts, clear upfront pricing &amp; a 90-day warranty.
+              Expert doorstep service for AC, Refrigerator, Washing Machine, RO &amp; Microwave. Certified technicians arrive within 30 minutes with genuine spare parts, clear upfront pricing &amp; upto 90-day warranty.
             </p>
           </div>
         </div>

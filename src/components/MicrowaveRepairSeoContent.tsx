@@ -551,7 +551,7 @@ export default function MicrowaveRepairSeoContent() {
               <div>
                 <div className="review-stars">★★★★★</div>
                 <p className="review-quote">
-                  &ldquo;Fast, polite, and completely transparent service in Kankarbagh. They diagnosed a shorted fuse and door microswitch and fixed it in 45 minutes with a 90-day warranty. Highly recommended!&rdquo;
+                  &ldquo;Fast, polite, and completely transparent service in Kankarbagh. They diagnosed a shorted fuse and door microswitch and fixed it in 45 minutes with upto 90-day warranty. Highly recommended!&rdquo;
                 </p>
               </div>
               <div className="review-author-wrap">

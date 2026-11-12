@@ -75,7 +75,7 @@ export default function TermsPage() {
             4. Warranty &amp; Guarantee
           </h2>
           <p style={{ marginBottom: "16px" }}>
-            Repairs carried out with replacement components include up to a 90-day warranty on spare parts and workmanship, unless explicitly stated otherwise. Warranty does not cover accidental physical damage, power surges, or unauthorized third-party tampering post-repair.
+            Repairs carried out with replacement components include up to upto 90-day warranty on spare parts and workmanship, unless explicitly stated otherwise. Warranty does not cover accidental physical damage, power surges, or unauthorized third-party tampering post-repair.
           </p>
 
           <h2 style={{ fontSize: "18px", fontWeight: "800", color: "#0f172a", margin: "24px 0 8px 0" }}>

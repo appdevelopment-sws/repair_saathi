@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { popularCategories } from "@/data/servicesData";
+import FooterLocationServices from "./FooterLocationServices";
 import { Phone, Mail, MapPin } from "lucide-react";
 import WhatsAppIcon from "./WhatsAppIcon";
 import {
@@ -64,7 +65,10 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Col 3: For Users */}
+          {/* Col 3: Services in Patna (Dynamic SEO Locations) */}
+          <FooterLocationServices />
+
+          {/* Col 4: For Users */}
           <div>
             <h4 className="footer-col-title">For Users</h4>
             <ul className="footer-links-list">

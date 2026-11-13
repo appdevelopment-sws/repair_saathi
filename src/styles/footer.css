@@ -8,8 +8,8 @@
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
-  gap: 32px;
+  grid-template-columns: 1.25fr 1fr 1fr 1fr 1.2fr;
+  gap: 24px;
   padding-bottom: 40px;
 }
 
@@ -53,6 +53,22 @@
 
 .footer-link-item a:hover {
   color: #fbbc34;
+}
+
+.footer-view-all-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #38bdf8 !important;
+  font-weight: 700;
+  font-size: 13.5px;
+  margin-top: 4px;
+  transition: all 0.2s ease;
+}
+
+.footer-view-all-link:hover {
+  color: #7dd3fc !important;
+  transform: translateX(3px);
 }
 
 .footer-contact-item {

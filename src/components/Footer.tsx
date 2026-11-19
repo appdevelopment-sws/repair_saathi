@@ -196,6 +196,21 @@ export default function Footer() {
             <Link href="/refund-and-returns-policy/">Refund Policy</Link>
           </div>
         </div>
+
+        {/* Developer Credit */}
+        <div className="footer-credit-bar">
+          <p>
+            Design and Development by{" "}
+            <a
+              href="https://startupwebsupport.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-credit-link"
+            >
+              Startup Web Support
+            </a>
+          </p>
+        </div>
       </div>
     </footer>
   );

@@ -42,28 +42,42 @@ export default function BlogClient() {
         if (res.ok) {
           const json = await res.json();
           if (json.success && Array.isArray(json.data) && json.data.length > 0) {
-            const apiPosts: BlogPost[] = json.data.map((item: any) => ({
-              id: String(item.id),
-              slug: item.slug,
-              title: item.title,
-              author: item.author || "Repair Saathi Technical Team",
-              date: new Date(item.publishedAt || item.createdAt).toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              }),
-              readTime: item.readTime || "5 min read",
-              category: item.category || "General",
-              image: item.image || "/images/ac-repair-sec.webp",
-              excerpt: item.excerpt || "",
-              content: item.content,
-              tags: Array.isArray(item.tags)
-                ? item.tags
-                : typeof item.tags === "string"
-                ? JSON.parse(item.tags || "[]")
-                : [],
-              isFeatured: !!item.isFeatured,
-            }));
+            const apiPosts: BlogPost[] = json.data.map((item: any) => {
+              let bestExcerpt = "";
+              if (item.excerpt && typeof item.excerpt === "string" && item.excerpt.trim()) {
+                bestExcerpt = item.excerpt.trim();
+              } else if (item.metaDescription && typeof item.metaDescription === "string" && item.metaDescription.trim()) {
+                bestExcerpt = item.metaDescription.trim();
+              } else if (item.content && typeof item.content === "string") {
+                const plain = item.content.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+                if (plain) bestExcerpt = plain.slice(0, 160) + "...";
+              }
+
+              return {
+                id: String(item.id),
+                slug: item.slug,
+                title: item.title,
+                author: item.author || "Repair Saathi Technical Team",
+                date: new Date(item.publishedAt || item.createdAt).toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                }),
+                readTime: item.readTime || "5 min read",
+                category: item.category || "General",
+                image: item.image || "/images/ac-repair-sec.webp",
+                imageLink: item.imageLink || undefined,
+                excerpt: bestExcerpt,
+                metaDescription: item.metaDescription || bestExcerpt,
+                content: item.content,
+                tags: Array.isArray(item.tags)
+                  ? item.tags
+                  : typeof item.tags === "string"
+                  ? JSON.parse(item.tags || "[]")
+                  : [],
+                isFeatured: !!item.isFeatured,
+              };
+            });
 
             const apiSlugs = new Set(apiPosts.map((p) => p.slug));
             const staticRemain = blogsData.filter((p) => !apiSlugs.has(p.slug));

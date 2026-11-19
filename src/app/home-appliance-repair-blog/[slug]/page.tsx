@@ -76,6 +76,16 @@ async function fetchBlogPost(rawSlug: string): Promise<BlogPost | null> {
             }
           }
 
+          let bestExcerpt = "";
+          if (item.excerpt && typeof item.excerpt === "string" && item.excerpt.trim()) {
+            bestExcerpt = item.excerpt.trim();
+          } else if (item.metaDescription && typeof item.metaDescription === "string" && item.metaDescription.trim()) {
+            bestExcerpt = item.metaDescription.trim();
+          } else if (item.content && typeof item.content === "string") {
+            const plain = item.content.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+            if (plain) bestExcerpt = plain.slice(0, 160) + "...";
+          }
+
           const blogPost: BlogPost = {
             id: String(item.id),
             slug: item.slug,
@@ -86,11 +96,11 @@ async function fetchBlogPost(rawSlug: string): Promise<BlogPost | null> {
             category: item.category || "Appliance Care",
             image: item.image || "/images/og-repair-saathi.png",
             imageLink: item.imageLink || undefined,
-            excerpt: item.excerpt || "",
+            excerpt: bestExcerpt,
             content: item.content || "",
             tags,
             metaTitle: item.metaTitle || `${item.title} | Repair Saathi Patna`,
-            metaDescription: item.metaDescription || item.excerpt,
+            metaDescription: item.metaDescription || bestExcerpt,
             isFeatured: !!item.isFeatured,
           };
           return blogPost;

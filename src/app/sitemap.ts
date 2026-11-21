@@ -65,7 +65,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   const blogPages: MetadataRoute.Sitemap = blogsData.map((blog) => ({
-    url: `${baseUrl}/home-appliance-repair-blog/?slug=${blog.slug}`,
+    url: `${baseUrl}/home-appliance-repair-blog/${blog.slug}/`,
     lastModified: currentDate,
     changeFrequency: "weekly",
     priority: 0.75,
